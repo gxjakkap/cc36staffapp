@@ -18,7 +18,7 @@ services:
       - "7642:7642"
       - "3037:3037"
     depends_on:
-      - server
+      - staff
     networks:
       - main
     volumes:
@@ -38,9 +38,9 @@ services:
     networks:
       - main
     depends_on:
-      - staff-db
+      - db
     user: "1001:1001"
-  staff-db:
+  db:
     image: postgres
     restart: always
     user: postgres
