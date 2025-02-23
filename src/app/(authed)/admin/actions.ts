@@ -13,6 +13,7 @@ export async function addStaffAccount(data: { name: string, role: "staff" | "adm
 
     try {
         await auth.api.createUser({
+            headers: await headers(),
             body: {
                 email: data.email,
                 name: data.name,
