@@ -5,8 +5,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { AddStaffDialog } from "./add-staff"
 //import { StaffEditAndDeleteActions } from "./edit-staff"
 import { UserWithRole } from "better-auth/plugins/admin"
+import { StaffEditAndDeleteActions } from "./edit-staff"
 
-interface UWRWithUsername extends UserWithRole{
+export interface UWRWithUsername extends UserWithRole{
     username?: string
 }
 
@@ -48,7 +49,7 @@ export function StaffUsersTable({ data }: StaffUsersTableProps){
                                 <TableCell>{s.username}</TableCell>
                                 <TableCell>{s.email}</TableCell>
                                 <TableCell>{firstCharCapital(s.role || 'null')}</TableCell>
-                                {/* <TableCell className="flex justify-end"><StaffEditAndDeleteActions data={s} deleteDisabled={((s.role === 'admin') && (adminCount < 2))}  /></TableCell> */}
+                                <TableCell className="flex justify-end"><StaffEditAndDeleteActions data={s} deleteDisabled={((s.role === 'admin') && (adminCount < 2))}  /></TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

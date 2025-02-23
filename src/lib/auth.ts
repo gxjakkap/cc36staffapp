@@ -1,5 +1,5 @@
 import { betterAuth } from "better-auth";
-import { admin, username } from "better-auth/plugins"
+import { admin, openAPI, username } from "better-auth/plugins"
 import { nextCookies } from "better-auth/next-js";
 import { Pool } from "pg";
 
@@ -16,6 +16,6 @@ export const auth = betterAuth({
         admin({
             defaultRole: "staff",
             adminRole: "admin"
-        }) 
+        }),
     ]
 })
