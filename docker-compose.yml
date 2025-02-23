@@ -1,0 +1,67 @@
+services:
+  watchtower:
+      image: containrrr/watchtower
+      command:
+        - "--label-enable"
+        - "--interval"
+        - "30"
+        - "--rolling-restart"
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+  reverse-proxy:
+    image: traefik:v3.1
+    command:
+      - "--providers.docker"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.staff.address=:3037"
+    ports:
+      - "7642:7642"
+      - "3037:3037"
+    depends_on:
+      - server
+    networks:
+      - main
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  staff:
+    image: ghcr.io/gxjakkap/comcamp36-staff:main
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.staff.rule=Host(`cornflower.comcamp.io`)"
+      - "traefik.http.services.staff.loadbalancer.server.port=3000"
+      - "com.centurylinklabs.watchtower.enable=true"
+    env_file: ".env"
+    deploy:
+      mode: replicated
+      replicas: 2
+    restart: always
+    networks:
+      - main
+    depends_on:
+      - staff-db
+    user: "1001:1001"
+  staff-db:
+    image: postgres
+    restart: always
+    user: postgres
+    env_file: ".env"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${STAFFAPP_POSTGRES_PASSWORD}
+      - POSTGRES_LOG_STATEMENT=all
+      - POSTGRES_LOG_CONNECTIONS=true
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  main:
+    driver: bridge
+
+volumes:
+  db-data:
