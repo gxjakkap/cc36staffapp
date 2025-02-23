@@ -8,6 +8,7 @@ services:
         - "--rolling-restart"
       volumes:
         - /var/run/docker.sock:/var/run/docker.sock
+        - /etc/watchtower/config/config.json:/config.json
   reverse-proxy:
     image: traefik:v3.1
     command:
