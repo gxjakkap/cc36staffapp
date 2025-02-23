@@ -15,7 +15,6 @@ services:
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.staff.address=:3037"
     ports:
-      - "7642:7642"
       - "3037:3037"
     depends_on:
       - staff
