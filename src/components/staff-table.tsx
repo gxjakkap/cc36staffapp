@@ -49,7 +49,7 @@ export function StaffUsersTable({ data }: StaffUsersTableProps){
                                 <TableCell>{s.username}</TableCell>
                                 <TableCell>{s.email}</TableCell>
                                 <TableCell>{firstCharCapital(s.role || 'null')}</TableCell>
-                                <TableCell className="flex justify-end"><StaffEditAndDeleteActions data={s} deleteDisabled={((s.role === 'admin') && (adminCount < 2))}  /></TableCell>
+                                <TableCell className="flex justify-end"><StaffEditAndDeleteActions data={s} deleteDisabled={false}  /></TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
