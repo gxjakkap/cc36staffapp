@@ -12,14 +12,16 @@ export async function addStaffAccount(data: { name: string, role: "staff" | "adm
     }
 
     try {
-        await auth.api.signUpEmail({
+        await auth.api.createUser({
             body: {
-                username: data.username,
                 email: data.email,
                 name: data.name,
-                password: data.password
-            },
-            
+                password: data.password,
+                role: data.role,
+                data: {
+                    username: data.username
+                }
+            }
         })
     }
     catch (error) {
