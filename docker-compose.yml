@@ -26,8 +26,9 @@ services:
     image: ghcr.io/gxjakkap/comcamp36-staff:main
     labels:
       - "traefik.enable=true"
+      - "traefik.http.routers.staff.entrypoints=staff"
       - "traefik.http.routers.staff.rule=Host(`cornflower.comcamp.io`)"
-      - "traefik.http.services.staff.loadbalancer.server.port=3037"
+      - "traefik.http.services.staff.loadbalancer.server.port=8080"
       - "com.centurylinklabs.watchtower.enable=true"
     env_file: ".env"
     deploy:
