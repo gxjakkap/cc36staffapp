@@ -6,7 +6,7 @@ import { z } from "zod"
 
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 
-import { deleteStaffAccount } from "@/app/(authed)/admin/actions"
+import { deleteStaffAccount, editStaffAccount } from "@/app/(authed)/admin/actions"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
@@ -16,10 +16,10 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { UWRWithUsername } from "./staff-table"
 
-/* const ROLES = ["staff", "admin"] as const
-const RoleEnum = z.enum(ROLES) */
+const ROLES = ["staff", "admin"] as const
+const RoleEnum = z.enum(ROLES)
 
-/* const passwordSchema = z
+const passwordSchema = z
   .string()
   .optional()
   .refine((password) => password === undefined || password.length === 0 || password.length >= 11, {
@@ -36,25 +36,19 @@ const RoleEnum = z.enum(ROLES) */
   })
   .refine((password) => password === undefined || password.length === 0 || /[!@#$%^&*]/.test(password), {
     message: "Password must contain at least 1 special character",
-  }) */
+  })
 
-/* const editFormSchema = z.object({
-    name: z.string().min(2, {
-        message: "Name must be at least 2 characters.",
-    }),
-    email: z.string().email("Must be a valid email address."),
+const editFormSchema = z.object({
     password: passwordSchema,
     role: RoleEnum
-}) */
+})
 
-/* function EditDialog({ data, isOpen, onClose }: { data: UWRWithUsername, isOpen: boolean, onClose: () => void }){
+function EditDialog({ data, isOpen, onClose }: { data: UWRWithUsername, isOpen: boolean, onClose: () => void }){
     const [status, setStatus] = useState<'ready' | 'loading' | 'success' | 'failed'>('ready')
     const [errMsg, setErrMsg] = useState('')
     const form = useForm<z.infer<typeof editFormSchema>>({
         resolver: zodResolver(editFormSchema),
         defaultValues: {
-            name: data.name,
-            email: data.email,
             role: data.role as never,
             password: ''
         },
@@ -62,14 +56,6 @@ const RoleEnum = z.enum(ROLES) */
     const onSubmit = async(formData: z.infer<typeof editFormSchema>) => {
         setStatus('loading')
         const d: Partial<z.infer<typeof editFormSchema>> = {}
-        
-        if (formData.name !== data.name){
-            d.name = formData.name
-        }
-
-        if (formData.email !== data.email){
-            d.email = formData.email
-        }
 
         if (formData.password){
             d.password = formData.password
@@ -100,32 +86,6 @@ const RoleEnum = z.enum(ROLES) */
                 </DialogHeader>
                     {(status === 'ready' || status === 'failed') && (<Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                            <FormField
-                                control={form.control}
-                                name="name"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Name</FormLabel>
-                                            <FormControl>
-                                                <Input placeholder="Somsak Saksom" {...field} />
-                                            </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="email"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Email</FormLabel>
-                                            <FormControl>
-                                                <Input placeholder="somsak.saks@kmutt.ac.th" {...field} />
-                                            </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
                             <FormField
                                 control={form.control}
                                 name="password"
@@ -201,7 +161,7 @@ const RoleEnum = z.enum(ROLES) */
             </DialogContent>
         </Dialog>
     )
-} */
+}
 
 function DeleteDialog({ data, isOpen, onClose }: { data: UWRWithUsername, isOpen: boolean, onClose: () => void }){
     const [status, setStatus] = useState<'ready' | 'loading'>('ready')
@@ -286,11 +246,11 @@ export function StaffEditAndDeleteActions({ data, deleteDisabled }: { data: UWRW
                 </TooltipProvider>
             )}
 
-            {/* <EditDialog
+            <EditDialog
                 isOpen={editOpen}
                 onClose={() => setEditOpen(false)}
                 data={data}
-            /> */}
+            />
 
             <DeleteDialog
                 data={data}

@@ -38,6 +38,10 @@ interface ResTableProps {
   data: ResColumn[],
 }
 
+const genderVal = (val: string) => {
+  return (val === "man") ? "ชาย" : "หญิง"
+}
+
 export function ResTable({ data }: ResTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [globalFilter, setGlobalFilter] = React.useState<string>("")
@@ -57,7 +61,7 @@ export function ResTable({ data }: ResTableProps) {
     {
       accessorKey: "gender",
       header: "Gender",
-      cell: ({ row }) => <div>{row.getValue("gender")}</div>
+      cell: ({ row }) => <div>{genderVal(row.getValue("gender"))}</div>
     },
     {
       accessorKey: "phone",

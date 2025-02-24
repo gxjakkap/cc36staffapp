@@ -40,7 +40,7 @@ const formatDateString = (date: number) => {
 }
 
 const genderVal = (val: string) => {
-    return (val === "man") ? "Male" : "Female"
+    return (val === "man") ? "ชาย" : "หญิง"
 }
 
 const titleVal = (title: string) => {
@@ -64,6 +64,7 @@ const titleVal = (title: string) => {
 const S3 = new S3Client({
     region: `${process.env.S3_REGION}`,
     endpoint: `${process.env.S3_ENDPOINT}`,
+    forcePathStyle: true,
     credentials: {
         accessKeyId: process.env.S3_ACCESS_KEY || "",
         secretAccessKey: process.env.S3_SECRET_KEY || "",
@@ -86,14 +87,14 @@ export default async function StudentProfilePage({ params }: Props){
         notFound()
     }
     const data = dataArr[0].User
+    console.log(data)
     const files = dataArr[0].File
+    console.log(files)
     const imgUrl = (files && files.facePhotoFilepath) ? await getPresignedURL(files.facePhotoFilepath) : "/placeholder_goose.png"
     const thaiIdUrl = (files && files.thaiNationalidCopyFilepath) ? await getPresignedURL(files.thaiNationalidCopyFilepath) : ""
     const parentFormUrl = (files && files.parentPermissionFilepath) ? await getPresignedURL(files.parentPermissionFilepath) : ""
     const p1Url = (files && files.p1Filepath) ? await getPresignedURL(files.p1Filepath) : ""
     const p7Url = (files && files.p7Filepath) ? await getPresignedURL(files.p7Filepath) : ""
-
-    console.log(thaiIdUrl)
     return (
         <div className={`${promptReg.className} bg-neutral-100 mx-auto flex flex-col gap-y-3 pb-14 mt-20 lg:w-1/2`}>
             <div className="flex flex-col lg:gap-y-1 text-center lg:text-left">
@@ -101,7 +102,14 @@ export default async function StudentProfilePage({ params }: Props){
             </div>
             <div className="flex flex-col lg:flex-row gap-x-20">
                 <div className="mx-auto lg:mx-0">
-                    <img className="max-w-[500px] max-h-[450px] rounded-md" src={imgUrl} alt={`${data.fullname}'s portrait`} />
+                <div className="w-[250px] aspect-[4/5] overflow-hidden rounded-md">
+                    <img 
+                        className="object-cover w-full h-full" 
+                        src={imgUrl} 
+                        alt={`${data.fullname}'s portrait`} 
+                    />
+                </div>
+
                 </div>
                 <div className="flex flex-col gap-y-8 text-center lg:text-left mt-4 lg:mt-0">
                     <div className="flex flex-col">
@@ -206,19 +214,19 @@ export default async function StudentProfilePage({ params }: Props){
                         <p className={`${promptBold.className} text-gray-700 text-xl`}>ไฟล์</p>
                         <p className={`${promptReg.className} text-gray-700 text-xl`}>
                             <span className={`${promptMed.className}`}>ปพ.1: </span>
-                            {(p1Url.length > 0) ? (<a href={`${p1Url}`} className="underline hover:text-blue-500">View</a>) : "บ๋อแบ๋"}
+                            {(p1Url.length > 0) ? (<a href={`${p1Url}`} target="_blank" rel="noopener,noreferrer" className="underline hover:text-blue-500">View</a>) : "บ๋อแบ๋"}
                         </p>
                         <p className={`${promptReg.className} text-gray-700 text-xl`}>
                             <span className={`${promptMed.className}`}>ปพ.7: </span>
-                            {(p7Url.length > 0) ? (<a href={`${p7Url}`} className="underline hover:text-blue-500">View</a>) : "บ๋อแบ๋"}
+                            {(p7Url.length > 0) ? (<a href={`${p7Url}`} target="_blank" rel="noopener,noreferrer" className="underline hover:text-blue-500">View</a>) : "บ๋อแบ๋"}
                         </p>
                         <p className={`${promptReg.className} text-gray-700 text-xl`}>
                             <span className={`${promptMed.className}`}>เอกสารขออนุญาตผู้ปกครอง: </span>
-                            {(parentFormUrl.length > 0) ? (<a href={`${parentFormUrl}`} className="underline hover:text-blue-500">View</a>) : "บ๋อแบ๋"}
+                            {(parentFormUrl.length > 0) ? (<a href={`${parentFormUrl}`} target="_blank" rel="noopener,noreferrer" className="underline hover:text-blue-500">View</a>) : "บ๋อแบ๋"}
                         </p>
                         <p className={`${promptReg.className} text-gray-700 text-xl`}>
                             <span className={`${promptMed.className}`}>สำเนาบัตรประชาชน: </span>
-                            {(thaiIdUrl.length > 0) ? (<a href={`${thaiIdUrl}`} className="underline hover:text-blue-500">View</a>) : "บ๋อแบ๋"}
+                            {(thaiIdUrl.length > 0) ? (<a href={`${thaiIdUrl}`} target="_blank" rel="noopener,noreferrer" className="underline hover:text-blue-500">View</a>) : "บ๋อแบ๋"}
                         </p>
                     </div>
                 </div>
