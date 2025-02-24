@@ -13,6 +13,7 @@ import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle } from "lucide-react"
 import { authClient } from "@/lib/auth-client"
 import { useRouter } from 'next/navigation'
+import Image from "next/image"
 
 const formSchema = z.object({
     user: z.string().min(1),
@@ -49,7 +50,16 @@ export default function StaffLogin(){
     return (
         <>
             <div className="flex flex-col gap-y-12 mt-[25vh]">
-                <h1 className="text-5xl text-center text-black prompt-bold">Staff Login</h1>
+                <div className="mx-auto">
+                    <Image
+                        style={{ width: "100%", height: "auto" }}
+                        width={250}
+                        height={130}
+                        src="/logo.png"
+                        alt="ComCamp36Logo"
+                        priority
+                    />
+                </div>
                 <Form {...loginForm}>
                     <form onSubmit={loginForm.handleSubmit(onSubmit)} className="flex flex-col mx-auto gap-y-2 w-[70vw] lg:w-[30vw]">
                         <FormField
