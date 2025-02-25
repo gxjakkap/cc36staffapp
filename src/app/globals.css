@@ -76,6 +76,9 @@
 }
 
 @theme inline {
+  --font-prompt: "Prompt", sans-serif;
+  --font-noto-sans-thai-looped: "Noto Sans Thai Looped", sans-serif;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
