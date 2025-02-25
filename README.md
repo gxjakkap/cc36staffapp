@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# cc36staffapp
 
-## Getting Started
+Internal application for managing applicants and participant data for ComCamp 36
 
-First, run the development server:
+## Development Setup
+
+1. Install dependencies
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm i
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Start the dev database
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+docker compose -f compose-db.yml up -d
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Set up .env 
 
-## Learn More
+```
+# S3 Credentials for Supabase storage
+S3_ACCESS_KEY=
+S3_SECRET_KEY=
+S3_REGION=
+S3_ENDPOINT=
+S3_BUCKET=
 
-To learn more about Next.js, take a look at the following resources:
+# Connection String for Live DB on Supabase
+DATABASE_URL=
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Better-Auth Settings
+BETTER_AUTH_SECRET=
+BETTER_AUTH_URL=http://localhost:3037
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Dev db settings 
+STAFFAPP_POSTGRES_PASSWORD=password
+STAFFAPP_POSTGRES_HOST=localhost
+```
 
-## Deploy on Vercel
+You can use `pnpm dlx @better-auth/cli secret` to generate `BETTER_AUTH_SECRET`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. Run migration for better-auth (IMPORTANT: DON'T TOUCH ANYTHING RELATED TO DRIZZLE! ITS CONNECTED TO LIVE DB ON SUPABASE!)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+pnpm dlx @better-auth/cli migrate
+```
+
+5. Create Admin account using `pnpm create-admin <email> <username> <password> [name]`
+
+Example: 
+```bash
+pnpm create-admin anyemail@example.com username password example name
+```
+
+6. Go to `http://localhost:3037` and login with credentials you just created.
