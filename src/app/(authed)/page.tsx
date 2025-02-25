@@ -14,7 +14,7 @@ export default async function Home() {
     })
     .from(user);
   return (
-    <div className={`flex flex-col w-screen font-geist-mono`}>
+    <div className="flex flex-col font-geist-mono">
       <ResTable
         data={data.filter(
           (u) =>

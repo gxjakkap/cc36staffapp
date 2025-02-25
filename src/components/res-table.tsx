@@ -94,13 +94,13 @@ export function ResTable({ data }: ResTableProps) {
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
-    state: { sorting, columnVisibility },
+    state: { sorting, columnVisibility, globalFilter },
     // Optionally, you can set an initial pagination state here:
     initialState: { pagination: { pageIndex: 0, pageSize: 15 } },
   });
 
   return (
-    <div className="w-[85vw] lg:w-[95vw] min-h-screen mx-10">
+    <div className="min-h-screen mx-10">
       <div className="flex items-center py-4">
         <Input
           placeholder="Search"

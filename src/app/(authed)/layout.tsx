@@ -24,9 +24,7 @@ export default async function AuthorizedLayout({
   }
 
   return (
-    <div
-      className={`antialiased flex flex-col bg-neutral-100 w-screen min-h-screen`}
-    >
+    <div className="antialiased flex flex-col bg-neutral-100 min-h-screen">
       <NavigationMenu className="max-h-[6rem] mt-5 ml-auto">
         <NavigationMenuList className="flex gap-x-3 pr-12 text-xl">
           <NavigationMenuItem>
