@@ -199,7 +199,7 @@ export default async function StudentProfilePage({ params }: Props){
                         </p>
                         <p className={`${promptReg.className} text-gray-700 text-xl`}>
                             <span className={`${promptMed.className}`}>สะดวกมาค่ายทุกวัน: </span>
-                            {(data.comcampAttendance) ? ("✅") : ("❌")}
+                            {(data.everydayAttendance) ? ("✅") : ("❌")}
                         </p>
                         <p className={`${promptReg.className} text-gray-700 text-xl`}>
                             <span className={`${promptMed.className}`}>สะดวกนำแลปท้อปมา: </span>
