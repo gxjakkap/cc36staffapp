@@ -119,7 +119,7 @@ export default async function StudentProfilePage({ params }: Props){
                         </p>
                         <p className={`${promptReg.className} text-gray-700 text-xl`}>
                             <span className={`${promptMed.className}`}>วันเกิด: </span>
-                            {formatDateString((new Date(data.birth || 0)).getDate())}
+                            {formatDateString((new Date(data.birth || 0)).getTime())}
                         </p>
                         <p className={`${promptReg.className} text-gray-700 text-xl`}>
                             <span className={`${promptMed.className}`}>เพศ: </span>
