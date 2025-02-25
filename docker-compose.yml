@@ -1,14 +1,14 @@
 services:
   watchtower:
-      image: containrrr/watchtower
-      command:
-        - "--label-enable"
-        - "--interval"
-        - "30"
-        - "--rolling-restart"
-      volumes:
-        - /var/run/docker.sock:/var/run/docker.sock
-        - /etc/watchtower/config/config.json:/config.json
+    image: containrrr/watchtower
+    command:
+      - "--label-enable"
+      - "--interval"
+      - "30"
+      - "--rolling-restart"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/watchtower/config/config.json:/config.json
   reverse-proxy:
     image: traefik:v3.1
     command:
@@ -55,7 +55,7 @@ services:
     ports:
       - "5432:5432"
     healthcheck:
-      test: [ "CMD", "pg_isready" ]
+      test: ["CMD", "pg_isready"]
       interval: 10s
       timeout: 5s
       retries: 5

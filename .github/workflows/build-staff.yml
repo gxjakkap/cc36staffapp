@@ -2,12 +2,11 @@ name: Build Staff App Docker Image
 on:
   push:
     paths:
-      - '**/*'
+      - "**/*"
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository_owner }}/comcamp36-staff
   CI: true
-
 
 jobs:
   publish-docker-image:
@@ -45,7 +44,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          
+
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:
