@@ -150,7 +150,7 @@ const DropdownMenuEditStaff = () => {
               ) : (
                 <>
                   <Button type="submit">Confirm</Button>
-                  <DialogClose>
+                  <DialogClose asChild>
                     <Button type="button" variant="outline">
                       Cancel
                     </Button>
