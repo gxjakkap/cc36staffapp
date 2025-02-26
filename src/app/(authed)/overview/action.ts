@@ -10,8 +10,10 @@ const getOverview = authenticatedAction
       .select({ count: count() })
       .from(user);
 
-    const [completionStats] = await db
+    const [stats] = await db
       .select({
+        isMan: sql<number>`sum(case when ${user.gender} = 'man' then 1 else 0 end)`,
+        isWoman: sql<number>`sum(case when ${user.gender} = 'woman' then 1 else 0 end)`,
         infoDone: sql<number>`sum(case when ${user.infoDone} = true then 1 else 0 end)`,
         regisDone: sql<number>`sum(case when ${user.regisDone} = true then 1 else 0 end)`,
         academicDone: sql<number>`sum(case when ${user.academicDone} = true then 1 else 0 end)`,
@@ -22,7 +24,7 @@ const getOverview = authenticatedAction
 
     return {
       totalUsers,
-      completionStats,
+      stats,
     };
   });
 

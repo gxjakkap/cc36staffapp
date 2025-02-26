@@ -100,7 +100,7 @@ export function ResTable({ data }: ResTableProps) {
   });
 
   return (
-    <div className="min-h-screen mx-10">
+    <div className="container mx-auto">
       <div className="flex items-center py-4">
         <Input
           placeholder="Search"

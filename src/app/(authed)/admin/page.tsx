@@ -21,7 +21,7 @@ export default async function SettingsPage() {
   });
 
   return (
-    <div className="flex flex-col gap-y-4 lg:w-3/4 mx-auto">
+    <div className="container pt-8 pb-12 px-6 flex flex-col gap-y-4 mx-auto">
       <Card>
         <CardHeader>
           <CardTitle className="text-lg">Admin panel</CardTitle>
