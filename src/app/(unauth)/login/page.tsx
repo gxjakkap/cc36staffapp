@@ -1,9 +1,6 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -14,104 +11,89 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { authClient } from "@/lib/auth-client";
+import { useServerActionMutation } from "@/hook/server-action-hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AlertCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
+import { SignInStaff } from "./action";
+
 const formSchema = z.object({
-  user: z.string().min(1),
+  username: z.string().min(1),
   password: z.string().min(1),
 });
 
 export default function StaffLogin() {
-  const [status, setStatus] = useState<
-    "ready" | "loading" | "success" | "failed"
-  >("ready");
-  /* const [err, setErr] = useState("") */
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl");
+  const { mutate, isPending } = useServerActionMutation(SignInStaff, {
+    onSuccess() {
+      toast.success("Sucessfully login");
+    },
+    onError() {
+      toast.error("Something went wrong, please check your crediential");
+    },
+  });
 
   const loginForm = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+    },
   });
 
-  const router = useRouter();
-
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    setStatus("loading");
-    const res = await authClient.signIn.username({
-      username: values.user,
-      password: values.password,
-    });
-    console.log(res);
-    if (res.data) {
-      setStatus("success");
-      router.push(callbackUrl || "/");
-    } else {
-      setStatus("failed");
-    }
+    mutate(values);
   };
+
   return (
-    <>
-      <div className="flex flex-col gap-y-12 mt-[25vh]">
-        <div className="mx-auto">
-          <Image
-            style={{ width: "100%", height: "auto" }}
-            width={250}
-            height={130}
-            src="/logo.png"
-            alt="ComCamp36Logo"
-            priority
-          />
-        </div>
-        <Form {...loginForm}>
-          <form
-            onSubmit={loginForm.handleSubmit(onSubmit)}
-            className="flex flex-col mx-auto gap-y-2 w-[70vw] lg:w-[30vw]"
-          >
-            <FormField
-              control={loginForm.control}
-              name="user"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Username</FormLabel>
-                  <FormControl>
-                    <Input placeholder="username" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={loginForm.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input placeholder="*********" {...field} type="password" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" className="w-full">
-              Sign in
-            </Button>
-          </form>
-        </Form>
-        {status === "failed" && (
-          <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle className="font-medium">Login failed</AlertTitle>
-            <AlertDescription className="font-medium">
-              Check your credentials and try again.
-            </AlertDescription>
-          </Alert>
-        )}
+    <div className="flex flex-col gap-y-12 mt-[25vh]">
+      <div className="mx-auto">
+        <Image
+          style={{ width: "100%", height: "auto" }}
+          width={250}
+          height={130}
+          src="/logo.png"
+          alt="ComCamp36Logo"
+          priority
+        />
       </div>
-    </>
+      <Form {...loginForm}>
+        <form
+          onSubmit={loginForm.handleSubmit(onSubmit)}
+          className="flex flex-col mx-auto gap-y-2 w-[70vw] lg:w-[30vw]"
+        >
+          <FormField
+            control={loginForm.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Username</FormLabel>
+                <FormControl>
+                  <Input placeholder="username" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={loginForm.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input placeholder="*********" {...field} type="password" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit" className="w-full" disabled={isPending}>
+            Sign in
+          </Button>
+        </form>
+      </Form>
+    </div>
   );
 }

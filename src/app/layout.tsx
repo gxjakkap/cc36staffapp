@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Noto_Sans_Thai_Looped, Prompt } from "next/font/google";
+import ReactQueryProvider from "@/components/providers/react-query";
+import { cn } from "@/lib/utils";
+import { Toaster } from "sonner";
 
 import "./globals.css";
-
-import { cn } from "@/lib/utils";
 
 const prompt = Prompt({
   weight: ["400", "500", "600", "700"],
@@ -35,7 +36,10 @@ export default function RootLayout({
           notoSansThaiLooped.variable,
         )}
       >
-        {children}
+        <ReactQueryProvider>
+          {children}
+          <Toaster richColors />
+        </ReactQueryProvider>
       </body>
     </html>
   );
