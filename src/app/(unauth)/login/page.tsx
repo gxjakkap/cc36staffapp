@@ -28,6 +28,7 @@ export default function StaffLogin() {
   const { mutate, isPending } = useServerActionMutation(SignInStaff, {
     onSuccess() {
       toast.success("Sucessfully login");
+      window.location.reload();
     },
     onError() {
       toast.error("Something went wrong, please check your crediential");
