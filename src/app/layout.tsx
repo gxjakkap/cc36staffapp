@@ -6,6 +6,8 @@ import { Toaster } from "sonner";
 
 import "./globals.css";
 
+import { ThemeProvider } from "@/components/providers/theme";
+
 const prompt = Prompt({
   weight: ["400", "500", "600", "700"],
   variable: "--font-prompt",
@@ -37,8 +39,15 @@ export default function RootLayout({
         )}
       >
         <ReactQueryProvider>
-          {children}
-          <Toaster richColors />
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+            <Toaster richColors />
+          </ThemeProvider>
         </ReactQueryProvider>
       </body>
     </html>
