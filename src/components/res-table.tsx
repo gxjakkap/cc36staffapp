@@ -93,7 +93,7 @@ const parseAsSorting = createParser({
   },
   serialize: (value: SortingState) => {
     if (!value || !Array.isArray(value) || value.length === 0) {
-      return "";
+      return null as unknown as string;
     }
     return JSON.stringify(value);
   },
