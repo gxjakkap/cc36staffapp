@@ -5,9 +5,9 @@ import { user } from "@/db/schema";
 
 function TableSkeleton() {
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto mt-4">
       <div className="rounded-md border animate-pulse">
-        <div className="h-[400px] bg-muted"></div>
+        <div className="h-[400px] bg-muted" />
       </div>
     </div>
   );
