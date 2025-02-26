@@ -2,12 +2,9 @@
 
 import * as React from "react";
 import dynamic from "next/dynamic";
-import {
-  ThemeProvider as StaticProvider,
-  ThemeProviderProps,
-} from "next-themes";
+import { ThemeProviderProps } from "next-themes";
 
-const DynProvider = dynamic(
+const NextThemesProvider = dynamic(
   () => import("next-themes").then((e) => e.ThemeProvider),
   {
     ssr: false,
@@ -15,7 +12,5 @@ const DynProvider = dynamic(
 );
 
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
-  const NextThemeProvider =
-    process.env.NODE_ENV === "production" ? StaticProvider : DynProvider;
-  return <NextThemeProvider {...props}>{children}</NextThemeProvider>;
+  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
 }
