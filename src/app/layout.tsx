@@ -7,6 +7,7 @@ import "./globals.css";
 
 import { ThemeProvider } from "@/components/providers/theme";
 import { LineSeedSand } from "@/fonts";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 export const metadata: Metadata = {
   title: "CC36 Staff",
@@ -33,8 +34,10 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ReactQueryProvider>
-            {children}
-            <Toaster richColors />
+            <NuqsAdapter>
+              {children}
+              <Toaster richColors />
+            </NuqsAdapter>
           </ReactQueryProvider>
         </ThemeProvider>
       </body>

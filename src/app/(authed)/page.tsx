@@ -1,8 +1,19 @@
+import { Suspense } from "react";
 import { ResTable } from "@/components/res-table";
 import { db } from "@/db";
 import { user } from "@/db/schema";
 
-export default async function Home() {
+function TableSkeleton() {
+  return (
+    <div className="container mx-auto">
+      <div className="rounded-md border animate-pulse">
+        <div className="h-[400px] bg-muted"></div>
+      </div>
+    </div>
+  );
+}
+
+async function DataTable() {
   const data = await db
     .select({
       id: user.id,
@@ -13,17 +24,26 @@ export default async function Home() {
       hasSubmit: user.hasSubmitAnswer,
     })
     .from(user);
+
   return (
-    <div className="flex flex-col font-geist-mono">
-      <ResTable
-        data={data.filter(
-          (u) =>
-            u.fullname !== null &&
-            u.email !== null &&
-            u.gender !== null &&
-            u.phone !== null,
-        )}
-      />
+    <ResTable
+      data={data.filter(
+        (u) =>
+          u.fullname !== null &&
+          u.email !== null &&
+          u.gender !== null &&
+          u.phone !== null,
+      )}
+    />
+  );
+}
+
+export default function Home() {
+  return (
+    <div>
+      <Suspense fallback={<TableSkeleton />}>
+        <DataTable />
+      </Suspense>
     </div>
   );
 }

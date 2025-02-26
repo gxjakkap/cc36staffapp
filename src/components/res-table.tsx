@@ -23,6 +23,18 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+} from "lucide-react";
+import {
+  parseAsBoolean,
+  parseAsInteger,
+  parseAsString,
+  useQueryState,
+} from "nuqs";
 
 export interface ResColumn {
   id: string;
@@ -42,15 +54,33 @@ const genderVal = (val: string) => {
 };
 
 export function ResTable({ data }: ResTableProps) {
+  const [search, setSearch] = useQueryState("q", parseAsString.withDefault(""));
+  const [onlySubmitted, setOnlySubmitted] = useQueryState(
+    "submitted",
+    parseAsBoolean.withDefault(true),
+  );
+  const [pageIndex, setPageIndex] = useQueryState(
+    "page",
+    parseAsInteger.withDefault(0),
+  );
+  const [pageSize, setPageSize] = useQueryState(
+    "size",
+    parseAsInteger.withDefault(15),
+  );
+
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [globalFilter, setGlobalFilter] = React.useState<string>("");
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({ id: false });
-  const [filterSubmitted, setFilterSubmitted] = React.useState<boolean>(true);
 
   const memoizedFilteredData = React.useMemo(() => {
-    return filterSubmitted ? data.filter((row) => row.hasSubmit) : data;
-  }, [data, filterSubmitted]);
+    let filteredData = data;
+
+    if (onlySubmitted) {
+      filteredData = filteredData.filter((row) => row.hasSubmit);
+    }
+
+    return filteredData;
+  }, [data, onlySubmitted]);
 
   const columns = React.useMemo<ColumnDef<ResColumn>[]>(
     () => [
@@ -94,26 +124,42 @@ export function ResTable({ data }: ResTableProps) {
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
-    state: { sorting, columnVisibility, globalFilter },
-    // Optionally, you can set an initial pagination state here:
-    initialState: { pagination: { pageIndex: 0, pageSize: 15 } },
+    state: {
+      sorting,
+      columnVisibility,
+      globalFilter: search,
+      pagination: {
+        pageIndex,
+        pageSize,
+      },
+    },
+    onGlobalFilterChange: setSearch,
+    onPaginationChange: (updater) => {
+      const newPagination =
+        typeof updater === "function"
+          ? updater({ pageIndex, pageSize })
+          : updater;
+
+      setPageIndex(newPagination.pageIndex);
+      setPageSize(newPagination.pageSize);
+    },
   });
 
   return (
     <div className="container mx-auto">
-      <div className="flex items-center py-4">
+      <div className="flex items-center py-4 flex-wrap gap-2">
         <Input
           placeholder="Search"
-          value={globalFilter}
-          onChange={(e) => setGlobalFilter(e.target.value)}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
           className="max-w-[10rem] lg:max-w-sm"
         />
         <Button
           variant="outline"
-          className="ml-2"
-          onClick={() => setFilterSubmitted((prev) => !prev)}
+          onClick={() => setOnlySubmitted(!onlySubmitted)}
+          className={onlySubmitted ? "bg-accent" : ""}
         >
-          {filterSubmitted ? "Show All" : "Filter Submitted"}
+          {onlySubmitted ? "Show All" : "Filter Submitted"}
         </Button>
       </div>
       <div className="rounded-md border">
@@ -171,27 +217,42 @@ export function ResTable({ data }: ResTableProps) {
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-between space-x-2 py-4">
-        <span>
-          Page {table.getState().pagination.pageIndex + 1} of{" "}
-          {table.getPageCount()}
-        </span>
-        <div className="space-x-2">
+      <div className="flex items-center justify-end space-x-2 py-4 flex-wrap gap-2">
+        <div className="flex items-center space-x-2">
           <Button
             variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
+            size="icon"
+            onClick={() => setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            <ChevronsLeft />
           </Button>
           <Button
             variant="outline"
-            size="sm"
+            size="icon"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            <ChevronLeft />
+          </Button>
+          <div className="text-sm px-2">
+            {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
+          </div>
+          <Button
+            variant="outline"
+            size="icon"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            <ChevronRight />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => setPageIndex(table.getPageCount() - 1)}
+            disabled={!table.getCanNextPage()}
+          >
+            <ChevronsRight />
           </Button>
         </div>
       </div>
