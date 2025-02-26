@@ -5,24 +5,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { db } from "@/db";
-import { user } from "@/db/schema";
-import { count, sql } from "drizzle-orm";
+
+import getOverview from "./action";
 
 export default async function OverviewPage() {
-  const [{ count: totalUsers }] = await db
-    .select({ count: count() })
-    .from(user);
+  const [data] = await getOverview();
 
-  const [completionStats] = await db
-    .select({
-      infoDone: sql<number>`sum(case when ${user.infoDone} = true then 1 else 0 end)`,
-      regisDone: sql<number>`sum(case when ${user.regisDone} = true then 1 else 0 end)`,
-      academicDone: sql<number>`sum(case when ${user.academicDone} = true then 1 else 0 end)`,
-      filesDone: sql<number>`sum(case when ${user.filesDone} = true then 1 else 0 end)`,
-      hasSubmit: sql<number>`sum(case when ${user.hasSubmitAnswer} = true then 1 else 0 end)`,
-    })
-    .from(user);
+  if (!data) {
+    return null;
+  }
 
   return (
     <div className="container mx-auto pb-12 px-6 space-y-12">
@@ -42,19 +33,20 @@ export default async function OverviewPage() {
             <CardContent className="pt-6">
               <div className="space-y-8">
                 <div>
-                  <div className="text-6xl font-bold">{totalUsers}</div>
+                  <div className="text-6xl font-bold">{data?.totalUsers}</div>
                   <div className="text-base text-muted-foreground mt-3">
                     ผู้สมัครทั้งหมด
                   </div>
                 </div>
                 <div>
                   <div className="text-5xl font-bold text-green-600">
-                    {completionStats.hasSubmit}
+                    {data?.completionStats.hasSubmit}
                   </div>
                   <div className="text-base text-muted-foreground mt-3">
-                    {((completionStats.hasSubmit / totalUsers) * 100).toFixed(
-                      2,
-                    )}
+                    {(
+                      (data?.completionStats.hasSubmit / data.totalUsers) *
+                      100
+                    ).toFixed(2)}
                     % • ส่งใบสมัครแล้ว
                   </div>
                 </div>
@@ -75,11 +67,14 @@ export default async function OverviewPage() {
             </CardHeader>
             <CardContent>
               <div className="text-4xl font-bold text-blue-600">
-                {completionStats.infoDone}
+                {data?.completionStats.infoDone}
               </div>
               <div className="text-sm text-muted-foreground/80 mt-2">
-                {((completionStats.infoDone / totalUsers) * 100).toFixed(2)}% •
-                เสร็จสมบูรณ์
+                {(
+                  (data?.completionStats.infoDone / data?.totalUsers) *
+                  100
+                ).toFixed(2)}
+                % • เสร็จสมบูรณ์
               </div>
             </CardContent>
           </Card>
@@ -95,11 +90,14 @@ export default async function OverviewPage() {
             </CardHeader>
             <CardContent>
               <div className="text-4xl font-bold text-violet-600">
-                {completionStats.filesDone}
+                {data?.completionStats.filesDone}
               </div>
               <div className="text-sm text-muted-foreground/80 mt-2">
-                {((completionStats.filesDone / totalUsers) * 100).toFixed(2)}% •
-                เสร็จสมบูรณ์
+                {(
+                  (data.completionStats.filesDone / data.totalUsers) *
+                  100
+                ).toFixed(2)}
+                % • เสร็จสมบูรณ์
               </div>
             </CardContent>
           </Card>
@@ -115,11 +113,14 @@ export default async function OverviewPage() {
             </CardHeader>
             <CardContent>
               <div className="text-4xl font-bold text-amber-600">
-                {completionStats.regisDone}
+                {data.completionStats.regisDone}
               </div>
               <div className="text-sm text-muted-foreground/80 mt-2">
-                {((completionStats.regisDone / totalUsers) * 100).toFixed(2)}% •
-                เสร็จสมบูรณ์
+                {(
+                  (data.completionStats.regisDone / data.totalUsers) *
+                  100
+                ).toFixed(2)}
+                % • เสร็จสมบูรณ์
               </div>
             </CardContent>
           </Card>
@@ -135,10 +136,13 @@ export default async function OverviewPage() {
             </CardHeader>
             <CardContent>
               <div className="text-4xl font-bold text-rose-600">
-                {completionStats.academicDone}
+                {data?.completionStats.academicDone}
               </div>
               <div className="text-sm text-muted-foreground/80 mt-2">
-                {((completionStats.academicDone / totalUsers) * 100).toFixed(2)}
+                {(
+                  (data.completionStats.academicDone / data.totalUsers) *
+                  100
+                ).toFixed(2)}
                 % • เสร็จสมบูรณ์
               </div>
             </CardContent>
