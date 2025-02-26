@@ -179,7 +179,7 @@ export default async function StudentProfilePage({ params }: Props) {
             </p>
             <p className="text-gray-700 text-xl gap-x-2">
               <span className="font-medium">ที่อยู่: </span>
-              <p className="break-words">{data.address}</p>
+              <span className="break-words">{data.address}</span>
             </p>
           </div>
           <div className="flex flex-col">
