@@ -42,7 +42,7 @@ export default async function OverviewPage() {
                     {data.stats.hasSubmit} คน
                   </div>
                   <div className="text-base text-muted-foreground mt-3">
-                    {((data?.stats.hasSubmit / data.totalUsers) * 100).toFixed(
+                    {((data.stats.hasSubmit / data.totalUsers) * 100).toFixed(
                       2,
                     )}
                     % • ส่งใบสมัครแล้ว
@@ -99,11 +99,11 @@ export default async function OverviewPage() {
             </CardHeader>
             <CardContent>
               <div className="text-4xl font-bold text-blue-600">
-                {data?.stats.infoDone}
+                {data.stats.infoDone} คน
               </div>
               <div className="text-sm text-muted-foreground/80 mt-2">
-                {((data?.stats.infoDone / data?.totalUsers) * 100).toFixed(2)}%
-                • เสร็จสมบูรณ์
+                {((data.stats.infoDone / data.totalUsers) * 100).toFixed(2)}% •
+                เสร็จสมบูรณ์
               </div>
             </CardContent>
           </Card>
