@@ -14,6 +14,15 @@ const nextConfig: NextConfig = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: process.env.NEXT_PUBLIC_IMAGE_HOST as string,
+        pathname: "**",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

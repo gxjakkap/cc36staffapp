@@ -94,6 +94,7 @@ export default async function StudentProfilePage({ params }: Props) {
     files && files.p1Filepath ? await getPresignedURL(files.p1Filepath) : "";
   const p7Url =
     files && files.p7Filepath ? await getPresignedURL(files.p7Filepath) : "";
+
   return (
     <div className="mx-auto flex flex-col gap-y-3 pb-14 mt-20 lg:w-1/2">
       <div className="flex flex-col lg:gap-y-1 text-center lg:text-left">
@@ -177,10 +178,10 @@ export default async function StudentProfilePage({ params }: Props) {
                 {data.email?.toLowerCase()}
               </a>
             </p>
-            <p className="text-gray-700 text-xl gap-x-2">
+            <div className="text-gray-700 text-xl gap-x-2">
               <span className="font-medium">ที่อยู่: </span>
-              <span className="break-words">{data.address}</span>
-            </p>
+              <p className="break-words">{data.address}</p>
+            </div>
           </div>
           <div className="flex flex-col">
             <p className="text-gray-700 text-xl font-bold">
