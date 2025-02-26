@@ -13,23 +13,29 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
+  Column,
   ColumnDef,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  SortDirection,
   SortingState,
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
 import {
+  ChevronDown,
   ChevronLeft,
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
+  ChevronsUpDown,
+  ChevronUp,
 } from "lucide-react";
 import {
+  createParser,
   parseAsBoolean,
   parseAsInteger,
   parseAsString,
@@ -49,9 +55,49 @@ interface ResTableProps {
   data: ResColumn[];
 }
 
+interface SortableHeaderProps {
+  children: React.ReactNode;
+  isSorted: false | SortDirection;
+  onSort: () => void;
+}
+
+const SortableHeader = ({
+  children,
+  isSorted,
+  onSort,
+}: SortableHeaderProps) => {
+  return (
+    <Button variant="ghost" size="sm" onClick={onSort}>
+      {children}
+      {isSorted === "asc" && <ChevronUp />}
+      {isSorted === "desc" && <ChevronDown />}
+      {isSorted === false && <ChevronsUpDown />}
+    </Button>
+  );
+};
+
 const genderVal = (val: string) => {
   return val === "man" ? "ชาย" : "หญิง";
 };
+
+const parseAsSorting = createParser({
+  parse: (value: string | null) => {
+    if (!value) return [];
+    try {
+      const parsed = JSON.parse(value);
+      return Array.isArray(parsed) ? (parsed as SortingState) : [];
+    } catch (e) {
+      console.error(e);
+      return [];
+    }
+  },
+  serialize: (value: SortingState) => {
+    if (!value || !Array.isArray(value) || value.length === 0) {
+      return "";
+    }
+    return JSON.stringify(value);
+  },
+}).withDefault([]);
 
 export function ResTable({ data }: ResTableProps) {
   const [search, setSearch] = useQueryState("q", parseAsString.withDefault(""));
@@ -67,8 +113,13 @@ export function ResTable({ data }: ResTableProps) {
     "size",
     parseAsInteger.withDefault(15),
   );
+  const [sorting, setSorting] = useQueryState("sort", parseAsSorting);
 
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const effectiveSorting = React.useMemo<SortingState>(
+    () => (Array.isArray(sorting) ? sorting : []),
+    [sorting],
+  );
+
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({ id: false });
 
@@ -82,33 +133,79 @@ export function ResTable({ data }: ResTableProps) {
     return filteredData;
   }, [data, onlySubmitted]);
 
+  const cycleSorting = (column: Column<ResColumn, unknown>) => {
+    const currentSortDirection = column.getIsSorted();
+    if (currentSortDirection === false) {
+      column.toggleSorting(false);
+    } else if (currentSortDirection === "asc") {
+      column.toggleSorting(true);
+    } else {
+      column.clearSorting();
+    }
+  };
+
   const columns = React.useMemo<ColumnDef<ResColumn>[]>(
     () => [
       {
         accessorKey: "fullname",
-        header: "Name",
+        header: ({ column }) => (
+          <SortableHeader
+            isSorted={column.getIsSorted()}
+            onSort={() => cycleSorting(column)}
+          >
+            Name
+          </SortableHeader>
+        ),
         cell: ({ row }) => <div>{row.getValue("fullname")}</div>,
       },
       {
         accessorKey: "gender",
-        header: "Gender",
+        header: ({ column }) => (
+          <SortableHeader
+            isSorted={column.getIsSorted()}
+            onSort={() => cycleSorting(column)}
+          >
+            Gender
+          </SortableHeader>
+        ),
         cell: ({ row }) => <div>{genderVal(row.getValue("gender"))}</div>,
       },
       {
         accessorKey: "phone",
-        header: "Phone",
+        header: ({ column }) => (
+          <SortableHeader
+            isSorted={column.getIsSorted()}
+            onSort={() => cycleSorting(column)}
+          >
+            Phone
+          </SortableHeader>
+        ),
         cell: ({ row }) => <div>{row.getValue("phone")}</div>,
       },
       {
         accessorKey: "email",
-        header: "Email",
+        header: ({ column }) => (
+          <SortableHeader
+            isSorted={column.getIsSorted()}
+            onSort={() => cycleSorting(column)}
+          >
+            Email
+          </SortableHeader>
+        ),
         cell: ({ row }) => (
           <div className="lowercase">{row.getValue("email")}</div>
         ),
       },
       {
         accessorKey: "hasSubmit",
-        header: "Submit",
+        header: ({ column }) => (
+          <SortableHeader
+            isSorted={column.getIsSorted()}
+            onSort={() => cycleSorting(column)}
+          >
+            Submit
+          </SortableHeader>
+        ),
         cell: ({ row }) => <div>{row.getValue("hasSubmit") ? "✅" : "❌"}</div>,
       },
     ],
@@ -118,14 +215,18 @@ export function ResTable({ data }: ResTableProps) {
   const table = useReactTable({
     data: memoizedFilteredData,
     columns,
-    onSortingChange: setSorting,
+    onSortingChange: (updater) => {
+      const newSorting =
+        typeof updater === "function" ? updater(effectiveSorting) : updater;
+      setSorting(newSorting);
+    },
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     state: {
-      sorting,
+      sorting: effectiveSorting,
       columnVisibility,
       globalFilter: search,
       pagination: {
@@ -187,6 +288,7 @@ export function ResTable({ data }: ResTableProps) {
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
+                      className="px-5"
                       onClick={() => {
                         if (cell.column.id !== "action") {
                           redirect(
