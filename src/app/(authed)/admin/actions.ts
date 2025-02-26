@@ -2,103 +2,91 @@
 
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
+import { ForbiddenError } from "@/lib/errors";
+import { authenticatedAction } from "@/lib/safe-action";
+import { z } from "zod";
 
-export async function addStaffAccount(data: {
-  name: string;
-  role: "staff" | "admin";
-  email: string;
-  username: string;
-  password: string;
-}) {
-  const reqHeaders = await headers();
-  const session = await auth.api.getSession({ headers: reqHeaders });
-  if (!session || session.user.role !== "admin") {
-    return { status: 403, err: "forbidden" };
-  }
+export const addStaffAccount = authenticatedAction
+  .createServerAction()
+  .input(
+    z.object({
+      name: z.string(),
+      role: z.enum(["staff", "admin"]),
+      email: z.string(),
+      username: z.string(),
+      password: z.string(),
+    }),
+  )
+  .handler(async ({ ctx, input }) => {
+    if (ctx.user.role != "admin") {
+      throw new ForbiddenError();
+    }
 
-  try {
     await auth.api.createUser({
       headers: await headers(),
       body: {
-        email: data.email,
-        name: data.name,
-        password: data.password,
-        role: data.role,
+        email: input.email,
+        name: input.name,
+        password: input.password,
+        role: input.role,
         data: {
-          username: data.username,
+          username: input.username,
         },
       },
     });
-  } catch (error) {
-    /* if (error instanceof APIError) {
-            console.log(error.message, error.status)
-            return { status: 400, error: JSON.parse(JSON.stringify(error)) }
-        } */
-    return { status: 400, error: JSON.parse(JSON.stringify(error)) };
-  }
+  });
 
-  return { status: 201 };
-}
+export const deleteStaffAccount = authenticatedAction
+  .createServerAction()
+  .input(
+    z.object({
+      id: z.string(),
+    }),
+  )
+  .handler(async ({ ctx, input }) => {
+    if (ctx.user.role != "admin") {
+      throw new ForbiddenError();
+    }
 
-export async function deleteStaffAccount(id: string) {
-  const reqHeaders = await headers();
-  const session = await auth.api.getSession({ headers: reqHeaders });
-  if (!session || session.user.role !== "admin") {
-    return { status: 403, err: "forbidden" };
-  }
-  try {
     await auth.api.removeUser({
       headers: await headers(),
       body: {
-        userId: id,
+        userId: input.id,
       },
     });
-  } catch (error) {
-    /* if (error instanceof APIError) {
-            console.log(error.message, error.status)
-            return { status: 400, error: JSON.parse(JSON.stringify(error)) }
-        } */
-    return { status: 400, error: JSON.parse(JSON.stringify(error)) };
-  }
+  });
 
-  return { status: 200 };
-}
-
-export async function editStaffAccount(
-  data: Partial<{ password: string; role: "staff" | "admin" }>,
-  id: string,
-) {
-  const reqHeaders = await headers();
-  const session = await auth.api.getSession({ headers: reqHeaders });
-  if (!session || session.user.role !== "admin") {
-    return { status: 403, err: "forbidden" };
-  }
-  try {
-    if (data.role) {
-      await auth.api.setRole({
-        headers: await headers(),
-        body: {
-          userId: id,
-          role: data.role,
-        },
-      });
+export const editStaffAccount = authenticatedAction
+  .createServerAction()
+  .input(
+    z.object({
+      id: z.string(),
+      password: z.string().optional(),
+      role: z.enum(["staff", "admin"]).optional(),
+    }),
+  )
+  .handler(async ({ ctx, input }) => {
+    if (ctx.user.role != "admin") {
+      throw new ForbiddenError();
     }
-    if (data.password) {
+
+    if (input.password) {
       await auth.api.setUserPassword({
         headers: await headers(),
         body: {
-          userId: id,
-          newPassword: data.password,
+          userId: input.id,
+          newPassword: input.password,
         },
       });
     }
-  } catch (error) {
-    /* if (error instanceof APIError) {
-            console.log(error.message, error.status)
-            return { status: 400, error: JSON.parse(JSON.stringify(error)) }
-        } */
-    return { status: 400, error: JSON.parse(JSON.stringify(error)) };
-  }
 
-  return { status: 200 };
-}
+    if (input.role) {
+      await auth.api.setRole({
+        headers: await headers(),
+        body: {
+          userId: input.id,
+          role: input.role,
+        },
+      });
+    }
+  });

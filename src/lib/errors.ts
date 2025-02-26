@@ -38,3 +38,10 @@ export class LoginError extends PublicError {
     this.name = "LoginError";
   }
 }
+
+export class ForbiddenError extends PublicError {
+  constructor() {
+    super("You do not have permission to perform this action");
+    this.name = "ForbiddenError";
+  }
+}

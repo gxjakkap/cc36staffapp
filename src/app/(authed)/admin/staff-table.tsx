@@ -9,11 +9,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-//import { StaffEditAndDeleteActions } from "./edit-staff"
 import { UserWithRole } from "better-auth/plugins/admin";
 
 import { AddStaffDialog } from "./add-staff";
-import { StaffEditAndDeleteActions } from "./edit-staff";
+import EditStaff from "./edit-staff";
 
 export interface UWRWithUsername extends UserWithRole {
   username?: string;
@@ -32,7 +31,6 @@ const firstCharCapital = (s: string) => {
 };
 
 export function StaffUsersTable({ data }: StaffUsersTableProps) {
-  //const adminCount = data.users.filter(ea => ea.role === 'admin').length
   return (
     <Card className="relative">
       <CardHeader>
@@ -58,7 +56,7 @@ export function StaffUsersTable({ data }: StaffUsersTableProps) {
                 <TableCell>{s.email}</TableCell>
                 <TableCell>{firstCharCapital(s.role || "null")}</TableCell>
                 <TableCell className="flex justify-end">
-                  <StaffEditAndDeleteActions data={s} deleteDisabled={false} />
+                  <EditStaff user={{ ...s }} />
                 </TableCell>
               </TableRow>
             ))}
