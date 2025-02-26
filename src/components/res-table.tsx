@@ -118,7 +118,7 @@ export function ResTable({ data }: ResTableProps) {
       </div>
       <div className="rounded-md border">
         <Table>
-          <TableHeader className="bg-neutral-100">
+          <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (

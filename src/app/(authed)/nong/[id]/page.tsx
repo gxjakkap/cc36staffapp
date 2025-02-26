@@ -95,7 +95,7 @@ export default async function StudentProfilePage({ params }: Props) {
   const p7Url =
     files && files.p7Filepath ? await getPresignedURL(files.p7Filepath) : "";
   return (
-    <div className="bg-neutral-100 mx-auto flex flex-col gap-y-3 pb-14 mt-20 lg:w-1/2">
+    <div className="mx-auto flex flex-col gap-y-3 pb-14 mt-20 lg:w-1/2">
       <div className="flex flex-col lg:gap-y-1 text-center lg:text-left">
         <h1 className="font-medium text-[1.875rem] lg:text-4xl text-zinc-900">
           {titleVal(data.title || "")}
