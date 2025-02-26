@@ -17,7 +17,17 @@ export default async function OverviewPage() {
 
   return (
     <div className="container mx-auto pt-8 pb-12 px-6 space-y-8">
-      <h1 className="text-4xl font-bold">Overview</h1>
+      <div className="text-4xl font-bold flex justify-between">
+        <h1>Overview</h1>
+        <h1 className="text-destructive">
+          เหลืออีก{" "}
+          {Math.ceil(
+            (new Date("2025-03-13").getTime() - new Date().getTime()) /
+              (1000 * 60 * 60 * 24),
+          )}{" "}
+          วันปิดรับสมัคร
+        </h1>
+      </div>
       <div className="grid grid-cols-2 lg:grid-cols-6 gap-6">
         <div className="lg:col-span-2 lg:row-span-2 col-span-full">
           <Card className="h-full">
@@ -25,6 +35,7 @@ export default async function OverviewPage() {
               <CardTitle className="text-2xl font-bold">
                 สถานะการสมัคร
               </CardTitle>
+              <div className="text-sm text-muted-foreground mt-2"></div>
               <CardDescription>ภาพรวมของผู้สมัครทั้งหมด</CardDescription>
             </CardHeader>
             <CardContent className="pt-6">
