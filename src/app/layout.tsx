@@ -6,7 +6,7 @@ import { Toaster } from "sonner";
 import "./globals.css";
 
 import { ThemeProvider } from "@/components/providers/theme";
-import { LineSeedSand } from "@/fonts";
+import { LineSeedSans } from "@/fonts";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 export const metadata: Metadata = {
@@ -21,11 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={cn(
-          "font-line-seed-sand antialiased",
-          LineSeedSand.variable,
-          LineSeedSand.className,
-        )}
+        className={cn("font-line-seed-sans antialiased", LineSeedSans.variable)}
       >
         <ThemeProvider
           attribute="class"

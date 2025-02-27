@@ -1,6 +1,6 @@
 import localFont from "next/font/local";
 
-export const LineSeedSand = localFont({
+export const LineSeedSans = localFont({
   src: [
     {
       path: "./line/LINESeedSansTH_W_Th.woff",
@@ -16,5 +16,5 @@ export const LineSeedSand = localFont({
     },
   ],
   display: "swap",
-  variable: "--font-line-seed-sand",
+  variable: "--font-line-seed-sans",
 });
