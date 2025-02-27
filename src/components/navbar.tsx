@@ -15,22 +15,22 @@ export function Navbar({ isAdmin }: NavbarProps) {
   const pathname = usePathname();
 
   return (
-    <div className="flex py-4 px-10 border-b sticky top-0 bg-border/10 backdrop-blur z-10">
+    <div className="flex py-4 px-10 border-b sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <nav className="flex justify-end w-full items-center gap-4 xl:gap-6">
         <Link
           href="/"
           className={cn(
-            "transition-colors hover:text-foreground/80",
+            "text-sm transition-colors hover:text-foreground/80",
             pathname === "/" ? "text-foreground" : "text-foreground/80",
           )}
         >
-          Home
+          Overview
         </Link>
 
         <Link
           href="/nongs"
           className={cn(
-            "transition-colors hover:text-foreground/80",
+            "text-sm transition-colors hover:text-foreground/80",
             pathname === "/nongs" ? "text-foreground" : "text-foreground/80",
           )}
         >
@@ -40,7 +40,7 @@ export function Navbar({ isAdmin }: NavbarProps) {
         <Link
           href="/answers"
           className={cn(
-            "transition-colors hover:text-foreground/80",
+            "text-sm transition-colors hover:text-foreground/80",
             pathname === "/answers" ? "text-foreground" : "text-foreground/80",
           )}
         >
@@ -52,7 +52,7 @@ export function Navbar({ isAdmin }: NavbarProps) {
             <Link
               href="/admin"
               className={cn(
-                "transition-colors hover:text-foreground/80",
+                "text-sm transition-colors hover:text-foreground/80",
                 pathname === "/admin"
                   ? "text-foreground"
                   : "text-foreground/80",
@@ -63,7 +63,7 @@ export function Navbar({ isAdmin }: NavbarProps) {
           </>
         )}
 
-        <SignOutButton className="text-base" />
+        <SignOutButton />
         <ThemeToggle />
       </nav>
     </div>
