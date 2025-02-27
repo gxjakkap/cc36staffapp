@@ -77,6 +77,7 @@
 
 @theme {
   --font-line-seed-sans: "var(--font-line-seed-sans)", sans-serif;
+  --font-sarabun: "var(--font-sarabun)", sans-serif;
 }
 
 @theme inline {

@@ -1,4 +1,4 @@
-import { getOverview } from "@/app/(authed)/action";
+import { getOverview } from "@/app/(authed)/actions";
 import {
   Card,
   CardContent,

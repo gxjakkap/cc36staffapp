@@ -27,3 +27,7 @@ export const titleVal = (title: string) => {
       return title;
   }
 };
+
+export const formatTextWithLineBreaks = (text: string) => {
+  return text.replace(/(?:\r\n|\r|\n)/g, "<br />");
+};

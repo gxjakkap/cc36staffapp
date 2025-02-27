@@ -1,3 +1,4 @@
+import { Sarabun } from "next/font/google";
 import localFont from "next/font/local";
 
 export const LineSeedSans = localFont({
@@ -17,4 +18,10 @@ export const LineSeedSans = localFont({
   ],
   display: "swap",
   variable: "--font-line-seed-sans",
+});
+
+export const sarabun = Sarabun({
+  weight: "400",
+  display: "swap",
+  variable: "--font-sarabun",
 });
