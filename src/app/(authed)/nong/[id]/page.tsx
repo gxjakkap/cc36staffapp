@@ -150,7 +150,7 @@ async function ApplicantPage({ params }: ApplicantPageProps) {
           </div>
           <div className="flex flex-col gap-1">
             <div className="flex flex-col gap-2">
-              <div className="grid grid-cols-[auto_auto]">
+              <div className="grid grid-cols-[auto_auto] gap-2">
                 <span className="flex items-center gap-1">
                   <span className="font-bold text-foreground/80">
                     ข้อมูลส่วนตัว:
@@ -170,14 +170,56 @@ async function ApplicantPage({ params }: ApplicantPageProps) {
                   {data.user.academicDone ? "✅" : "❌"}
                 </span>
                 <span className="flex items-center gap-1">
-                  <span className="font-bold text-foreground/80">ไฟล์:</span>
-                  {data.user.filesDone ? "✅" : "❌"}
-                </span>
-                <span className="flex items-center gap-1">
                   <span className="font-bold text-foreground/80">
                     ส่งคำตอบ:
                   </span>
                   {data.user.hasSubmitAnswer ? "✅" : "❌"}
+                </span>
+                <span className="flex items-center gap-2 col-span-2">
+                  <span className="font-bold text-foreground/80">ไฟล์:</span>
+                  {data.user.filesDone ? "✅" : "❌"}
+                  <div className="flex flex-wrap gap-2 ml-1">
+                    {data.files.thaiIdUrl && (
+                      <a
+                        href={data.files.thaiIdUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-accent-foreground underline hover:text-accent-foreground/80 transition-colors px-2 py-1 rounded bg-accent"
+                      >
+                        สำเนาบัตรประชาชน
+                      </a>
+                    )}
+                    {data.files.parentFormUrl && (
+                      <a
+                        href={data.files.parentFormUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-accent-foreground underline hover:text-accent-foreground/80 transition-colors px-2 py-1 rounded bg-accent"
+                      >
+                        เอกสารขออนุญาตผู้ปกครอง
+                      </a>
+                    )}
+                    {data.files.p1Url && (
+                      <a
+                        href={data.files.p1Url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-accent-foreground underline hover:text-accent-foreground/80 transition-colors px-2 py-1 rounded bg-accent"
+                      >
+                        ปพ.1
+                      </a>
+                    )}
+                    {data.files.p7Url && (
+                      <a
+                        href={data.files.p7Url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-accent-foreground underline hover:text-accent-foreground/80 transition-colors px-2 py-1 rounded bg-accent"
+                      >
+                        ปพ.7
+                      </a>
+                    )}
+                  </div>
                 </span>
               </div>
             </div>

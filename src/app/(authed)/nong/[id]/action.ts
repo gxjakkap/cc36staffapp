@@ -50,7 +50,10 @@ const getUserInfo = authenticatedAction
       }),
     );
 
-    const result = Object.fromEntries(urls);
+    const result = Object.fromEntries(urls) as Record<
+      keyof typeof filePaths,
+      string
+    >;
 
     return {
       user: users[0].User,
