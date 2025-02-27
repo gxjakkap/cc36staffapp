@@ -28,13 +28,23 @@ export function Navbar({ isAdmin }: NavbarProps) {
         </Link>
 
         <Link
-          href="/overview"
+          href="/nongs"
           className={cn(
             "transition-colors hover:text-foreground/80",
-            pathname === "/overview" ? "text-foreground" : "text-foreground/80",
+            pathname === "/nongs" ? "text-foreground" : "text-foreground/80",
           )}
         >
-          Overview
+          Nongs
+        </Link>
+
+        <Link
+          href="/answers"
+          className={cn(
+            "transition-colors hover:text-foreground/80",
+            pathname === "/answers" ? "text-foreground" : "text-foreground/80",
+          )}
+        >
+          Answers
         </Link>
 
         {isAdmin && (

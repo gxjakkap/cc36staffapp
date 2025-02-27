@@ -1,285 +1,217 @@
-/* eslint-disable @next/next/no-img-element */
+import Image from "next/image";
+import { Card, CardContent } from "@/components/ui/card";
+import { formatDateString, genderVal, titleVal } from "@/lib/formatter";
 
-import { notFound } from "next/navigation";
-import { db } from "@/db";
-import { file, user } from "@/db/schema";
-import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { eq } from "drizzle-orm";
+import getUserInfo from "./action";
 
-interface Props {
+interface ApplicantPageProps {
   params: Promise<{ id: string }>;
 }
 
-const formatDateString = (date: number) => {
-  const epdate = new Date(date);
-  return epdate.toLocaleDateString("th-TH", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
+async function ApplicantPage({ params }: ApplicantPageProps) {
+  const [data, error] = await getUserInfo({
+    id: (await params).id,
   });
-};
 
-const genderVal = (val: string) => {
-  return val === "man" ? "ชาย" : "หญิง";
-};
-
-const titleVal = (title: string) => {
-  switch (title) {
-    case "miss":
-      return "นางสาว";
-    case "mrs":
-      return "นาง";
-    case "mr":
-      return "นาย";
-    case "master":
-      return "เด็กชาย";
-    case "miss_young":
-      return "เด็กหญิง";
-    default:
-      return title;
+  if (!data || error) {
+    return null;
   }
-};
 
-const S3 = new S3Client({
-  region: `${process.env.S3_REGION}`,
-  endpoint: `${process.env.S3_ENDPOINT}`,
-  forcePathStyle: true,
-  credentials: {
-    accessKeyId: process.env.S3_ACCESS_KEY || "",
-    secretAccessKey: process.env.S3_SECRET_KEY || "",
-  },
-});
-
-async function getPresignedURL(filePath: string) {
-  const url = await getSignedUrl(
-    S3,
-    new GetObjectCommand({
-      Bucket: `${process.env.S3_BUCKET}`,
-      Key: `${filePath}`,
-    }),
-    { expiresIn: 3600 },
-  );
-  return url;
-}
-
-export default async function StudentProfilePage({ params }: Props) {
-  const { id } = await params;
-  const dataArr = await db
-    .select()
-    .from(user)
-    .leftJoin(file, eq(file.userId, user.id))
-    .where(eq(user.id, id))
-    .limit(1);
-  if (dataArr.length < 1) {
-    notFound();
-  }
-  const data = dataArr[0].User;
-  console.log(data);
-  const files = dataArr[0].File;
-  console.log(files);
-  const imgUrl =
-    files && files.facePhotoFilepath
-      ? await getPresignedURL(files.facePhotoFilepath)
-      : "/placeholder_goose.png";
-  const thaiIdUrl =
-    files && files.thaiNationalidCopyFilepath
-      ? await getPresignedURL(files.thaiNationalidCopyFilepath)
-      : "";
-  const parentFormUrl =
-    files && files.parentPermissionFilepath
-      ? await getPresignedURL(files.parentPermissionFilepath)
-      : "";
-  const p1Url =
-    files && files.p1Filepath ? await getPresignedURL(files.p1Filepath) : "";
-  const p7Url =
-    files && files.p7Filepath ? await getPresignedURL(files.p7Filepath) : "";
+  const ApplicantInfo: ApplicantItemsProps[] = [
+    {
+      label: "ข้อมูลส่วนตัว",
+      data: "",
+      isHeader: true,
+    },
+    {
+      label: "อายุ",
+      data: `${data.user.age || "ยังไม่ได้ระบุอายุ"}`,
+    },
+    {
+      label: "วันเกิด",
+      data: `${formatDateString(new Date(data.user.birth || 0).getTime())}`,
+    },
+    {
+      label: "เพศ",
+      data: `${data.user.gender ? genderVal(data.user.gender) : "ยังไม่ได้ระบุเพศ"}`,
+    },
+    {
+      label: "ประวัติการศึกษา",
+      data: "",
+      isHeader: true,
+    },
+    {
+      label: "ชั้นการศึกษา",
+      data: `${data.user.graduation || "ยังไม่ได้ระบุชั้นการศึกษา"}`,
+    },
+    {
+      label: "สายการเรียน",
+      data: `${data.user.course || "ยังไม่ได้ระบุสายการเรียน"}`,
+    },
+    {
+      label: "โรงเรียน",
+      data: `${data.user.school || "ยังไม่ได้ระบุโรงเรียน"}`,
+    },
+    {
+      label: "ข้อมูลทางการแพทย์",
+      data: "",
+      isHeader: true,
+    },
+    {
+      label: "หมู่เลือด",
+      data: `${data.user.bloodGroup?.toUpperCase() || "ยังไม่ได้ระบุหมู่เลือด"}`,
+    },
+    {
+      label: "สิทธิการรักษา",
+      data: `${data.user.medicalCoverage || "ยังไม่ได้ระบุสิทธิการรักษา"}`,
+    },
+    {
+      label: "โรคประจำตัว",
+      data: `${data.user.chronicDisease || "ยังไม่ได้ระบุโรคประจำตัว"}`,
+    },
+    {
+      label: "แพ้อาหาร",
+      data: `${data.user.foodAllergic || "ยังไม่ได้ระบุแพ้อาหาร"}`,
+    },
+    {
+      label: "แพ้ยา",
+      data: `${data.user.drugAllergic || "ยังไม่ได้ระบุแพ้ยา"}`,
+    },
+    {
+      label: "ข้อมูลสำหรับติดต่อ",
+      data: "",
+      isHeader: true,
+    },
+    {
+      label: "มือถือ",
+      data: `${data.user.telephone || "ยังไม่ได้ระบุมือถือ"}`,
+    },
+    {
+      label: "อีเมล",
+      data: `${data.user.email?.toLowerCase() || "ยังไม่ได้ระบุอีเมล"}`,
+    },
+    {
+      label: "ที่อยู่",
+      data: `${data.user.address || "ยังไม่ได้ระบุที่อยู่"}`,
+    },
+    {
+      label: "ข้อมูลผู้ปกครอง",
+      data: "",
+      isHeader: true,
+    },
+    {
+      label: "ติดต่อผู้ปกครอง",
+      data: `${data.user.parentPhone || "ยังไม่ได้ระบุติดต่อผู้ปกครอง"}`,
+    },
+    {
+      label: "ชื่อผู้ปกครอง",
+      data: `${data.user.parentFullname} (${data.user.parentRelation})`,
+    },
+    {
+      label: "ข้อมูลเกี่ยวกับค่าย",
+      data: "",
+      isHeader: true,
+    },
+    {
+      label: "ประเภทอาหาร",
+      data: `${data.user.preferFood || "ยังไม่ได้ระบุประเภทอาหาร"}`,
+    },
+    {
+      label: "สะดวกมาค่ายทุกวัน",
+      data: `${data.user.everydayAttendance ? "✅" : "❌"}`,
+    },
+    {
+      label: "สะดวกนำแลปท้อปมา",
+      data: `${data.user.hasLaptop ? "✅" : "❌"}`,
+    },
+    {
+      label: "วิธีการเดินทาง",
+      data: `${data.user.travel || "ยังไม่ได้ระบุวิธีการเดินทาง"}`,
+    },
+  ];
 
   return (
-    <div className="mx-auto flex flex-col gap-y-3 pb-14 mt-20 lg:w-1/2">
-      <div className="flex flex-col lg:gap-y-1 text-center lg:text-left">
-        <h1 className="font-medium text-[1.875rem] lg:text-4xl text-zinc-900">
-          {titleVal(data.title || "")}
-          {data.fullname}
-        </h1>
-      </div>
-      <div className="flex flex-col lg:flex-row gap-x-20">
-        <div className="mx-auto lg:mx-0">
-          <div className="w-[250px] aspect-[4/5] overflow-hidden rounded-md">
-            <img
-              className="object-cover w-full h-full"
-              src={imgUrl}
-              alt={`${data.fullname}'s portrait`}
+    <div className="py-12 max-w-screen w-full flex justify-center">
+      <Card className="max-w-[80rem] w-full">
+        <CardContent className="grid grid-cols-[1fr_2fr] gap-4">
+          <div className="flex justify-center w-[25rem] h-fit flex-col">
+            <div className="text-3xl font-bold">
+              {titleVal(data.user.title || "")}
+              {data.user.fullname || "ยังไม่ได้ระบุชื่อเต็ม"}
+            </div>
+            <Image
+              style={{ width: "100%", height: "auto" }}
+              width={1000}
+              height={0}
+              src={data.files.imgUrl}
+              alt="ComCamp36Logo"
+              priority
             />
           </div>
-        </div>
-        <div className="flex flex-col gap-y-8 text-center lg:text-left mt-4 lg:mt-0">
-          <div className="flex flex-col">
-            <p className="text-gray-700 text-xl">
-              <span className="font-medium">อายุ: </span>
-              {data.age}
-            </p>
-            <p className=" text-gray-700 text-xl">
-              <span className="font-medium">วันเกิด: </span>
-              {formatDateString(new Date(data.birth || 0).getTime())}
-            </p>
-            <p className="text-gray-700 text-xl">
-              <span className="font-medium">เพศ: </span>
-              {data.gender ? genderVal(data.gender) : "undefined"}
-            </p>
-            <p className="text-gray-700 text-xl">
-              <span className="font-medium">ชั้นการศึกษา: </span>
-              {data.graduation}
-            </p>
-            <p className="text-gray-700 text-xl">
-              <span className="font-medium">สายการเรียน: </span>
-              {data.course}
-            </p>
-            <p className="text-gray-700 text-xl">
-              <span className="font-medium">โรงเรียน: </span>
-              {data.school}
-            </p>
-          </div>
-          <div className="flex flex-col">
-            <p className="text-gray-700 text-xl font-bold">Medical🩸</p>
-            <p className="text-gray-700 text-xl">
-              <span className="font-medium">หมู่เลือด: </span>
-              {data.bloodGroup?.toUpperCase()}
-            </p>
-            <p className="text-gray-700 text-xl">
-              <span className="font-medium">สิทธิการรักษา: </span>
-              {data.medicalCoverage}
-            </p>
-            <p className="text-gray-700 text-xl">
-              <span className="font-medium">โรคประจำตัว: </span>
-              {data.chronicDisease}
-            </p>
-            <p className="text-gray-700 text-xl">
-              <span className="font-medium">แพ้อาหาร: </span>
-              {data.foodAllergic}
-            </p>
-            <p className="text-gray-700 text-xl">
-              <span className="font-medium">แพ้ยา: </span>
-              {data.drugAllergic}
-            </p>
-          </div>
-          <div className="flex flex-col">
-            <p className="text-gray-700 text-xl font-bold">Contact Info📱</p>
-            <p className="text-gray-700 text-xl">
-              <span className="font-medium">มือถือ: </span>
-              {data.telephone}
-            </p>
-            <p className="text-gray-700 text-xl">
-              <span className="font-medium">อีเมล: </span>
-              <a
-                href={`mailto:${data.email}`}
-                className="hover:underline hover:text-blue-500"
-              >
-                {data.email?.toLowerCase()}
-              </a>
-            </p>
-            <div className="text-gray-700 text-xl gap-x-2">
-              <span className="font-medium">ที่อยู่: </span>
-              <p className="break-words">{data.address}</p>
+          <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-2">
+              <div className="grid grid-cols-[auto_auto]">
+                <span className="flex items-center gap-1">
+                  <span className="font-bold text-foreground/80">
+                    ข้อมูลส่วนตัว:
+                  </span>
+                  {data.user.infoDone ? "✅" : "❌"}
+                </span>
+                <span className="flex items-center gap-1">
+                  <span className="font-bold text-foreground/80">
+                    คำถามทะเบียน:
+                  </span>
+                  {data.user.regisDone ? "✅" : "❌"}
+                </span>
+                <span className="flex items-center gap-1">
+                  <span className="font-bold text-foreground/80">
+                    คำถามวิชาการ:
+                  </span>
+                  {data.user.academicDone ? "✅" : "❌"}
+                </span>
+                <span className="flex items-center gap-1">
+                  <span className="font-bold text-foreground/80">ไฟล์:</span>
+                  {data.user.filesDone ? "✅" : "❌"}
+                </span>
+                <span className="flex items-center gap-1">
+                  <span className="font-bold text-foreground/80">
+                    ส่งคำตอบ:
+                  </span>
+                  {data.user.hasSubmitAnswer ? "✅" : "❌"}
+                </span>
+              </div>
             </div>
+            {ApplicantInfo.map((item, index) => (
+              <ApplicantItems key={index} {...item} />
+            ))}
           </div>
-          <div className="flex flex-col">
-            <p className="text-gray-700 text-xl font-bold">
-              Emergency Contact🆘
-            </p>
-            <p className="text-gray-700 text-xl">
-              <span className="font-medium">ติดต่อผู้ปกครอง: </span>
-              {data.parentPhone}
-            </p>
-            <p className="text-gray-700 text-xl">
-              <span className="font-medium">ชื่อ: </span>
-              {data.parentFullname} ({data.parentRelation})
-            </p>
-          </div>
-          <div className="flex flex-col">
-            <p className="text-gray-700 text-xl font-bold">ข้อมูลเพิ่มเติม</p>
-            <p className="text-gray-700 text-xl">
-              <span className="font-medium">ประเภทอาหาร: </span>
-              {data.preferFood}
-            </p>
-            <p className="text-gray-700 text-xl">
-              <span className="font-medium">สะดวกมาค่ายทุกวัน: </span>
-              {data.everydayAttendance ? "✅" : "❌"}
-            </p>
-            <p className="text-gray-700 text-xl">
-              <span className="font-medium">สะดวกนำแลปท้อปมา: </span>
-              {data.hasLaptop ? "✅" : "❌"}
-            </p>
-            <p className="text-gray-700 text-xl">
-              <span className="font-medium">วิธีการเดินทาง: </span>
-              {data.travel}
-            </p>
-          </div>
-          <div className="flex flex-col">
-            <p className="text-gray-700 text-xl font-bold">ไฟล์</p>
-            <p className="text-gray-700 text-xl">
-              <span className="font-medium">ปพ.1: </span>
-              {p1Url.length > 0 ? (
-                <a
-                  href={`${p1Url}`}
-                  target="_blank"
-                  rel="noopener,noreferrer"
-                  className="underline hover:text-blue-500"
-                >
-                  View
-                </a>
-              ) : (
-                "บ๋อแบ๋"
-              )}
-            </p>
-            <p className="text-gray-700 text-xl">
-              <span className="font-medium">ปพ.7: </span>
-              {p7Url.length > 0 ? (
-                <a
-                  href={`${p7Url}`}
-                  target="_blank"
-                  rel="noopener,noreferrer"
-                  className="underline hover:text-blue-500"
-                >
-                  View
-                </a>
-              ) : (
-                "บ๋อแบ๋"
-              )}
-            </p>
-            <p className="text-gray-700 text-xl">
-              <span className="font-medium">เอกสารขออนุญาตผู้ปกครอง: </span>
-              {parentFormUrl.length > 0 ? (
-                <a
-                  href={`${parentFormUrl}`}
-                  target="_blank"
-                  rel="noopener,noreferrer"
-                  className="underline hover:text-blue-500"
-                >
-                  View
-                </a>
-              ) : (
-                "บ๋อแบ๋"
-              )}
-            </p>
-            <p className="text-gray-700 text-xl">
-              <span className="font-medium">สำเนาบัตรประชาชน: </span>
-              {thaiIdUrl.length > 0 ? (
-                <a
-                  href={`${thaiIdUrl}`}
-                  target="_blank"
-                  rel="noopener,noreferrer"
-                  className="underline hover:text-blue-500"
-                >
-                  View
-                </a>
-              ) : (
-                "บ๋อแบ๋"
-              )}
-            </p>
-          </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
+
+interface ApplicantItemsProps {
+  label: string;
+  data: string;
+  isHeader?: boolean;
+}
+
+const ApplicantItems: React.FC<ApplicantItemsProps> = ({
+  label,
+  data,
+  isHeader,
+}) => {
+  if (isHeader) {
+    return <h2 className="text-xl font-bold pt-4">{label}</h2>;
+  }
+
+  return (
+    <div className="grid w-full grid-cols-[1fr_3fr] gap-4 text-lg text-foreground/80">
+      <span className="font-semibold text-foreground/60">{label}</span>
+      <span className="text-foreground/60">{data}</span>
+    </div>
+  );
+};
+
+export default ApplicantPage;
