@@ -31,36 +31,48 @@ export function Navbar({ isAdmin }: NavbarProps) {
           href="/nongs"
           className={cn(
             "text-sm transition-colors hover:text-foreground/80",
-            pathname === "/nongs" ? "text-foreground" : "text-foreground/80",
+            pathname.includes("/nongs")
+              ? "font-bold text-destructive"
+              : "text-foreground/80",
           )}
         >
-          Nongs
+          น้องๆ
         </Link>
 
         <Link
-          href="/answers"
+          href="/thabians"
           className={cn(
             "text-sm transition-colors hover:text-foreground/80",
-            pathname === "/answers" ? "text-foreground" : "text-foreground/80",
+            pathname.includes("/thabians")
+              ? "font-bold text-destructive"
+              : "text-foreground/80",
           )}
         >
-          Answers
+          ทะเบียน
+        </Link>
+
+        <Link
+          href="/wichakans"
+          className={cn(
+            "text-sm transition-colors hover:text-foreground/80",
+            pathname.includes("/wichakans")
+              ? "font-bold text-destructive"
+              : "text-foreground/80",
+          )}
+        >
+          วิชาการ
         </Link>
 
         {isAdmin && (
-          <>
-            <Link
-              href="/admin"
-              className={cn(
-                "text-sm transition-colors hover:text-foreground/80",
-                pathname === "/admin"
-                  ? "text-foreground"
-                  : "text-foreground/80",
-              )}
-            >
-              Admin
-            </Link>
-          </>
+          <Link
+            href="/admin"
+            className={cn(
+              "text-sm transition-colors hover:text-foreground/80",
+              pathname === "/admin" ? "text-foreground" : "text-foreground/80",
+            )}
+          >
+            Admin
+          </Link>
         )}
 
         <SignOutButton />
