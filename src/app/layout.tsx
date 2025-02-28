@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
+import { Toaster } from "sonner";
+
 import ReactQueryProvider from "@/components/providers/react-query";
 import { cn } from "@/lib/utils";
-import { Toaster } from "sonner";
 
 import "./globals.css";
 
+import { NuqsAdapter } from "nuqs/adapters/next/app";
+
 import { ThemeProvider } from "@/components/providers/theme";
 import { LineSeedSans, sarabun } from "@/fonts";
-import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 export const metadata: Metadata = {
   title: "CC36 Staff",

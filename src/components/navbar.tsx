@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
 import { SignOutButton } from "@/components/sign-out-button";
 import { cn } from "@/lib/utils";
 

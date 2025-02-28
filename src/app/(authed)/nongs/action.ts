@@ -1,9 +1,10 @@
 "use server";
 
+import { and, eq } from "drizzle-orm";
+
 import { db } from "@/db";
 import { user } from "@/db/schema";
 import { authenticatedAction } from "@/lib/safe-action";
-import { and, eq } from "drizzle-orm";
 
 const getAllUserTable = authenticatedAction
   .createServerAction()

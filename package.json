@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "format": "prettier --write .",
     "with-env": "dotenv -e .env --",
     "prepare": "husky install",
     "create-admin": "pnpm with-env tsx scripts/create-admin.ts"

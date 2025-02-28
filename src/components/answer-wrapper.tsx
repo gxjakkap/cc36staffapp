@@ -1,7 +1,8 @@
+import type { InferSelectModel } from "drizzle-orm";
+
 import { Separator } from "@/components/ui/separator";
 import type { answerAcademic, answerRegis } from "@/db/schema";
 import { formatTextWithLineBreaks } from "@/lib/formatter";
-import type { InferSelectModel } from "drizzle-orm";
 
 type AnswerRegis = InferSelectModel<typeof answerRegis>;
 type AnswerAcademic = InferSelectModel<typeof answerAcademic>;

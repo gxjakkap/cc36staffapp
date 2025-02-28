@@ -1,13 +1,14 @@
 "use server";
 
 import { headers } from "next/headers";
+import { count, eq, sql } from "drizzle-orm";
+import { z } from "zod";
+
 import { db } from "@/db";
 import { answerAcademic, answerRegis, user } from "@/db/schema";
 import { auth } from "@/lib/auth";
 import { NotFoundError } from "@/lib/errors";
 import { authenticatedAction } from "@/lib/safe-action";
-import { count, eq, sql } from "drizzle-orm";
-import { z } from "zod";
 
 export async function signOutAction() {
   await auth.api.signOut({

@@ -1,6 +1,9 @@
 "use client";
 
 import { useContext, useState } from "react";
+import { TrashIcon } from "lucide-react";
+import { toast } from "sonner";
+
 import { LoadingSpinner } from "@/components/svg/loading-spinner";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,8 +19,6 @@ import {
 import { useServerActionMutation } from "@/hook/server-action-hooks";
 import { authClient } from "@/lib/auth-client";
 import { defaultToastReactQuery } from "@/lib/toast";
-import { TrashIcon } from "lucide-react";
-import { toast } from "sonner";
 
 import { EditStaffContext } from ".";
 import { deleteStaffAccount } from "../actions";

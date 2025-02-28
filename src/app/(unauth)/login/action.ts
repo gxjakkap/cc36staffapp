@@ -1,8 +1,9 @@
 "use server";
 
+import { z } from "zod";
+
 import { auth } from "@/lib/auth";
 import { unauthenticatedAction } from "@/lib/safe-action";
-import { z } from "zod";
 
 export const SignInStaff = unauthenticatedAction
   .createServerAction()

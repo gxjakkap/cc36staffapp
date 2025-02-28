@@ -1,10 +1,11 @@
 "use server";
 
 import { headers } from "next/headers";
+import { z } from "zod";
+
 import { auth } from "@/lib/auth";
 import { ForbiddenError } from "@/lib/errors";
 import { authenticatedAction } from "@/lib/safe-action";
-import { z } from "zod";
 
 export const addStaffAccount = authenticatedAction
   .createServerAction()

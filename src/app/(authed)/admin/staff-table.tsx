@@ -1,5 +1,7 @@
 "use client";
 
+import { UserWithRole } from "better-auth/plugins/admin";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -9,7 +11,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { UserWithRole } from "better-auth/plugins/admin";
 
 import { AddStaffDialog } from "./add-staff";
 import EditStaff from "./edit-staff";

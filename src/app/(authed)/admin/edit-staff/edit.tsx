@@ -1,4 +1,10 @@
 import { useContext, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Edit2Icon } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+
 import { LoadingSpinner } from "@/components/svg/loading-spinner";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,11 +35,6 @@ import {
 } from "@/components/ui/select";
 import { useServerActionMutation } from "@/hook/server-action-hooks";
 import { defaultToastReactQuery } from "@/lib/toast";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Edit2Icon } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
 
 import { EditStaffContext } from ".";
 import { editStaffAccount } from "../actions";

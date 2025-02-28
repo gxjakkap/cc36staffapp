@@ -1,9 +1,10 @@
 import Link from "next/link";
+import { ColumnDef } from "@tanstack/react-table";
+import { SearchIcon } from "lucide-react";
+
 import { DataTableColumnHeader } from "@/components/data-table/column-header";
 import { Button } from "@/components/ui/button";
 import { formatPhoneNumber, genderVal } from "@/lib/formatter";
-import { ColumnDef } from "@tanstack/react-table";
-import { SearchIcon } from "lucide-react";
 
 type Nongs = {
   id: string;

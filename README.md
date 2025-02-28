@@ -16,7 +16,7 @@ pnpm i
 docker compose -f compose-db.yml up -d
 ```
 
-3. Set up .env 
+3. Set up .env
 
 ```
 # S3 Credentials for Supabase storage
@@ -33,7 +33,7 @@ DATABASE_URL=
 BETTER_AUTH_SECRET=
 BETTER_AUTH_URL=http://localhost:3037
 
-# Dev db settings 
+# Dev db settings
 STAFFAPP_POSTGRES_PASSWORD=password
 STAFFAPP_POSTGRES_HOST=localhost
 ```
@@ -48,7 +48,8 @@ pnpm dlx @better-auth/cli migrate
 
 5. Create Admin account using `pnpm create-admin <email> <username> <password> [name]`
 
-Example: 
+Example:
+
 ```bash
 pnpm create-admin anyemail@example.com username password example name
 ```

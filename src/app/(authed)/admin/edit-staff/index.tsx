@@ -1,6 +1,8 @@
 "use client";
 
 import { createContext } from "react";
+import { Settings2Icon } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -9,7 +11,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Settings2Icon } from "lucide-react";
 
 import { UWRWithUsername } from "../staff-table";
 import DropdownMenuDeleteStaff from "./delete";
