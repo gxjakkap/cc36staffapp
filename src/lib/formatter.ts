@@ -31,3 +31,12 @@ export const titleVal = (title: string) => {
 export const formatTextWithLineBreaks = (text: string) => {
   return text.replace(/(?:\r\n|\r|\n)/g, "<br />");
 };
+
+export const formatPhoneNumber = (tel: string) => {
+  const cleaned = ("" + tel).replace(/\D/g, "");
+  const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+  if (match) {
+    return match[1] + "-" + match[2] + "-" + match[3];
+  }
+  return null;
+};

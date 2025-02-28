@@ -1,49 +1,26 @@
-import { Suspense } from "react";
-import { ResTable } from "@/components/res-table";
-import { db } from "@/db";
-import { user } from "@/db/schema";
+"use client";
 
-function TableSkeleton() {
-  return (
-    <div className="container mx-auto mt-4">
-      <div className="rounded-md border animate-pulse">
-        <div className="h-[400px] bg-muted" />
-      </div>
-    </div>
-  );
-}
+import { DataTable } from "@/components/data-table";
+import { useServerActionQuery } from "@/hook/server-action-hooks";
 
-async function DataTable() {
-  const data = await db
-    .select({
-      id: user.id,
-      fullname: user.fullname,
-      gender: user.gender,
-      phone: user.telephone,
-      email: user.email,
-      hasSubmit: user.hasSubmitAnswer,
-    })
-    .from(user);
-
-  return (
-    <ResTable
-      data={data.filter(
-        (u) =>
-          u.fullname !== null &&
-          u.email !== null &&
-          u.gender !== null &&
-          u.phone !== null,
-      )}
-    />
-  );
-}
+import getAllUserTable from "./action";
+import { columns } from "./column";
 
 export default function Home() {
+  const { data, isLoading } = useServerActionQuery(getAllUserTable, {
+    queryKey: ["nongs"],
+    input: undefined,
+  });
+
+  if (isLoading) {
+    return;
+  }
+
   return (
-    <div>
-      <Suspense fallback={<TableSkeleton />}>
-        <DataTable />
-      </Suspense>
+    <div className="pt-10 w-full flex justify-center items-center">
+      <div className="w-full max-w-[90vw]">
+        <DataTable columns={columns} data={data ?? []} />
+      </div>
     </div>
   );
 }
