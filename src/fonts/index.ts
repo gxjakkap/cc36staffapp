@@ -24,4 +24,5 @@ export const sarabun = Sarabun({
   weight: "400",
   display: "swap",
   variable: "--font-sarabun",
+  subsets: ["latin", "thai"],
 });
