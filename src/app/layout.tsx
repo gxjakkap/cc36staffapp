@@ -34,6 +34,7 @@ export default function RootLayout({
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
+          themes={["light", "dark", "reading"]}
         >
           <ReactQueryProvider>
             <NuqsAdapter>

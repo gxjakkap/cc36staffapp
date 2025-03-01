@@ -3,6 +3,7 @@
 @plugin "tailwindcss-animate";
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant reading (&:is(.reading *));
 
 :root {
   --background: oklch(1 0 0);
@@ -73,6 +74,36 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(0.274 0.006 286.033);
   --sidebar-ring: oklch(0.442 0.017 285.786);
+}
+
+.reading {
+  --background: oklch(95.32% 0.0591 91.45);
+  --foreground: oklch(23.93% 0 0);
+
+  --card: oklch(95.32% 0.0591 91.45);
+  --card-foreground: oklch(23.93% 0 0);
+
+  --popover: oklch(95.32% 0.0591 91.45);
+  --popover-foreground: oklch(23.93% 0 0);
+
+  --primary: oklch(30% 0.02 90);
+  --primary-foreground: oklch(95.32% 0.0591 91.45);
+
+  --secondary: oklch(85% 0.03 91.45);
+  --secondary-foreground: oklch(30% 0.02 90);
+
+  --muted: oklch(85% 0.02 91.45);
+  --muted-foreground: oklch(50% 0.01 90);
+
+  --accent: oklch(80% 0.04 91.45);
+  --accent-foreground: oklch(30% 0.02 90);
+
+  --destructive: oklch(50% 0.1 27);
+  --destructive-foreground: oklch(95.32% 0.0591 91.45);
+
+  --border: oklch(80% 0.03 91.45);
+  --input: oklch(80% 0.03 91.45);
+  --ring: oklch(70% 0.02 91.45);
 }
 
 @theme {
