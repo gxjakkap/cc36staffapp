@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
 
 import { getAcademicAnswer } from "@/app/(authed)/actions";
-import getUserInfo from "@/app/(authed)/nong/[id]/action";
 import { AnswerWrapper } from "@/components/answer-wrapper";
 import {
   ResizableHandle,
@@ -17,12 +16,6 @@ export default async function AnswerAcademicPage({
   params,
 }: AnswerAcademicPageProps) {
   const { id } = await params;
-
-  const [userInfoData, userInfoError] = await getUserInfo({ id });
-
-  if (!userInfoData || userInfoError) {
-    return redirect("/wichakans");
-  }
 
   const [academicAnswerData, academicAnswerError] = await getAcademicAnswer({
     userId: id,
