@@ -14,7 +14,7 @@ interface NavbarProps {
 
 const NAVBARS = [
   { href: "/", text: "หน้าหลัก" },
-  { href: "/nongs", text: "ข้อมูลส่วยตัว" },
+  { href: "/nongs", text: "ข้อมูลส่วนตัว" },
   { href: "/thabians", text: "คำถามทะเบียน" },
   { href: "/wichakans", text: "คำถามวิชาการ" },
 ];
