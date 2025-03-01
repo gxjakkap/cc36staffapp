@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTheme } from "next-themes";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -48,6 +49,8 @@ export default function StaffLogin() {
     mutate(values);
   };
 
+  const { resolvedTheme } = useTheme();
+
   return (
     <div className="flex flex-col gap-y-12 mt-[25vh]">
       <div className="mx-auto">
@@ -55,7 +58,9 @@ export default function StaffLogin() {
           style={{ width: "100%", height: "auto" }}
           width={250}
           height={130}
-          src="/logo.png"
+          src={
+            resolvedTheme === "light" ? "/logo-black.png" : "/logo-white.png"
+          }
           alt="ComCamp36Logo"
           priority
         />
