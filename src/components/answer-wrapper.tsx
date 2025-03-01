@@ -30,21 +30,21 @@ export function AnswerWrapper<T extends "academic" | "regis">({
   );
 
   return (
-    <div className="w-full">
+    <div className="w-full my-3">
       {filteredAnswers.map(([key, value], index) => (
-        <div key={key}>
-          <div className="space-y-2">
+        <div key={key} className="mx-auto max-w-[80ch]">
+          <div className="space-y-3">
             <h3 className="text-xl font-semibold">
               {question[key as keyof typeof question]}
             </h3>
             <p
-              className="text-wrap font-sarabun"
+              className="font-sarabun leading-7 text-foreground/90"
               dangerouslySetInnerHTML={{
                 __html: formatTextWithLineBreaks(String(value)),
               }}
             />
           </div>
-          {index < filteredAnswers.length - 1 && <Separator className="my-6" />}
+          {index < filteredAnswers.length - 1 && <Separator className="my-8" />}
         </div>
       ))}
     </div>
