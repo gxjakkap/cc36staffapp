@@ -52,7 +52,7 @@ export default function StaffLogin() {
   const { resolvedTheme } = useTheme();
 
   return (
-    <div className="flex flex-col gap-y-12 mt-[25vh]">
+    <div className="mt-[25vh] flex flex-col gap-y-12">
       <div className="mx-auto">
         <Image
           style={{ width: "100%", height: "auto" }}
@@ -68,7 +68,7 @@ export default function StaffLogin() {
       <Form {...loginForm}>
         <form
           onSubmit={loginForm.handleSubmit(onSubmit)}
-          className="flex flex-col mx-auto gap-y-2 w-[70vw] lg:w-[30vw]"
+          className="mx-auto flex w-[70vw] flex-col gap-y-2 lg:w-[30vw]"
         >
           <FormField
             control={loginForm.control}

@@ -132,10 +132,10 @@ async function ApplicantPage({ params }: ApplicantPageProps) {
   ];
 
   return (
-    <div className="py-12 max-w-screen w-full flex justify-center">
-      <Card className="max-w-[80rem] w-full">
+    <div className="flex w-full max-w-screen justify-center py-12">
+      <Card className="w-full max-w-[80rem]">
         <CardContent className="grid grid-cols-[1fr_2fr] gap-4">
-          <div className="flex justify-center w-[25rem] h-fit flex-col">
+          <div className="flex h-fit w-[25rem] flex-col justify-center">
             <div className="text-3xl font-bold">
               {titleVal(data.user.title || "")}
               {data.user.fullname || "ยังไม่ได้ระบุชื่อเต็ม"}
@@ -153,39 +153,39 @@ async function ApplicantPage({ params }: ApplicantPageProps) {
             <div className="flex flex-col gap-2">
               <div className="grid grid-cols-[auto_auto] gap-2">
                 <span className="flex items-center gap-1">
-                  <span className="font-bold text-foreground/80">
+                  <span className="text-foreground/80 font-bold">
                     ข้อมูลส่วนตัว:
                   </span>
                   {data.user.infoDone ? "✅" : "❌"}
                 </span>
                 <span className="flex items-center gap-1">
-                  <span className="font-bold text-foreground/80">
+                  <span className="text-foreground/80 font-bold">
                     คำถามทะเบียน:
                   </span>
                   {data.user.regisDone ? "✅" : "❌"}
                 </span>
                 <span className="flex items-center gap-1">
-                  <span className="font-bold text-foreground/80">
+                  <span className="text-foreground/80 font-bold">
                     คำถามวิชาการ:
                   </span>
                   {data.user.academicDone ? "✅" : "❌"}
                 </span>
                 <span className="flex items-center gap-1">
-                  <span className="font-bold text-foreground/80">
+                  <span className="text-foreground/80 font-bold">
                     ส่งคำตอบ:
                   </span>
                   {data.user.hasSubmitAnswer ? "✅" : "❌"}
                 </span>
-                <span className="flex items-center gap-2 col-span-2">
-                  <span className="font-bold text-foreground/80">ไฟล์:</span>
+                <span className="col-span-2 flex items-center gap-2">
+                  <span className="text-foreground/80 font-bold">ไฟล์:</span>
                   {data.user.filesDone ? "✅" : "❌"}
-                  <div className="flex flex-wrap gap-2 ml-1">
+                  <div className="ml-1 flex flex-wrap gap-2">
                     {data.files.thaiIdUrl && (
                       <a
                         href={data.files.thaiIdUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-accent-foreground underline hover:text-accent-foreground/80 transition-colors px-2 py-1 rounded bg-accent"
+                        className="text-accent-foreground hover:text-accent-foreground/80 bg-accent rounded px-2 py-1 underline transition-colors"
                       >
                         สำเนาบัตรประชาชน
                       </a>
@@ -195,7 +195,7 @@ async function ApplicantPage({ params }: ApplicantPageProps) {
                         href={data.files.parentFormUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-accent-foreground underline hover:text-accent-foreground/80 transition-colors px-2 py-1 rounded bg-accent"
+                        className="text-accent-foreground hover:text-accent-foreground/80 bg-accent rounded px-2 py-1 underline transition-colors"
                       >
                         เอกสารขออนุญาตผู้ปกครอง
                       </a>
@@ -205,7 +205,7 @@ async function ApplicantPage({ params }: ApplicantPageProps) {
                         href={data.files.p1Url}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-accent-foreground underline hover:text-accent-foreground/80 transition-colors px-2 py-1 rounded bg-accent"
+                        className="text-accent-foreground hover:text-accent-foreground/80 bg-accent rounded px-2 py-1 underline transition-colors"
                       >
                         ปพ.1
                       </a>
@@ -215,7 +215,7 @@ async function ApplicantPage({ params }: ApplicantPageProps) {
                         href={data.files.p7Url}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-accent-foreground underline hover:text-accent-foreground/80 transition-colors px-2 py-1 rounded bg-accent"
+                        className="text-accent-foreground hover:text-accent-foreground/80 bg-accent rounded px-2 py-1 underline transition-colors"
                       >
                         ปพ.7
                       </a>
@@ -246,12 +246,12 @@ const ApplicantItems: React.FC<ApplicantItemsProps> = ({
   isHeader,
 }) => {
   if (isHeader) {
-    return <h2 className="text-xl font-bold pt-4">{label}</h2>;
+    return <h2 className="pt-4 text-xl font-bold">{label}</h2>;
   }
 
   return (
-    <div className="grid w-full grid-cols-[1fr_3fr] gap-4 text-lg text-foreground/80">
-      <span className="font-semibold text-foreground/60">{label}</span>
+    <div className="text-foreground/80 grid w-full grid-cols-[1fr_3fr] gap-4 text-lg">
+      <span className="text-foreground/60 font-semibold">{label}</span>
       <span className="text-foreground/60">{data}</span>
     </div>
   );

@@ -8,10 +8,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default function Loading() {
   return (
     <div className="p-6">
-      <Skeleton className="h-10 w-72 mx-auto mb-4" />
+      <Skeleton className="mx-auto mb-4 h-10 w-72" />
       <ResizablePanelGroup
         direction="horizontal"
-        className="w-full h-full border rounded-lg"
+        className="h-full w-full rounded-lg border"
       >
         <ResizablePanel defaultSize={60}>
           <div className="flex flex-col gap-4 p-6">

@@ -6,7 +6,11 @@ const config = {
   printWidth: 80,
   tabWidth: 2,
   singleQuote: false,
-  plugins: ["@ianvs/prettier-plugin-sort-imports"],
+  plugins: [
+    "@ianvs/prettier-plugin-sort-imports",
+    "prettier-plugin-tailwindcss",
+  ],
+  tailwindFunctions: ["clsx", "cva"],
   importOrder: [
     "^(react/(.*)$)|^(react$)",
     "^(next/(.*)$)|^(next$)",

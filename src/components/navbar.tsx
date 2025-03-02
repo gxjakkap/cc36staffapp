@@ -23,8 +23,8 @@ export function Navbar({ isAdmin }: NavbarProps) {
   const pathname = usePathname();
 
   return (
-    <div className="flex py-4 px-10 border-b sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <nav className="flex justify-end w-full items-center gap-4 xl:gap-6">
+    <div className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 flex border-b px-10 py-4 backdrop-blur">
+      <nav className="flex w-full items-center justify-end gap-4 xl:gap-6">
         {NAVBARS.map(({ href, text }) => (
           <Link
             key={href}
@@ -32,7 +32,7 @@ export function Navbar({ isAdmin }: NavbarProps) {
             className={cn(
               "text-sm transition-colors",
               pathname === href || pathname.startsWith(href + "/")
-                ? "font-bold text-destructive"
+                ? "text-destructive font-bold"
                 : "text-foreground/80",
             )}
           >
@@ -68,7 +68,7 @@ const NavbarChild = ({
     href={href}
     className={cn(
       "text-sm transition-colors",
-      isActive ? "font-bold text-destructive" : "text-foreground/80",
+      isActive ? "text-destructive font-bold" : "text-foreground/80",
     )}
   >
     {text}

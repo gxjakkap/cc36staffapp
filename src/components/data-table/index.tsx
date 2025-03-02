@@ -43,7 +43,7 @@ export function DataTable<TData, TValue>({
       <div className="flex">
         <DataTableViewOptions table={table} />
       </div>
-      <div className="rounded-sm border w-full">
+      <div className="w-full rounded-sm border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

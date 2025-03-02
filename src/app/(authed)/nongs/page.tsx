@@ -17,7 +17,7 @@ export default function Home() {
   }
 
   return (
-    <div className="pt-10 w-full flex justify-center items-center">
+    <div className="flex w-full items-center justify-center pt-10">
       <div className="w-full max-w-[90vw]">
         <DataTable columns={columns} data={data ?? []} />
       </div>

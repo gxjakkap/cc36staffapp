@@ -18,9 +18,9 @@ export default async function AuthorizedLayout({
   }
 
   return (
-    <div className="antialiased flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col antialiased">
       <Navbar isAdmin={session.user.role == "admin"} />
-      <div className="mt-12 flex flex-col lg:mt-0 h-full">{children}</div>
+      <div className="mt-12 flex h-full flex-col lg:mt-0">{children}</div>
     </div>
   );
 }

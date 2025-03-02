@@ -249,7 +249,7 @@ export function ResTable({ data }: ResTableProps) {
 
   return (
     <div className="container mx-auto">
-      <div className="flex items-center py-4 flex-wrap gap-2">
+      <div className="flex flex-wrap items-center gap-2 py-4">
         <Input
           placeholder="Search"
           value={search}
@@ -320,7 +320,7 @@ export function ResTable({ data }: ResTableProps) {
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4 flex-wrap gap-2">
+      <div className="flex flex-wrap items-center justify-end gap-2 space-x-2 py-4">
         <div className="flex items-center space-x-2">
           <Button
             variant="outline"
@@ -338,7 +338,7 @@ export function ResTable({ data }: ResTableProps) {
           >
             <ChevronLeft />
           </Button>
-          <div className="text-sm px-2">
+          <div className="px-2 text-sm">
             {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
           </div>
           <Button

@@ -46,7 +46,7 @@ const DropdownMenuDeleteStaff = () => {
       <DialogTrigger asChild disabled={user.id == data?.user.id}>
         <Button
           variant="ghost"
-          className="justify-start w-full text-destructive hover:text-destructive"
+          className="text-destructive hover:text-destructive w-full justify-start"
         >
           <TrashIcon /> Delete User
         </Button>

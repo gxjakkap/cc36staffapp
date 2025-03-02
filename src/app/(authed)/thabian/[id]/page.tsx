@@ -34,12 +34,12 @@ export default async function AnswerRegisPage({
 
   return (
     <div className="p-6">
-      <h1 className="font-bold text-4xl mb-4 text-center">
+      <h1 className="mb-4 text-center text-4xl font-bold">
         คำถามจากฝ่ายทะเบียน
       </h1>
       <ResizablePanelGroup
         direction="horizontal"
-        className="w-full h-full border rounded-lg"
+        className="h-full w-full rounded-lg border"
       >
         <ResizablePanel defaultSize={60}>
           <div className="flex items-center justify-center p-6">
