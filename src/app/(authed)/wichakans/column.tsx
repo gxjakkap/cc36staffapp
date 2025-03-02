@@ -6,14 +6,15 @@ import { DataTableColumnHeader } from "@/components/data-table/column-header";
 import { Button } from "@/components/ui/button";
 import { formatId, formatThaiBuddhist } from "@/lib/formatter";
 
-type Thabians = {
+type Wichkans = {
   id: string;
   status: "lock" | "unlock" | "done";
-  score?: number;
+  score_academic?: number;
+  score_chess?: number;
   timestamp?: Date;
 };
 
-export const columns: ColumnDef<Thabians>[] = [
+export const columns: ColumnDef<Wichkans>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => (
@@ -31,11 +32,32 @@ export const columns: ColumnDef<Thabians>[] = [
     size: 200,
   },
   {
-    accessorKey: "score",
+    accessorKey: "score_academic",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="คะแนน (คำถามวิชาการ)" />
+      <DataTableColumnHeader
+        column={column}
+        title="คะแนนพาร์ทที่ 1 (algorithms)"
+      />
     ),
-    cell: ({ row }) => <div>{row.original.score}</div>,
+    cell: ({ row }) => (
+      <div>
+        {row.original.score_academic
+          ? row.original.score_academic
+          : "ยังไม่ได้ตรวจ"}
+      </div>
+    ),
+    size: 200,
+  },
+  {
+    accessorKey: "score_chess",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="คะแนนพาร์ทที่ 2 (chess)" />
+    ),
+    cell: ({ row }) => (
+      <div>
+        {row.original.score_chess ? row.original.score_chess : "ยังไม่ได้ตรวจ"}
+      </div>
+    ),
     size: 200,
   },
   {
@@ -55,7 +77,7 @@ export const columns: ColumnDef<Thabians>[] = [
   {
     id: "ตรวจสอบ",
     cell: ({ row }) => (
-      <Link href={`/thabian/${row.original.id}`}>
+      <Link href={`/wichakan/${row.original.id}`}>
         <Button variant="outline" size="icon">
           <SearchIcon />
         </Button>
