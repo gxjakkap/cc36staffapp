@@ -4,7 +4,11 @@ import { SearchIcon } from "lucide-react";
 
 import { DataTableColumnHeader } from "@/components/data-table/column-header";
 import { Button } from "@/components/ui/button";
-import { formatPhoneNumber, genderVal } from "@/lib/formatter";
+import {
+  formatPhoneNumber,
+  formatThaiBuddhist,
+  genderVal,
+} from "@/lib/formatter";
 
 type Nongs = {
   id: string;
@@ -12,7 +16,9 @@ type Nongs = {
   gender: string | null;
   phone: string | null;
   email: string;
-  hasSubmit: boolean;
+  has_submit: boolean;
+  status: "lock" | "unlock" | "done";
+  timestamp: Date | null;
 };
 
 export const columns: ColumnDef<Nongs>[] = [
@@ -51,15 +57,41 @@ export const columns: ColumnDef<Nongs>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="อีเมล" />
     ),
-    cell: ({ row }) => <div className="lowercase">{row.original.email}</div>,
+    cell: ({ row }) => <div>{row.original.email}</div>,
     size: 200,
   },
   {
-    accessorKey: "hasSubmit",
+    accessorKey: "status",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="สถานะ" />
+    ),
+    cell: ({ row }) => <div className="lowercase">{row.original.status}</div>,
+    size: 60,
+  },
+  {
+    accessorKey: "timestamp",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="เวลาที่ตรวจสอบ" />
+    ),
+    cell: ({ row }) => (
+      <div>
+        {row.original.timestamp
+          ? formatThaiBuddhist(row.original.timestamp)
+          : "ยังไม่ได้ตรวจสอบ"}
+      </div>
+    ),
+    size: 40,
+  },
+  {
+    accessorKey: "has_submit",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="ส่งใบสมัคร" />
     ),
-    cell: ({ row }) => <div>{row.original.hasSubmit ? "✅" : "❌"}</div>,
+    cell: ({ row }) => (
+      <div className="flex w-[5rem] items-center justify-center">
+        {row.original.has_submit ? "✅" : "❌"}
+      </div>
+    ),
     size: 40,
   },
   {

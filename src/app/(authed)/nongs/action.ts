@@ -16,7 +16,7 @@ const getAllUserTable = authenticatedAction
         email: user.email,
         gender: user.gender,
         phone: user.telephone,
-        hasSubmit: user.hasSubmitAnswer,
+        has_submit: user.hasSubmitAnswer,
       })
       .from(user)
       .where(and(eq(user.infoDone, true), eq(user.filesDone, true)));
