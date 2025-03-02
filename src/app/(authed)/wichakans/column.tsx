@@ -3,6 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { SearchIcon } from "lucide-react";
 
 import { DataTableColumnHeader } from "@/components/data-table/column-header";
+import StatusBadge from "@/components/data-table/status-badge";
 import { Button } from "@/components/ui/button";
 import { formatId, formatThaiBuddhist } from "@/lib/formatter";
 
@@ -28,7 +29,7 @@ export const columns: ColumnDef<Wichkans>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="สถานะ" />
     ),
-    cell: ({ row }) => <div>{row.original.status}</div>,
+    cell: ({ row }) => <StatusBadge status={row.original.status} />,
     size: 200,
   },
   {

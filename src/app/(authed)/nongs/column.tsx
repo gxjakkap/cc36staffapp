@@ -3,6 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { SearchIcon } from "lucide-react";
 
 import { DataTableColumnHeader } from "@/components/data-table/column-header";
+import StatusBadge from "@/components/data-table/status-badge";
 import { Button } from "@/components/ui/button";
 import {
   formatPhoneNumber,
@@ -65,7 +66,7 @@ export const columns: ColumnDef<Nongs>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="สถานะ" />
     ),
-    cell: ({ row }) => <div className="lowercase">{row.original.status}</div>,
+    cell: ({ row }) => <StatusBadge status={row.original.status} />,
     size: 60,
   },
   {
