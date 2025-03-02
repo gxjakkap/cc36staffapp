@@ -1,6 +1,7 @@
 import type { InferSelectModel } from "drizzle-orm";
 
 import { Separator } from "@/components/ui/separator";
+import { ViewControls } from "@/components/view-controls";
 import type { answerAcademic, answerRegis } from "@/db/schema";
 import { formatTextWithLineBreaks } from "@/lib/formatter";
 
@@ -30,7 +31,8 @@ export function AnswerWrapper<T extends "academic" | "regis">({
   );
 
   return (
-    <div className="my-3 w-full">
+    <div className="mb-3 w-full">
+      <ViewControls className="mb-3 justify-end" />
       {filteredAnswers.map(([key, value], index) => (
         <div key={key} className="mx-auto max-w-[80ch]">
           <div className="space-y-3">
@@ -38,7 +40,7 @@ export function AnswerWrapper<T extends "academic" | "regis">({
               {question[key as keyof typeof question]}
             </h3>
             <p
-              className="font-sarabun text-foreground/90 leading-7"
+              className="answer font-sarabun text-foreground/90 leading-7"
               dangerouslySetInnerHTML={{
                 __html: formatTextWithLineBreaks(String(value)),
               }}
