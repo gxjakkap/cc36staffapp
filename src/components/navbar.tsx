@@ -17,6 +17,7 @@ const NAVBARS = [
   { href: "/nongs", text: "ข้อมูลส่วนตัว" },
   { href: "/thabians", text: "คำถามทะเบียน" },
   { href: "/wichakans", text: "คำถามวิชาการ" },
+  { href: "/change-password", text: "เปลี่ยนรหัสผ่าน" },
 ];
 
 export function Navbar({ isAdmin }: NavbarProps) {
