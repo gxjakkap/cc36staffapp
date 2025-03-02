@@ -6,7 +6,7 @@ import { useServerActionQuery } from "@/hook/server-action-hooks";
 import getAllUserTable from "./action";
 import { columns } from "./column";
 
-export default function Home() {
+export default function NongsPage() {
   const { data, isLoading } = useServerActionQuery(getAllUserTable, {
     queryKey: ["nongs"],
     input: undefined,

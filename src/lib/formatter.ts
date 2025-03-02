@@ -1,3 +1,6 @@
+import { format } from "date-fns";
+import { th } from "date-fns/locale";
+
 export const formatDateString = (date: number) => {
   const epdate = new Date(date);
   return epdate.toLocaleDateString("th-TH", {
@@ -40,3 +43,23 @@ export const formatPhoneNumber = (tel: string) => {
   }
   return null;
 };
+
+export const formatId = (id: string) => {
+  return id.length > 6 ? id.substring(0, 6) : id;
+};
+
+export function formatThaiBuddhist(date: Date, withTime?: boolean) {
+  const formattedDate = format(date, "PPP", { locale: th });
+  const buddhistYear = date.getFullYear() + 543;
+  if (withTime) {
+    const formattedDateTime = format(date, "PPP p", { locale: th });
+    return formattedDateTime.replace(
+      date.getFullYear().toString(),
+      buddhistYear.toString(),
+    );
+  }
+  return formattedDate.replace(
+    date.getFullYear().toString(),
+    buddhistYear.toString(),
+  );
+}
