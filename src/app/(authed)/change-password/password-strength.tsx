@@ -14,10 +14,10 @@ export function PasswordStrength({
 }: PasswordStrengthProps) {
   const checkStrength = (pass: string) => {
     const requirements = [
-      { regex: /.{8,}/, text: "At least 8 characters" },
-      { regex: /[0-9]/, text: "At least 1 number" },
-      { regex: /[a-z]/, text: "At least 1 lowercase letter" },
-      { regex: /[A-Z]/, text: "At least 1 uppercase letter" },
+      { regex: /.{8,}/, text: "ความยาวอย่างน้อย 8 ตัวอักษร" },
+      { regex: /[0-9]/, text: "ตัวเลขอย่างน้อย 1 ตัว" },
+      { regex: /[a-z]/, text: "ตัวอักษรพิมพ์เล็กอย่างน้อย 1 ตัว" },
+      { regex: /[A-Z]/, text: "ตัวอักษรพิมพ์ใหญ่อย่างน้อย 1 ตัว" },
     ];
 
     return requirements.map((req) => ({
@@ -41,10 +41,10 @@ export function PasswordStrength({
   };
 
   const getStrengthText = (score: number) => {
-    if (score === 0) return "Enter a password";
-    if (score <= 2) return "Weak password";
-    if (score === 3) return "Medium password";
-    return "Strong password";
+    if (score === 0) return "กรอกรหัสผ่าน";
+    if (score <= 2) return "รหัสผ่านไม่ปลอดภัย";
+    if (score === 3) return "เกือบละ";
+    return "ใช้ได้";
   };
 
   return (
@@ -67,7 +67,7 @@ export function PasswordStrength({
         id={`${passwordId}-description`}
         className="text-foreground mb-2 text-sm font-medium"
       >
-        {getStrengthText(strengthScore)}. Must contain:
+        {getStrengthText(strengthScore)} ต้องประกอบด้วย:
       </p>
 
       <ul className="space-y-1.5" aria-label="Password requirements">

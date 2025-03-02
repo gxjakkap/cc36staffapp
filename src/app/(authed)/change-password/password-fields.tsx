@@ -19,22 +19,20 @@ import {
 import { PasswordInput } from "@/components/ui/passwordInput";
 import { useServerActionMutation } from "@/hook/server-action-hooks";
 
-import { upPassword } from "./action";
-import { PasswordStrength } from "./PasswordStrength";
+import { changePassword } from "./action";
+import { PasswordStrength } from "./password-strength";
 
 const formSchema = z.object({
-  currentPassword: z
-    .string()
-    .min(2, { message: "Current password is required" }),
+  currentPassword: z.string().min(1, { message: "กรุณากรอกรหัสผ่านปัจจุบัน" }),
   newPassword: z
     .string()
-    .min(8, { message: "Password must be at least 8 characters long" })
-    .regex(/[0-9]/, { message: "Password must contain at least 1 number" })
+    .min(8, { message: "รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษร" })
+    .regex(/[0-9]/, { message: "รหัสผ่านต้องมีตัวเลขอย่างน้อย 1 ตัว" })
     .regex(/[a-z]/, {
-      message: "Password must contain at least 1 lowercase letter",
+      message: "รหัสผ่านต้องมีตัวอักษรพิมพ์เล็กอย่างน้อย 1 ตัว",
     })
     .regex(/[A-Z]/, {
-      message: "Password must contain at least 1 uppercase letter",
+      message: "รหัสผ่านต้องมีตัวอักษรพิมพ์ใหญ่อย่างน้อย 1 ตัว",
     }),
 });
 
@@ -54,7 +52,7 @@ export default function ChangePass() {
     setIsNewPasswordVisible((prev) => !prev);
 
   // Server action mutation
-  const { mutate, isPending } = useServerActionMutation(upPassword);
+  const { mutate, isPending } = useServerActionMutation(changePassword);
 
   // Use the form schema to infer the form type
   const form = useForm<z.infer<typeof formSchema>>({
@@ -70,10 +68,16 @@ export default function ChangePass() {
   // Password strength checking functions
   const checkStrength = (pass: string) => {
     const requirements = [
-      { regex: /.{8,}/, text: "At least 8 characters" },
-      { regex: /[0-9]/, text: "At least 1 number" },
-      { regex: /[a-z]/, text: "At least 1 lowercase letter" },
-      { regex: /[A-Z]/, text: "At least 1 uppercase letter" },
+      { regex: /.{8,}/, text: "รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษร" },
+      { regex: /[0-9]/, text: "รหัสผ่านต้องมีตัวเลขอย่างน้อย 1 ตัว" },
+      {
+        regex: /[a-z]/,
+        text: "รหัสผ่านต้องมีตัวอักษรพิมพ์เล็กอย่างน้อย 1 ตัว",
+      },
+      {
+        regex: /[A-Z]/,
+        text: "รหัสผ่านต้องมีตัวอักษรพิมพ์ใหญ่อย่างน้อย 1 ตัว",
+      },
     ];
 
     return requirements.map((req) => ({
@@ -100,7 +104,7 @@ export default function ChangePass() {
       onError: (error) => {
         toast.error(
           error?.message ||
-            "Something went wrong, please check your credentials",
+            "เกิดข้อผิดพลาด ตรวจสอบข้อมูลการเข้าสู่ระบบอีกครั้ง",
         );
       },
     });
@@ -118,13 +122,13 @@ export default function ChangePass() {
             name="currentPassword"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Current Password</FormLabel>
+                <FormLabel>กรอกรหัสผ่านเดิม</FormLabel>
                 <FormControl>
                   <div className="relative">
                     <PasswordInput
                       id={currentPasswordId}
                       className="pe-9"
-                      placeholder="Your current password"
+                      placeholder="รหัสผ่านเดิม"
                       type={isCurrentPasswordVisible ? "text" : "password"}
                       {...field}
                       aria-invalid={!!form.formState.errors.currentPassword}
@@ -158,13 +162,13 @@ export default function ChangePass() {
             name="newPassword"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>New Password</FormLabel>
+                <FormLabel>ตั้งรหัสผ่านใหม่</FormLabel>
                 <FormControl>
                   <div className="relative">
                     <PasswordInput
                       id={newPasswordId}
                       className="pe-9"
-                      placeholder="Set your new password"
+                      placeholder="รหัสผ่านใหม่"
                       type={isNewPasswordVisible ? "text" : "password"}
                       {...field}
                       aria-invalid={strengthScore < 4}
@@ -196,7 +200,7 @@ export default function ChangePass() {
           <PasswordStrength password={newPassword} passwordId={newPasswordId} />
 
           <Button type="submit" className="w-full" disabled={isPending}>
-            Confirm
+            ยืนยัน
           </Button>
         </form>
       </Form>

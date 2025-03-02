@@ -6,7 +6,7 @@ import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { authenticatedAction } from "@/lib/safe-action";
 
-export const upPassword = authenticatedAction
+export const changePassword = authenticatedAction
   .createServerAction()
   .input(
     z.object({
