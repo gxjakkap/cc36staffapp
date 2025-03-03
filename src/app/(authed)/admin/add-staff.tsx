@@ -1,5 +1,5 @@
-import { UserPlusIcon } from "@heroicons/react/24/outline";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { UserPlus } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -86,7 +86,7 @@ export function AddStaffDialog() {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="default" className="absolute top-8 right-8 p-2">
-          <UserPlusIcon className="h-6" /> Add
+          <UserPlus className="size-6" /> Add
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
