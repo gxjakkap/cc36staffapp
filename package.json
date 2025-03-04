@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "pnpm with-env next dev --turbopack -p 3037",
-    "build": "next build",
+    "build": "pnpm drizzle-kit generate --config drizzle.staff.config.ts && pnpm drizzle-kit migrate --config drizzle.staff.config.ts && next build",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
