@@ -30,6 +30,16 @@ const getAllTabiansTable = authenticatedAction
           .from(tabian)
           .where(eq(tabian.userId, user.id));
 
+        if (tabiansData.length <= 0) {
+          return {
+            id: user.id,
+            scoreRegis: null,
+            status: "unlock",
+            staffUsername: null,
+            timestamp: null,
+          };
+        }
+
         return {
           id: user.id,
           scoreRegis: tabiansData[0].scoreRegis,

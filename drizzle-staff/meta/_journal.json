@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1741120164889,
-      "tag": "0000_salty_lady_bullseye",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1741120895856,
-      "tag": "0001_groovy_firebrand",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1741120913331,
-      "tag": "0002_worried_meteorite",
+      "when": 1741121399288,
+      "tag": "0000_lush_shadowcat",
       "breakpoints": true
     }
   ]

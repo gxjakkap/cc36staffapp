@@ -31,6 +31,17 @@ const getAllWichakansTable = authenticatedAction
           .from(wichakarn)
           .where(eq(wichakarn.userId, user.id));
 
+        if (wichakansData.length <= 0) {
+          return {
+            id: user.id,
+            score_chess: null,
+            score_academic: null,
+            status: "unlock",
+            staffUsername: null,
+            timestamp: null,
+          };
+        }
+
         return {
           id: user.id,
           score_chess: wichakansData[0].score_chess,

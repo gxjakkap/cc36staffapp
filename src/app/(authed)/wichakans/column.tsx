@@ -10,9 +10,9 @@ import { formatId, formatThaiBuddhist } from "@/lib/formatter";
 type Wichkans = {
   id: string;
   status: "lock" | "unlock" | "done";
-  score_academic?: number;
-  score_chess?: number;
-  timestamp?: Date;
+  score_academic?: number | null;
+  score_chess?: number | null;
+  timestamp?: Date | null;
 };
 
 export const columns: ColumnDef<Wichkans>[] = [
