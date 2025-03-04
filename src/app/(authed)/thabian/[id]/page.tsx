@@ -11,8 +11,6 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 
-import { submitTabian } from "./action";
-
 interface AnswerRegisPageProps {
   params: Promise<{ id: string }>;
 }
@@ -68,7 +66,7 @@ export default async function AnswerRegisPage({
           <div className="flex items-center justify-center p-6">
             เกณฑ์การให้คะแนน
           </div>
-          <form action={submitTabian} className="p-5">
+          <form className="p-5">
             <div>
               <p>
                 1. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
