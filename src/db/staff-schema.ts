@@ -38,7 +38,7 @@ export const tabian = pgTable(
   {
     id: uuid("id").defaultRandom().primaryKey().notNull(),
     userId: text().notNull(),
-    info: text().default("ยังไม่ได้ตรวจสอบ").notNull(),
+    info: text(),
     scoreRegis: integer().default(0).notNull(),
     status: text().notNull().default("unlock").notNull(),
     staffUsername: text().notNull(),
