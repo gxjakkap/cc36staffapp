@@ -90,7 +90,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center font-bold"
                 >
-                  ไม่มีผลลัพท์
+                  ไม่มีผลลัพธ์
                 </TableCell>
               </TableRow>
             )}

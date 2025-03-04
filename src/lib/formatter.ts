@@ -7,6 +7,7 @@ export const formatDateString = (date: number) => {
     year: "numeric",
     month: "short",
     day: "numeric",
+    timeZone: "Asia/Bangkok",
   });
 };
 
