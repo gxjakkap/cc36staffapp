@@ -15,6 +15,13 @@
       "when": 1741122642632,
       "tag": "0001_lying_roughhouse",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1741181809970,
+      "tag": "0002_supreme_earthquake",
+      "breakpoints": true
     }
   ]
 }
