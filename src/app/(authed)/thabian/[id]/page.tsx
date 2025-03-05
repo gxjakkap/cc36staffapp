@@ -1,37 +1,55 @@
-import { redirect } from "next/navigation";
+"use client";
+
+import { redirect, useParams } from "next/navigation";
+import { z } from "zod";
 
 import { getRegisAnswer } from "@/app/(authed)/actions";
-import getUserInfo from "@/app/(authed)/nong/[id]/action";
 import { AnswerWrapper } from "@/components/answer-wrapper";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import Spinner from "@/components/spinner";
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { useServerActionQuery } from "@/hook/server-action-hooks";
 
-interface AnswerRegisPageProps {
-  params: Promise<{ id: string }>;
-}
+import { getUserTabians } from "./action";
+import TabianForm, { formSchema } from "./form";
 
-export default async function AnswerRegisPage({
-  params,
-}: AnswerRegisPageProps) {
-  const { id } = await params;
+export default function AnswerRegisPage() {
+  const { id } = useParams();
+  const {
+    data: tabiansData,
+    error: tabiansError,
+    isLoading: tabiansLoading,
+  } = useServerActionQuery(getUserTabians, {
+    queryKey: ["userTabians", id],
+    input: { id: id ? id.toString() : null },
+  });
 
-  const [userInfoData, userInfoError] = await getUserInfo({ id });
+  const {
+    data: regisAnswerData,
+    error: regisAnswerError,
+    isLoading: regisAnswerLoading,
+  } = useServerActionQuery(getRegisAnswer, {
+    queryKey: ["regisAnswer", id],
+    input: { userId: id ? id.toString() : null },
+  });
 
-  if (!userInfoData || userInfoError) {
+  if (!id) {
+    return null;
+  }
+
+  if (!tabiansLoading && tabiansError) {
     return redirect("/thabians");
   }
 
-  const [regisAnswerData, regisAnswerError] = await getRegisAnswer({
-    userId: id,
-  });
-
-  if (!regisAnswerData || regisAnswerError) {
+  if (!regisAnswerLoading && regisAnswerError) {
     return redirect("/thabians");
+  }
+
+  function onSubmit(data: z.infer<typeof formSchema>) {
+    console.log(data);
   }
 
   return (
@@ -45,132 +63,44 @@ export default async function AnswerRegisPage({
       >
         <ResizablePanel defaultSize={60}>
           <div className="flex items-center justify-center p-6">
-            <AnswerWrapper
-              type="regis"
-              questions={{
-                answer1: "1. น้องคาดหวังอะไรจากค่าย ComCamp36",
-                answer2:
-                  "2. ในยุคที่ AI และหุ่นยนต์สามารถทำงานแทนมนุษย์ได้มากขึ้น น้องคิดว่าวิศวกรคอมพิวเตอร์ยังมีความสำคัญอย่างไร?",
-                answer3: "คำถามที่ 3",
-                answer4: "คำถามที่ 4",
-                answer5: "คำถามที่ 5",
-                answer61: "คำถามที่ 6.1",
-                answer62: "คำถามที่ 6.2",
-              }}
-              answers={regisAnswerData.answers}
-            />
+            {regisAnswerData ? (
+              <AnswerWrapper
+                type="regis"
+                questions={{
+                  answer1: "1. น้องคาดหวังอะไรจากค่าย ComCamp36",
+                  answer2:
+                    "2. ในยุคที่ AI และหุ่นยนต์สามารถทำงานแทนมนุษย์ได้มากขึ้น น้องคิดว่าวิศวกรคอมพิวเตอร์ยังมีความสำคัญอย่างไร?",
+                  answer3: "คำถามที่ 3",
+                  answer4: "คำถามที่ 4",
+                  answer5: "คำถามที่ 5",
+                  answer61: "คำถามที่ 6.1",
+                  answer62: "คำถามที่ 6.2",
+                }}
+                answers={regisAnswerData.answers}
+              />
+            ) : (
+              <Spinner />
+            )}
           </div>
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={40}>
-          <div className="flex items-center justify-center p-6">
-            เกณฑ์การให้คะแนน
-          </div>
-          <form className="p-5">
-            <div>
-              <p>
-                1. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Nemo quasi aut et voluptates quia eum fugit perferendis
-                reprehenderit nobis quaerat laborum quas dignissimos alias ipsam
-                velit dolor, voluptatem error quidem?
-              </p>
-              <Input
-                name="score1"
-                min={0}
-                type="number"
-                placeholder="กรอกคะแนน 1"
-              ></Input>
-            </div>
-            <div className="mt-5">
-              <p>
-                2. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Nemo quasi aut et voluptates quia eum fugit perferendis
-                reprehenderit nobis quaerat laborum quas dignissimos alias ipsam
-                velit dolor, voluptatem error quidem?
-              </p>
-              <Input
-                name="score2"
-                min={0}
-                type="number"
-                placeholder="กรอกคะแนน 2"
-              ></Input>
-            </div>
-            <div className="mt-5">
-              <p>
-                3. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Nemo quasi aut et voluptates quia eum fugit perferendis
-                reprehenderit nobis quaerat laborum quas dignissimos alias ipsam
-                velit dolor, voluptatem error quidem?
-              </p>
-              <Input
-                name="score3"
-                min={0}
-                type="number"
-                placeholder="กรอกคะแนน 3"
-              ></Input>
-            </div>
-            <div className="mt-5">
-              <p>
-                4. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Nemo quasi aut et voluptates quia eum fugit perferendis
-                reprehenderit nobis quaerat laborum quas dignissimos alias ipsam
-                velit dolor, voluptatem error quidem?
-              </p>
-              <Input
-                name="score4"
-                min={0}
-                type="number"
-                placeholder="กรอกคะแนน 4"
-              ></Input>
-            </div>
-            <div className="mt-5">
-              <p>
-                5. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Nemo quasi aut et voluptates quia eum fugit perferendis
-                reprehenderit nobis quaerat laborum quas dignissimos alias ipsam
-                velit dolor, voluptatem error quidem?
-              </p>
-              <Input
-                name="score5"
-                min={0}
-                type="number"
-                placeholder="กรอกคะแนน 5"
-              ></Input>
-            </div>
-            <div className="mt-5">
-              <p>
-                6.1. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Nemo quasi aut et voluptates quia eum fugit perferendis
-                reprehenderit nobis quaerat laborum quas dignissimos alias ipsam
-                velit dolor, voluptatem error quidem?
-              </p>
-              <Input
-                name="score6_1"
-                min={0}
-                type="number"
-                placeholder="กรอกคะแนน 6.1"
-              ></Input>
-            </div>
-            <div className="mt-5">
-              <p>
-                6.2. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Nemo quasi aut et voluptates quia eum fugit perferendis
-                reprehenderit nobis quaerat laborum quas dignissimos alias ipsam
-                velit dolor, voluptatem error quidem?
-              </p>
-              <Input
-                name="score6_2"
-                min={0}
-                type="number"
-                placeholder="กรอกคะแนน 6.2"
-              ></Input>
-            </div>
-            <div className="mt-5 flex items-center justify-center">
-              <Button type="submit" className="cursor-pointer">
-                Submit
-              </Button>
-            </div>
-          </form>
+          <TabianForm
+            data={{
+              score1: tabiansData?.score1 ? tabiansData.score1.toString() : "",
+              score2: tabiansData?.score2 ? tabiansData.score2.toString() : "",
+              score3: tabiansData?.score3 ? tabiansData.score3.toString() : "",
+              score4: tabiansData?.score4 ? tabiansData.score4.toString() : "",
+              score5: tabiansData?.score5 ? tabiansData.score5.toString() : "",
+              score6_1: tabiansData?.score6_1
+                ? tabiansData.score6_1.toString()
+                : "",
+              score6_2: tabiansData?.score6_2
+                ? tabiansData.score6_2.toString()
+                : "",
+            }}
+            onSubmit={onSubmit}
+          />
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>

@@ -31,7 +31,7 @@ export function AnswerWrapper<T extends "academic" | "regis">({
   );
 
   return (
-    <div className="mb-3 w-full">
+    <div className="mb-3 h-[calc(100vh-15rem)] w-full overflow-y-scroll">
       <ViewControls className="mb-3 justify-end" />
       {filteredAnswers.map(([key, value], index) => (
         <div key={key} className="mx-auto max-w-[80ch]">
