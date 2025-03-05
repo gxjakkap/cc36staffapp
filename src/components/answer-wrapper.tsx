@@ -31,24 +31,28 @@ export function AnswerWrapper<T extends "academic" | "regis">({
   );
 
   return (
-    <div className="mb-3 h-[calc(100vh-15rem)] w-full overflow-y-scroll">
+    <div className="mb-3 w-full">
       <ViewControls className="mb-3 justify-end" />
-      {filteredAnswers.map(([key, value], index) => (
-        <div key={key} className="mx-auto max-w-[80ch]">
-          <div className="space-y-3">
-            <h3 className="text-xl font-semibold">
-              {question[key as keyof typeof question]}
-            </h3>
-            <p
-              className="answer font-sarabun text-foreground/90 leading-7"
-              dangerouslySetInnerHTML={{
-                __html: formatTextWithLineBreaks(String(value)),
-              }}
-            />
+      <div className="h-[calc(100vh-15rem)] w-full overflow-y-scroll">
+        {filteredAnswers.map(([key, value], index) => (
+          <div key={key} className="mx-auto max-w-[80ch]">
+            <div className="space-y-3">
+              <h3 className="text-xl font-semibold">
+                {question[key as keyof typeof question]}
+              </h3>
+              <p
+                className="answer font-sarabun text-foreground/90 leading-7"
+                dangerouslySetInnerHTML={{
+                  __html: formatTextWithLineBreaks(String(value)),
+                }}
+              />
+            </div>
+            {index < filteredAnswers.length - 1 && (
+              <Separator className="my-8" />
+            )}
           </div>
-          {index < filteredAnswers.length - 1 && <Separator className="my-8" />}
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }

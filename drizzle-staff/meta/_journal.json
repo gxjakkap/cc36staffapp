@@ -22,6 +22,20 @@
       "when": 1741181809970,
       "tag": "0002_supreme_earthquake",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1741192900913,
+      "tag": "0003_keen_ironclad",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1741198555263,
+      "tag": "0004_dashing_gateway",
+      "breakpoints": true
     }
   ]
 }

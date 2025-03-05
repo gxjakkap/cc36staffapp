@@ -26,10 +26,6 @@ export const wichakarn = pgTable(
       "btree",
       table.userId.asc().nullsLast().op("text_ops"),
     ),
-    uniqueIndex("Wichakarn_staffUsername_idx").using(
-      "btree",
-      table.staffUsername.asc().nullsLast().op("text_ops"),
-    ),
   ],
 );
 
@@ -39,13 +35,13 @@ export const tabian = pgTable(
     id: uuid("id").defaultRandom().primaryKey().notNull(),
     userId: text().notNull(),
     info: text(),
-    score1: integer().default(0).notNull(),
-    score2: integer().default(0).notNull(),
-    score3: integer().default(0).notNull(),
-    score4: integer().default(0).notNull(),
-    score5: integer().default(0).notNull(),
-    score6_1: integer().default(0).notNull(),
-    score6_2: integer().default(0).notNull(),
+    score1: integer(),
+    score2: integer(),
+    score3: integer(),
+    score4: integer(),
+    score5: integer(),
+    score6_1: integer(),
+    score6_2: integer(),
     status: text().notNull().default("unlock").notNull(),
     staffUsername: text().notNull(),
     updatedAt: timestamp("updated_at", { mode: "date" })
@@ -56,10 +52,6 @@ export const tabian = pgTable(
     uniqueIndex("Tabian_userId_idx").using(
       "btree",
       table.userId.asc().nullsLast().op("text_ops"),
-    ),
-    uniqueIndex("Tabian_staffUsername_idx").using(
-      "btree",
-      table.staffUsername.asc().nullsLast().op("text_ops"),
     ),
   ],
 );

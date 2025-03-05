@@ -28,12 +28,16 @@ export const formSchema = z.object({
 interface TabianFormProps {
   data: z.infer<typeof formSchema>;
   onSubmit: (data: z.infer<typeof formSchema>) => void;
+  status: "lock" | "unlock" | "done";
+  isSameUser: boolean;
 }
 
 function TabianForm(props: TabianFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: props.data,
+    defaultValues: {
+      ...props.data,
+    },
   });
 
   return (
@@ -209,7 +213,15 @@ function TabianForm(props: TabianFormProps) {
           />
         </div>
         <div className="flex justify-center">
-          <Button type="submit" className="cursor-pointer">
+          <Button
+            disabled={
+              props.status == "done" ||
+              props.status != "lock" ||
+              !props.isSameUser
+            }
+            type="submit"
+            className="cursor-pointer"
+          >
             ส่งคะแนน
           </Button>
         </div>

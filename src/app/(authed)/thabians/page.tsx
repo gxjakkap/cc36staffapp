@@ -8,7 +8,7 @@ import { columns } from "./column";
 
 export default function ThabiansPage() {
   const { data } = useServerActionQuery(getAllTabiansTable, {
-    queryKey: ["wichakans"],
+    queryKey: ["tabians"],
     input: undefined,
   });
 
