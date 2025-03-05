@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatDateString, genderVal, titleVal } from "@/lib/formatter";
 
@@ -229,6 +230,14 @@ async function ApplicantPage({ params }: ApplicantPageProps) {
             ))}
           </div>
         </CardContent>
+        <div className="flex justify-center">
+          <Button className="cursor-pointer bg-green-500 text-white">
+            ถูกต้อง
+          </Button>
+          <Button className="ml-2 cursor-pointer bg-red-500 text-white">
+            ไม่ถูกต้อง
+          </Button>
+        </div>
       </Card>
     </div>
   );
