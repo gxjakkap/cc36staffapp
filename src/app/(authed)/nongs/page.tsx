@@ -2,9 +2,10 @@
 
 import { DataTable } from "@/components/data-table";
 import { useServerActionQuery } from "@/hook/server-action-hooks";
+import { DataTableFilterField } from "@/types";
 
 import { getAllTabiansInfoTable } from "./action";
-import { columns } from "./column";
+import { columns, Nongs } from "./column";
 
 export default function NongsPage() {
   const { data: tabiansInfoData, isLoading: tabiansInfoLoading } =
@@ -16,6 +17,14 @@ export default function NongsPage() {
   if (tabiansInfoLoading) {
     return;
   }
+
+  const filterFields: DataTableFilterField<Nongs>[] = [
+    {
+      id: "fullname",
+      label: "Title",
+      placeholder: "ค้นหาด้วยชื่อ",
+    },
+  ];
 
   return (
     <div className="flex w-full items-center justify-center pt-10">
@@ -36,6 +45,7 @@ export default function NongsPage() {
                 }))
               : []
           }
+          filterFields={filterFields}
         />
       </div>
     </div>

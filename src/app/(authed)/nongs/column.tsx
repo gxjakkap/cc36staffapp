@@ -11,7 +11,7 @@ import {
   genderVal,
 } from "@/lib/formatter";
 
-type Nongs = {
+export type Nongs = {
   id: string;
   fullname: string | null;
   gender: string | null;
