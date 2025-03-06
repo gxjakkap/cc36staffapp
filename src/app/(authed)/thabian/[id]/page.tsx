@@ -1,29 +1,23 @@
 "use client";
 
 import { redirect, useParams } from "next/navigation";
-import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { z } from "zod";
 
 import { getRegisAnswer } from "@/app/(authed)/actions";
 import { AnswerWrapper } from "@/components/answer-wrapper";
 import Spinner from "@/components/spinner";
-import { Button } from "@/components/ui/button";
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import { useServerActionQuery } from "@/hook/server-action-hooks";
-import { authClient } from "@/lib/auth-client";
 
-import { getUserTabians, lockTabian, submitScoreTabians } from "./action";
-import TabianForm, { formSchema } from "./form";
+import { getUserTabians, submitScoreTabians } from "./action";
+import { ScoreFieldEnum } from "./enum";
+import TabianForm from "./form";
 
 export default function AnswerRegisPage() {
-  const { data } = authClient.useSession();
-  const queryClient = useQueryClient();
-
   const { id } = useParams();
   const {
     data: tabiansData,
@@ -55,67 +49,15 @@ export default function AnswerRegisPage() {
     return redirect("/thabians");
   }
 
-  async function onSubmit(data: z.infer<typeof formSchema>) {
+  async function submitScore(score: number, field: ScoreFieldEnum) {
     if (!id) return;
-
     const [code] = await submitScoreTabians({
       userId: id.toString(),
-      score1: parseInt(data.score1),
-      score2: parseInt(data.score2),
-      score3: parseInt(data.score3),
-      score4: parseInt(data.score4),
-      score5: parseInt(data.score5),
-      score6_1: parseInt(data.score6_1),
-      score6_2: parseInt(data.score6_2),
+      score,
+      field,
     });
-    if (code == "This has lock by other user") {
-      queryClient.invalidateQueries({ queryKey: ["userTabians", id] });
-      return toast.error("ใบสมัครนี้ถูกตรวจสอบโดยคนอื่นแล้ว");
-    }
     if (code == "success") {
-      queryClient.setQueryData(["userTabians", id], {
-        ...tabiansData,
-        score1: parseInt(data.score1),
-        score2: parseInt(data.score2),
-        score3: parseInt(data.score3),
-        score4: parseInt(data.score4),
-        score5: parseInt(data.score5),
-        score6_1: parseInt(data.score6_1),
-        score6_2: parseInt(data.score6_2),
-        status: "done",
-      });
-      toast.success("ส่งคะแนนสำเร็จเรียบแล้ว!");
-    }
-  }
-
-  async function lock() {
-    if (!id || !data?.user.username) return;
-
-    if (tabiansData?.status == "lock") {
-      const [code] = await lockTabian({
-        userId: id.toString(),
-        status: "unlock",
-      });
-      if (code == "success")
-        queryClient.setQueryData(["userTabians", id], {
-          ...tabiansData,
-          status: "unlock",
-        });
-    } else {
-      const [code] = await lockTabian({
-        userId: id.toString(),
-        status: "lock",
-      });
-      if (code == "This has lock by other user") {
-        queryClient.invalidateQueries({ queryKey: ["userTabians", id] });
-        return toast.error("ใบสมัครนี้ถูกตรวจสอบโดยคนอื่นแล้ว");
-      }
-      if (code == "success")
-        queryClient.setQueryData(["userTabians", id], {
-          ...tabiansData,
-          staffUsername: data.user.username,
-          status: "lock",
-        });
+      toast.success("ส่งคะแนนเรียบร้อยแล้ว!");
     }
   }
 
@@ -128,42 +70,6 @@ export default function AnswerRegisPage() {
         direction="horizontal"
         className="h-full w-full rounded-lg border"
       >
-        <div className="absolute flex items-center p-2">
-          <p>
-            Status:{" "}
-            <span
-              className={
-                tabiansData?.status == "lock"
-                  ? "text-yellow-500"
-                  : tabiansData?.status == "done"
-                    ? "text-green-500"
-                    : "text-orange-500"
-              }
-            >
-              {tabiansData?.status}
-            </span>
-          </p>
-          {tabiansData?.status == "lock" && (
-            <p className="ml-2">
-              Lock by:{" "}
-              <span className="font-bold">{tabiansData.staffUsername}</span>
-            </p>
-          )}
-          <div className="ml-2">
-              <Button
-                disabled={
-                  tabiansLoading ||
-                  (tabiansData?.status == "lock" &&
-                    tabiansData?.staffUsername != null &&
-                    tabiansData?.staffUsername != data?.user.username)
-                }
-                onClick={lock}
-                className="cursor-pointer"
-              >
-                {tabiansData?.status == "lock" ? "unlock" : "lock"}
-              </Button>
-          </div>
-        </div>
         <ResizablePanel defaultSize={60}>
           <div className="flex items-center justify-center p-6">
             {regisAnswerData ? (
@@ -194,25 +100,50 @@ export default function AnswerRegisPage() {
         <ResizablePanel defaultSize={40}>
           <TabianForm
             data={{
-              score1: tabiansData?.score1 ? tabiansData.score1.toString() : "",
-              score2: tabiansData?.score2 ? tabiansData.score2.toString() : "",
-              score3: tabiansData?.score3 ? tabiansData.score3.toString() : "",
-              score4: tabiansData?.score4 ? tabiansData.score4.toString() : "",
-              score5: tabiansData?.score5 ? tabiansData.score5.toString() : "",
-              score6_1: tabiansData?.score6_1
-                ? tabiansData.score6_1.toString()
+              score1_user1: tabiansData?.score1_user1
+                ? tabiansData.score1_user1.toString()
                 : "",
-              score6_2: tabiansData?.score6_2
-                ? tabiansData.score6_2.toString()
+              score1_user2: tabiansData?.score1_user2
+                ? tabiansData.score1_user2.toString()
+                : "",
+              score2_user1: tabiansData?.score2_user1
+                ? tabiansData.score2_user1.toString()
+                : "",
+              score2_user2: tabiansData?.score2_user2
+                ? tabiansData.score2_user2.toString()
+                : "",
+              score3_user1: tabiansData?.score3_user1
+                ? tabiansData.score3_user1.toString()
+                : "",
+              score3_user2: tabiansData?.score3_user2
+                ? tabiansData.score3_user2.toString()
+                : "",
+              score4_user1: tabiansData?.score4_user1
+                ? tabiansData.score4_user1.toString()
+                : "",
+              score4_user2: tabiansData?.score4_user2
+                ? tabiansData.score4_user2.toString()
+                : "",
+              score5_user1: tabiansData?.score5_user1
+                ? tabiansData.score5_user1.toString()
+                : "",
+              score5_user2: tabiansData?.score5_user2
+                ? tabiansData.score5_user2.toString()
+                : "",
+              score6_1_user1: tabiansData?.score6_1_user1
+                ? tabiansData.score6_1_user1.toString()
+                : "",
+              score6_1_user2: tabiansData?.score6_1_user2
+                ? tabiansData.score6_1_user2.toString()
+                : "",
+              score6_2_user1: tabiansData?.score6_2_user1
+                ? tabiansData.score6_2_user1.toString()
+                : "",
+              score6_2_user2: tabiansData?.score6_2_user1
+                ? tabiansData.score6_2_user1.toString()
                 : "",
             }}
-            status={
-              tabiansData?.status
-                ? (tabiansData.status as "lock" | "unlock" | "done")
-                : "unlock"
-            }
-            isSameUser={data?.user.username == tabiansData?.staffUsername}
-            onSubmit={onSubmit}
+            submitScore={submitScore}
           />
         </ResizablePanel>
       </ResizablePanelGroup>

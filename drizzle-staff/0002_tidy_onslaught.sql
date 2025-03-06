@@ -1,0 +1,1 @@
+ALTER TABLE "Tabian" ADD COLUMN "info_status" text DEFAULT 'undone';

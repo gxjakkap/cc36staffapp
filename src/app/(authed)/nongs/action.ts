@@ -27,9 +27,9 @@ export const getAllTabiansInfoTable = authenticatedAction
           .select({
             id: tabian.id,
             info: tabian.info,
-            status: tabian.status,
-            staffUsername: tabian.staffUsername,
-            timestamp: tabian.updatedAt,
+            status: tabian.info_status,
+            staffUsername: tabian.info_staffUsername,
+            timestamp: tabian.updatedAt_info,
           })
           .from(tabian)
           .where(eq(tabian.userId, user.id));

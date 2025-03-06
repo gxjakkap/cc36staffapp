@@ -1,16 +1,16 @@
 "use server";
 
+import { headers } from "next/headers";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { db, dbStaff } from "@/db";
 import { file, user } from "@/db/schema";
+import { tabian } from "@/db/staff-schema";
+import { auth } from "@/lib/auth";
 import { NotFoundError } from "@/lib/errors";
 import { getPresignedURL } from "@/lib/files";
 import { authenticatedAction } from "@/lib/safe-action";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
-import { tabian } from "@/db/staff-schema";
 
 export const getUserInfo = authenticatedAction
   .createServerAction()
@@ -20,7 +20,7 @@ export const getUserInfo = authenticatedAction
     }),
   )
   .handler(async ({ input }) => {
-    if (!input.id) return
+    if (!input.id) return;
 
     const users = await db
       .select()
@@ -65,15 +65,15 @@ export const getUserInfo = authenticatedAction
       user: users[0].User,
       files: result,
     };
-});
+  });
 
 export const submitNongInfo = authenticatedAction
   .createServerAction()
   .input(
     z.object({
       userId: z.string(),
-      isCorrect: z.boolean()
-    })
+      isCorrect: z.boolean(),
+    }),
   )
   .handler(async ({ input }) => {
     try {
@@ -81,28 +81,35 @@ export const submitNongInfo = authenticatedAction
         headers: await headers(),
       });
       if (!session?.user.username) return;
+
       const tabiansData = await dbStaff
         .select({
           id: tabian.id,
-          staffUsername: tabian.staffUsername,
         })
         .from(tabian)
         .where(eq(tabian.userId, input.userId));
-
-      if (tabiansData[0].staffUsername == session.user.username) {
-        await dbStaff
-          .update(tabian)
-          .set({
-            info: input.isCorrect,
-            staffUsername: session.user.username,
-            updatedAt: new Date(),
-          })
-          .where(eq(tabian.userId, input.userId));
+      if (tabiansData.length <= 0) {
+        await dbStaff.insert(tabian).values({
+          userId: input.userId,
+          info: input.isCorrect,
+          info_status: "done",
+          info_staffUsername: session.user.username,
+          updatedAt_info: new Date(),
+        });
         return "success";
-      } else {
-        return "This has lock by other user";
       }
+
+      await dbStaff
+        .update(tabian)
+        .set({
+          info: input.isCorrect,
+          info_status: "done",
+          info_staffUsername: session.user.username,
+          updatedAt_info: new Date(),
+        })
+        .where(eq(tabian.userId, input.userId));
+      return "success";
     } catch (error) {
       console.log(error);
-    }  
-})
+    }
+  });

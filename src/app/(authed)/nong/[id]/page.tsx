@@ -9,14 +9,12 @@ import Spinner from "@/components/spinner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useServerActionQuery } from "@/hook/server-action-hooks";
-import { authClient } from "@/lib/auth-client";
 import { formatDateString, genderVal, titleVal } from "@/lib/formatter";
 
-import { getUserTabians, lockTabian } from "../../thabian/[id]/action";
-import { getUserInfo } from "./action";
+import { getUserTabians } from "../../thabian/[id]/action";
+import { getUserInfo, submitNongInfo } from "./action";
 
 function ApplicantPage() {
-  const { data: authData } = authClient.useSession();
   const queryClient = useQueryClient();
   const { id } = useParams();
 
@@ -167,76 +165,22 @@ function ApplicantPage() {
     },
   ];
 
-  async function lock() {
-    if (!id || !authData?.user.username) return;
-
-    if (tabiansData?.status == "lock") {
-      const [code] = await lockTabian({
-        userId: id.toString(),
-        status: "unlock",
+  async function submitInfo(isCorrect: boolean) {
+    if (!id) return;
+    const [code] = await submitNongInfo({ userId: id.toString(), isCorrect });
+    if (code == "success") {
+      queryClient.setQueryData(["userInfoTabians", id], {
+        ...tabiansData,
+        info_status: "done",
+        info: isCorrect,
       });
-      if (code == "success")
-        queryClient.setQueryData(["userInfoTabians", id], {
-          ...tabiansData,
-          status: "unlock",
-        });
-    } else {
-      const [code] = await lockTabian({
-        userId: id.toString(),
-        status: "lock",
-      });
-      if (code == "This has lock by other user") {
-        queryClient.invalidateQueries({ queryKey: ["userInfoTabians", id] });
-        return toast.error("ใบสมัครนี้ถูกตรวจสอบโดยคนอื่นแล้ว");
-      }
-      if (code == "success")
-        queryClient.setQueryData(["userInfoTabians", id], {
-          ...tabiansData,
-          staffUsername: authData?.user.username,
-          status: "lock",
-        });
+      toast.success("ตรวจสอบข้อมูลเรียบร้อย");
     }
   }
 
   return (
     <div className="flex w-full max-w-screen justify-center py-12">
       <Card className="w-full max-w-[80rem]">
-        <div className="flex items-center p-2">
-          <p>
-            Status:{" "}
-            <span
-              className={
-                tabiansData?.status == "lock"
-                  ? "text-yellow-500"
-                  : tabiansData?.status == "done"
-                    ? "text-green-500"
-                    : "text-orange-500"
-              }
-            >
-              {tabiansData?.status}
-            </span>
-          </p>
-          {tabiansData?.status == "lock" && (
-            <p className="ml-2">
-              Lock by:{" "}
-              <span className="font-bold">{tabiansData.staffUsername}</span>
-            </p>
-          )}
-          <div className="ml-2">
-            <Button
-              disabled={
-                tabiansLoading ||
-                (tabiansData?.status == "lock" &&
-                  tabiansData?.staffUsername != null &&
-                  tabiansData?.staffUsername != authData?.user.username)
-              }
-              onClick={lock}
-              className="cursor-pointer"
-            >
-              {tabiansData?.status == "lock" ? "unlock" : "lock"}
-            </Button>
-          </div>
-        </div>
         <CardContent className="grid grid-cols-[1fr_2fr] gap-4">
           <div className="flex h-fit w-[25rem] flex-col justify-center">
             <div className="text-3xl font-bold">
@@ -334,20 +278,20 @@ function ApplicantPage() {
         </CardContent>
         <div className="flex justify-center">
           <Button
+            onClick={() => submitInfo(true)}
             disabled={
               tabiansLoading ||
-              tabiansData?.status != "lock" ||
-              tabiansData?.staffUsername != authData?.user.username
+              (tabiansData?.info_status == "done" && tabiansData?.info == true)
             }
             className="cursor-pointer bg-green-500 text-white"
           >
             ถูกต้อง
           </Button>
           <Button
+            onClick={() => submitInfo(false)}
             disabled={
               tabiansLoading ||
-              tabiansData?.status != "lock" ||
-              tabiansData?.staffUsername != authData?.user.username
+              (tabiansData?.info_status == "done" && !tabiansData?.info == true)
             }
             className="ml-2 cursor-pointer bg-red-500 text-white"
           >

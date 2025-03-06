@@ -74,7 +74,10 @@ export default function NongsPage() {
                   phone: item.phone,
                   email: item.email,
                   has_submit: item.has_submit,
-                  status: item.status as "lock" | "unlock" | "done",
+                  status:
+                    item.status == "done"
+                      ? "done"
+                      : ("unlock" as "lock" | "unlock" | "done"),
                   timestamp: item.timestamp,
                 }))
               : []
