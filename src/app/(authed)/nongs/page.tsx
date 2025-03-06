@@ -22,7 +22,7 @@ export default function NongsPage() {
     {
       id: "fullname",
       label: "Title",
-      placeholder: "Filter titles...",
+      placeholder: "ค้นหาด้วยชื่อ",
     },
   ];
 
