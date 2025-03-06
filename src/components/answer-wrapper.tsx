@@ -1,5 +1,6 @@
 import type { InferSelectModel } from "drizzle-orm";
 
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { ViewControls } from "@/components/view-controls";
 import type { answerAcademic, answerRegis } from "@/db/schema";
@@ -33,7 +34,7 @@ export function AnswerWrapper<T extends "academic" | "regis">({
   return (
     <div className="mb-3 w-full">
       <ViewControls className="mb-3 justify-end" />
-      <div className="h-[calc(100vh-15rem)] w-full overflow-y-scroll">
+      <ScrollArea className="h-[calc(100vh-15rem)] w-full">
         {filteredAnswers.map(([key, value], index) => (
           <div key={key} className="mx-auto max-w-[80ch]">
             <div className="space-y-3">
@@ -52,7 +53,7 @@ export function AnswerWrapper<T extends "academic" | "regis">({
             )}
           </div>
         ))}
-      </div>
+      </ScrollArea>
     </div>
   );
 }
