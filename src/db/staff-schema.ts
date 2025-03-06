@@ -13,8 +13,8 @@ export const wichakarn = pgTable(
   {
     id: uuid("id").defaultRandom().primaryKey().notNull(),
     userId: text().notNull(),
-    scoreAcademic: integer().default(0).notNull(),
-    scoreChess: integer().default(0).notNull(),
+    scoreAcademic: integer(),
+    scoreChess: integer(),
     status: text().notNull().default("unlock"),
     staffUsername: text().notNull(),
     updatedAt: timestamp("updated_at", { mode: "date" })
@@ -42,7 +42,7 @@ export const tabian = pgTable(
     score5: integer(),
     score6_1: integer(),
     score6_2: integer(),
-    status: text().notNull().default("unlock").notNull(),
+    status: text().default("unlock").notNull(),
     staffUsername: text().notNull(),
     updatedAt: timestamp("updated_at", { mode: "date" })
       .default(sql`NOW()`)

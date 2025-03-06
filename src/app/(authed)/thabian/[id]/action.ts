@@ -106,9 +106,6 @@ export const lockTabian = authenticatedAction
         .where(eq(tabian.userId, input.userId));
 
       if (tabiansData.length > 0) {
-        if (tabiansData[0].status == "done") {
-          return "This has lock by other user";
-        }
         if (tabiansData[0].status == "lock") {
           if (tabiansData[0].staffUsername == session.user.username) {
             await dbStaff

@@ -69,6 +69,7 @@ export default function AnswerRegisPage() {
       score6_2: parseInt(data.score6_2),
     });
     if (code == "This has lock by other user") {
+      queryClient.invalidateQueries({ queryKey: ["userTabians", id] });
       return toast.error("ใบสมัครนี้ถูกตรวจสอบโดยคนอื่นแล้ว");
     }
     if (code == "success") {
@@ -106,6 +107,7 @@ export default function AnswerRegisPage() {
         status: "lock",
       });
       if (code == "This has lock by other user") {
+        queryClient.invalidateQueries({ queryKey: ["userTabians", id] });
         return toast.error("ใบสมัครนี้ถูกตรวจสอบโดยคนอื่นแล้ว");
       }
       if (code == "success")
@@ -147,8 +149,7 @@ export default function AnswerRegisPage() {
               <span className="font-bold">{tabiansData.staffUsername}</span>
             </p>
           )}
-          {tabiansData?.status != "done" && (
-            <div className="ml-2">
+          <div className="ml-2">
               <Button
                 disabled={
                   tabiansLoading ||
@@ -161,8 +162,7 @@ export default function AnswerRegisPage() {
               >
                 {tabiansData?.status == "lock" ? "unlock" : "lock"}
               </Button>
-            </div>
-          )}
+          </div>
         </div>
         <ResizablePanel defaultSize={60}>
           <div className="flex items-center justify-center p-6">
