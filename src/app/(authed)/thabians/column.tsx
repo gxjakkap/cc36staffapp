@@ -10,8 +10,8 @@ import { formatId, formatThaiBuddhist } from "@/lib/formatter";
 type Thabians = {
   id: string;
   status: "lock" | "unlock" | "done";
-  score?: number;
-  timestamp?: Date;
+  score?: number | null;
+  timestamp?: Date | null;
 };
 
 export const columns: ColumnDef<Thabians>[] = [
@@ -34,9 +34,11 @@ export const columns: ColumnDef<Thabians>[] = [
   {
     accessorKey: "score",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="คะแนน (คำถามวิชาการ)" />
+      <DataTableColumnHeader column={column} title="คะแนน (คำถามฝ่ายทะเบียน)" />
     ),
-    cell: ({ row }) => <div>{row.original.score}</div>,
+    cell: ({ row }) => (
+      <div>{row.original.score ? row.original.score : "ยังไม่ได้ตรวจ"}</div>
+    ),
     size: 200,
   },
   {

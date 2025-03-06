@@ -1,4 +1,6 @@
-import { redirect } from "next/navigation";
+"use client"
+
+import { redirect, useParams } from "next/navigation";
 
 import { getAcademicAnswer } from "@/app/(authed)/actions";
 import { AnswerWrapper } from "@/components/answer-wrapper";
@@ -7,23 +9,106 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import WichakanForm from "./form";
+import { authClient } from "@/lib/auth-client";
+import { useQueryClient } from "@tanstack/react-query";
+import { useServerActionQuery } from "@/hook/server-action-hooks";
+import { getUserWichakans, lockWichakarn, submitScoreAcademics } from "./action";
+import { z } from "zod";
+import { formSchema } from "./form";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import Spinner from "@/components/spinner";
 
-interface AnswerAcademicPageProps {
-  params: Promise<{ id: string }>;
-}
+export default function AnswerAcademicPage() {
+  const { data } = authClient.useSession();
+  const queryClient = useQueryClient();
 
-export default async function AnswerAcademicPage({
-  params,
-}: AnswerAcademicPageProps) {
-  const { id } = await params;
+  const { id } = useParams();
 
-  const [academicAnswerData, academicAnswerError] = await getAcademicAnswer({
-    userId: id,
+  const {
+    data: wichakansData,
+    error: wichakansError,
+    isLoading: wichakansLoading
+  } = useServerActionQuery(getUserWichakans, {
+    queryKey: ["userWichakans", id],
+    input: { id: id ? id.toString() : null },
   });
 
-  if (!academicAnswerData || academicAnswerError) {
+  const {
+    data: academicAnswerData,
+    error: academicAnswerError,
+    isLoading: academicAnswerLoading
+  } = useServerActionQuery(getAcademicAnswer, {
+    queryKey: ["academicAnswer", id],
+    input: { userId: id ? id.toString() : null },
+  });
+
+  if (!id) {
+    return null;
+  }
+
+  if (!academicAnswerLoading && academicAnswerError) {
     return redirect("/wichakans");
   }
+
+  if (!wichakansLoading && wichakansError) {
+    return redirect("/wichakans");
+  }
+
+  async function onSubmit(data: z.infer<typeof formSchema>) {
+    if (!id) return;
+
+    const [code] = await submitScoreAcademics({
+      userId: id.toString(),
+      scoreChess: parseInt(data.scoreChess),
+      scoreAcademic: parseInt(data.scoreAcademic)
+    });
+    if (code == "This has lock by other user") {
+      queryClient.invalidateQueries({ queryKey: ["userWichakans", id] });
+      return toast.error("ใบสมัครนี้ถูกตรวจสอบโดยคนอื่นแล้ว");
+    }
+    if (code == "success") {
+      queryClient.setQueryData(["userWichakans", id], {
+        ...wichakansData,
+        scoreChess: parseInt(data.scoreChess),
+        scoreAcademic: parseInt(data.scoreAcademic),
+        status: "done",
+      });
+      toast.success("ส่งคะแนนสำเร็จเรียบแล้ว!");
+    }
+  }
+
+  async function lock() {
+      if (!id || !data?.user.username) return;
+  
+      if (wichakansData?.status == "lock") {
+        const [code] = await lockWichakarn({
+          userId: id.toString(),
+          status: "unlock",
+        });
+        if (code == "success")
+          queryClient.setQueryData(["userWichakans", id], {
+            ...wichakansData,
+            status: "unlock",
+          });
+      } else {
+        const [code] = await lockWichakarn({
+          userId: id.toString(),
+          status: "lock",
+        });
+        if (code == "This has lock by other user") {
+          queryClient.invalidateQueries({ queryKey: ["userWichakans", id] });
+          return toast.error("ใบสมัครนี้ถูกตรวจสอบโดยคนอื่นแล้ว");
+        }
+        if (code == "success")
+          queryClient.setQueryData(["userWichakans", id], {
+            ...wichakansData,
+            staffUsername: data.user.username,
+            status: "lock",
+          });
+      }
+    }
 
   return (
     <div className="p-6">
@@ -34,24 +119,72 @@ export default async function AnswerAcademicPage({
         direction="horizontal"
         className="h-full w-full rounded-lg border"
       >
+        <div className="absolute flex items-center p-2">
+          <p>
+            Status:{" "}
+            <span
+              className={
+                wichakansData?.status == "lock"
+                  ? "text-yellow-500"
+                  : wichakansData?.status == "done"
+                    ? "text-green-500"
+                    : "text-orange-500"
+              }
+            >
+              {wichakansData?.status}
+            </span>
+          </p>
+          {wichakansData?.status == "lock" && (
+            <p className="ml-2">
+              Lock by:{" "}
+              <span className="font-bold">{wichakansData.staffUsername}</span>
+            </p>
+          )}
+          <div className="ml-2">
+              <Button
+                disabled={
+                  wichakansLoading ||
+                  (wichakansData?.status == "lock" &&
+                    wichakansData?.staffUsername != null &&
+                    wichakansData?.staffUsername != data?.user.username)
+                }
+                onClick={lock}
+                className="cursor-pointer"
+              >
+                {wichakansData?.status == "lock" ? "unlock" : "lock"}
+              </Button>
+          </div>
+        </div>
         <ResizablePanel defaultSize={60}>
           <div className="flex items-center justify-center p-6">
-            <AnswerWrapper
-              type="academic"
-              questions={{
-                algoAnswer: "10 สหายในเงามืด",
-                chessNotation: "อัศวินห่านห้าวหาญนักล่าแต้ม (notation)",
-                chessScore: "อัศวินห่านห้าวหาญนักล่าแต้ม (score)",
-              }}
-              answers={academicAnswerData.answers}
-            />
+            {academicAnswerData?.answers ? (
+              <AnswerWrapper
+                type="academic"
+                questions={{
+                  algoAnswer: "10 สหายในเงามืด",
+                  chessNotation: "อัศวินห่านห้าวหาญนักล่าแต้ม (notation)",
+                  chessScore: "อัศวินห่านห้าวหาญนักล่าแต้ม (score)",
+                }}
+                answers={academicAnswerData.answers}
+              />
+            ) : <Spinner />}
           </div>
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={40}>
-          <div className="flex items-center justify-center p-6">
-            เกณฑ์การให้คะแนน
-          </div>
+          <WichakanForm 
+            data={{
+              scoreChess: wichakansData?.scoreChess ? wichakansData.scoreChess.toString() : "",
+              scoreAcademic: wichakansData?.scoreAcademic ? wichakansData.scoreAcademic.toString() : ""
+            }}
+            status={
+              wichakansData?.status
+                ? (wichakansData.status as "lock" | "unlock" | "done")
+                : "unlock"
+            }
+            isSameUser={data?.user.username == wichakansData?.staffUsername}
+            onSubmit={onSubmit}
+          />
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>

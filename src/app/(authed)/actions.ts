@@ -46,10 +46,14 @@ export const getAcademicAnswer = authenticatedAction
   .createServerAction()
   .input(
     z.object({
-      userId: z.string(),
+      userId: z.string().nullable(),
     }),
   )
   .handler(async ({ input }) => {
+    if (!input.userId) {
+      return;
+    }
+
     const [answers] = await db
       .select({
         id: answerAcademic.id,
@@ -74,10 +78,14 @@ export const getRegisAnswer = authenticatedAction
   .createServerAction()
   .input(
     z.object({
-      userId: z.string(),
+      userId: z.string().nullable(),
     }),
   )
   .handler(async ({ input }) => {
+    if (!input.userId) {
+      return;
+    }
+
     const [answers] = await db
       .select({
         id: answerRegis.id,
