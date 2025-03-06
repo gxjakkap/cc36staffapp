@@ -18,6 +18,7 @@ import { z } from "zod";
 import { formSchema } from "./form";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import Spinner from "@/components/spinner";
 
 export default function AnswerAcademicPage() {
   const { data } = authClient.useSession();
@@ -42,6 +43,10 @@ export default function AnswerAcademicPage() {
     queryKey: ["academicAnswer", id],
     input: { userId: id ? id.toString() : null },
   });
+
+  if (!id) {
+    return null;
+  }
 
   if (!academicAnswerLoading && academicAnswerError) {
     return redirect("/wichakans");
@@ -152,7 +157,7 @@ export default function AnswerAcademicPage() {
         </div>
         <ResizablePanel defaultSize={60}>
           <div className="flex items-center justify-center p-6">
-            {academicAnswerData?.answers && (
+            {academicAnswerData?.answers ? (
               <AnswerWrapper
                 type="academic"
                 questions={{
@@ -162,7 +167,7 @@ export default function AnswerAcademicPage() {
                 }}
                 answers={academicAnswerData.answers}
               />
-            )}
+            ) : <Spinner />}
           </div>
         </ResizablePanel>
         <ResizableHandle withHandle />

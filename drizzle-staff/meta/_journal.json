@@ -5,43 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1741121399288,
-      "tag": "0000_lush_shadowcat",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1741122642632,
-      "tag": "0001_lying_roughhouse",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1741181809970,
-      "tag": "0002_supreme_earthquake",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1741192900913,
-      "tag": "0003_keen_ironclad",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1741198555263,
-      "tag": "0004_dashing_gateway",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1741232815760,
-      "tag": "0005_shocking_elektra",
+      "when": 1741238289378,
+      "tag": "0000_yummy_captain_britain",
       "breakpoints": true
     }
   ]

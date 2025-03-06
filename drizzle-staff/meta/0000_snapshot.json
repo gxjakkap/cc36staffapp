@@ -1,5 +1,5 @@
 {
-  "id": "46c012d8-fd23-4420-b23e-bc41032d2028",
+  "id": "0a5582ab-8c06-4ea8-849f-7a3a8f8614db",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -23,17 +23,51 @@
         },
         "info": {
           "name": "info",
-          "type": "text",
+          "type": "boolean",
           "primaryKey": false,
-          "notNull": true,
-          "default": "'ยังไม่ได้ตรวจสอบ'"
+          "notNull": false
         },
-        "scoreRegis": {
-          "name": "scoreRegis",
+        "score1": {
+          "name": "score1",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true,
-          "default": 0
+          "notNull": false
+        },
+        "score2": {
+          "name": "score2",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score3": {
+          "name": "score3",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score4": {
+          "name": "score4",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score5": {
+          "name": "score5",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score6_1": {
+          "name": "score6_1",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score6_2": {
+          "name": "score6_2",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
         },
         "status": {
           "name": "status",
@@ -62,22 +96,6 @@
           "columns": [
             {
               "expression": "userId",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last",
-              "opclass": "text_ops"
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "Tabian_staffUsername_idx": {
-          "name": "Tabian_staffUsername_idx",
-          "columns": [
-            {
-              "expression": "staffUsername",
               "isExpression": false,
               "asc": true,
               "nulls": "last",
@@ -118,15 +136,13 @@
           "name": "scoreAcademic",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true,
-          "default": 0
+          "notNull": false
         },
         "scoreChess": {
           "name": "scoreChess",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true,
-          "default": 0
+          "notNull": false
         },
         "status": {
           "name": "status",
@@ -155,22 +171,6 @@
           "columns": [
             {
               "expression": "userId",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last",
-              "opclass": "text_ops"
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "Wichakarn_staffUsername_idx": {
-          "name": "Wichakarn_staffUsername_idx",
-          "columns": [
-            {
-              "expression": "staffUsername",
               "isExpression": false,
               "asc": true,
               "nulls": "last",

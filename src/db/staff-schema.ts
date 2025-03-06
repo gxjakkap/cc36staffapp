@@ -1,5 +1,6 @@
 import { sql } from "drizzle-orm";
 import {
+  boolean,
   integer,
   pgTable,
   text,
@@ -34,7 +35,7 @@ export const tabian = pgTable(
   {
     id: uuid("id").defaultRandom().primaryKey().notNull(),
     userId: text().notNull(),
-    info: text(),
+    info: boolean(),
     score1: integer(),
     score2: integer(),
     score3: integer(),

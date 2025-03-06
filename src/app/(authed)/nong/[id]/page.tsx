@@ -1,22 +1,53 @@
+"use client"
+
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatDateString, genderVal, titleVal } from "@/lib/formatter";
 
-import getUserInfo from "./action";
+import { getUserInfo } from "./action";
+import { useServerActionQuery } from "@/hook/server-action-hooks";
+import { redirect, useParams } from "next/navigation";
+import Spinner from "@/components/spinner";
+import { getUserTabians, lockTabian } from "../../thabian/[id]/action";
+import { authClient } from "@/lib/auth-client";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
-interface ApplicantPageProps {
-  params: Promise<{ id: string }>;
-}
+function ApplicantPage() {
+  const { data: authData } = authClient.useSession();
+  const queryClient = useQueryClient();
+  const { id } = useParams()
 
-async function ApplicantPage({ params }: ApplicantPageProps) {
-  const [data, error] = await getUserInfo({
-    id: (await params).id,
-  });
+  const { data, error, isLoading } = useServerActionQuery(getUserInfo, {
+    queryKey: ["userInfos", id],
+    input: { id: id ? id.toString() : null }
+  })
 
-  if (!data || error) {
-    return null;
+  const { data: tabiansData, error: tabiansErr, isLoading: tabiansLoading } = useServerActionQuery(getUserTabians, {
+    queryKey: ["userInfoTabians", id],
+    input: { id: id ? id.toString() : null }
+  })
+
+  if (!id) {
+    return redirect('/nongs')
+  }
+
+  if (!isLoading && error) {
+    return redirect('/nongs')
+  }
+
+  if (!tabiansLoading && tabiansErr) {
+    return redirect('/nongs')
+  }
+
+  if (isLoading || !data) {
+    return (
+      <div className="flex w-full max-w-screen justify-center py-12">
+        <Spinner />
+      </div>
+    )
   }
 
   const ApplicantInfo: ApplicantItemsProps[] = [
@@ -132,9 +163,76 @@ async function ApplicantPage({ params }: ApplicantPageProps) {
     },
   ];
 
+    async function lock() {
+      if (!id || !authData?.user.username) return;
+  
+      if (tabiansData?.status == "lock") {
+        const [code] = await lockTabian({
+          userId: id.toString(),
+          status: "unlock",
+        });
+        if (code == "success")
+          queryClient.setQueryData(["userInfoTabians", id], {
+            ...tabiansData,
+            status: "unlock",
+          });
+      } else {
+        const [code] = await lockTabian({
+          userId: id.toString(),
+          status: "lock",
+        });
+        if (code == "This has lock by other user") {
+          queryClient.invalidateQueries({ queryKey: ["userInfoTabians", id] });
+          return toast.error("ใบสมัครนี้ถูกตรวจสอบโดยคนอื่นแล้ว");
+        }
+        if (code == "success")
+          queryClient.setQueryData(["userInfoTabians", id], {
+            ...tabiansData,
+            staffUsername: authData?.user.username,
+            status: "lock",
+          });
+      }
+    }
+
   return (
     <div className="flex w-full max-w-screen justify-center py-12">
       <Card className="w-full max-w-[80rem]">
+        <div className="flex items-center p-2">
+          <p>
+            Status:{" "}
+            <span
+              className={
+                tabiansData?.status == "lock"
+                  ? "text-yellow-500"
+                  : tabiansData?.status == "done"
+                    ? "text-green-500"
+                    : "text-orange-500"
+              }
+            >
+              {tabiansData?.status}
+            </span>
+          </p>
+          {tabiansData?.status == "lock" && (
+            <p className="ml-2">
+              Lock by:{" "}
+              <span className="font-bold">{tabiansData.staffUsername}</span>
+            </p>
+          )}
+          <div className="ml-2">
+              <Button
+                disabled={
+                  tabiansLoading ||
+                  (tabiansData?.status == "lock" &&
+                    tabiansData?.staffUsername != null &&
+                    tabiansData?.staffUsername != authData?.user.username)
+                }
+                onClick={lock}
+                className="cursor-pointer"
+              >
+                {tabiansData?.status == "lock" ? "unlock" : "lock"}
+              </Button>
+          </div>
+        </div>
         <CardContent className="grid grid-cols-[1fr_2fr] gap-4">
           <div className="flex h-fit w-[25rem] flex-col justify-center">
             <div className="text-3xl font-bold">
@@ -231,10 +329,16 @@ async function ApplicantPage({ params }: ApplicantPageProps) {
           </div>
         </CardContent>
         <div className="flex justify-center">
-          <Button className="cursor-pointer bg-green-500 text-white">
+          <Button 
+            disabled={tabiansLoading && (tabiansData?.status == "done" || tabiansData?.status != "lock" || tabiansData?.staffUsername == authData?.user.username)} 
+            className="cursor-pointer bg-green-500 text-white"
+          >
             ถูกต้อง
           </Button>
-          <Button className="ml-2 cursor-pointer bg-red-500 text-white">
+          <Button 
+            disabled={tabiansLoading && (tabiansData?.status == "done" || tabiansData?.status != "lock" || tabiansData?.staffUsername == authData?.user.username)} 
+            className="ml-2 cursor-pointer bg-red-500 text-white"
+          >
             ไม่ถูกต้อง
           </Button>
         </div>
