@@ -3,16 +3,17 @@
 import { DataTable } from "@/components/data-table";
 import { useServerActionQuery } from "@/hook/server-action-hooks";
 
-import getAllUserTable from "./action";
+import { getAllTabiansInfoTable } from "./action";
 import { columns } from "./column";
 
 export default function NongsPage() {
-  const { data, isLoading } = useServerActionQuery(getAllUserTable, {
-    queryKey: ["nongs"],
-    input: undefined,
-  });
+  const { data: tabiansInfoData, isLoading: tabiansInfoLoading } =
+    useServerActionQuery(getAllTabiansInfoTable, {
+      queryKey: ["nongs"],
+      input: undefined,
+    });
 
-  if (isLoading) {
+  if (tabiansInfoLoading) {
     return;
   }
 
@@ -22,16 +23,16 @@ export default function NongsPage() {
         <DataTable
           columns={columns}
           data={
-            data
-              ? data.map((item) => ({
+            tabiansInfoData
+              ? tabiansInfoData.map((item) => ({
                   id: item.id,
                   fullname: item.fullname,
                   gender: item.gender,
                   phone: item.phone,
                   email: item.email,
                   has_submit: item.has_submit,
-                  status: "unlock" as "unlock" | "lock" | "done",
-                  timestamp: null,
+                  status: item.status as "lock" | "unlock" | "done",
+                  timestamp: item.timestamp,
                 }))
               : []
           }
