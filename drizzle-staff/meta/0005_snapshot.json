@@ -1,0 +1,414 @@
+{
+  "id": "0cdbb37d-11a0-41bd-a844-1535b45fb224",
+  "prevId": "51922a95-74a8-47a9-ba18-a46c82e6ca10",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.Tabian": {
+      "name": "Tabian",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "userId": {
+          "name": "userId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "info": {
+          "name": "info",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score1_user1": {
+          "name": "score1_user1",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score1_user2": {
+          "name": "score1_user2",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score2_user1": {
+          "name": "score2_user1",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score2_user2": {
+          "name": "score2_user2",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score3_user1": {
+          "name": "score3_user1",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score3_user2": {
+          "name": "score3_user2",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score4_user1": {
+          "name": "score4_user1",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score4_user2": {
+          "name": "score4_user2",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score5_user1": {
+          "name": "score5_user1",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score5_user2": {
+          "name": "score5_user2",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score6_1_user1": {
+          "name": "score6_1_user1",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score6_1_user2": {
+          "name": "score6_1_user2",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score6_2_user1": {
+          "name": "score6_2_user1",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score6_2_user2": {
+          "name": "score6_2_user2",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "info_status": {
+          "name": "info_status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'undone'"
+        },
+        "info_staffUsername": {
+          "name": "info_staffUsername",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score1_user1_staffUsername": {
+          "name": "score1_user1_staffUsername",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score1_user2_staffUsername": {
+          "name": "score1_user2_staffUsername",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score2_user1_staffUsername": {
+          "name": "score2_user1_staffUsername",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score2_user2_staffUsername": {
+          "name": "score2_user2_staffUsername",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score3_user1_staffUsername": {
+          "name": "score3_user1_staffUsername",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score3_user2_staffUsername": {
+          "name": "score3_user2_staffUsername",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score4_user1_staffUsername": {
+          "name": "score4_user1_staffUsername",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score4_user2_staffUsername": {
+          "name": "score4_user2_staffUsername",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score5_user1_staffUsername": {
+          "name": "score5_user1_staffUsername",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score5_user2_staffUsername": {
+          "name": "score5_user2_staffUsername",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score6_1_user1_staffUsername": {
+          "name": "score6_1_user1_staffUsername",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score6_1_user2_staffUsername": {
+          "name": "score6_1_user2_staffUsername",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score6_2_user1_staffUsername": {
+          "name": "score6_2_user1_staffUsername",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score6_2_user2_staffUsername": {
+          "name": "score6_2_user2_staffUsername",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt_info": {
+          "name": "updatedAt_info",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt_score1_user1": {
+          "name": "updatedAt_score1_user1",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt_score1_user2": {
+          "name": "updatedAt_score1_user2",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt_score2_user1": {
+          "name": "updatedAt_score2_user1",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt_score2_user2": {
+          "name": "updatedAt_score2_user2",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt_score3_user1": {
+          "name": "updatedAt_score3_user1",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt_score3_user2": {
+          "name": "updatedAt_score3_user2",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt_score4_user1": {
+          "name": "updatedAt_score4_user1",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt_score4_user2": {
+          "name": "updatedAt_score4_user2",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt_score5_user1": {
+          "name": "updatedAt_score5_user1",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt_score5_user2": {
+          "name": "updatedAt_score5_user2",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt_score6_1_user1": {
+          "name": "updatedAt_score6_1_user1",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt_score6_1_user2": {
+          "name": "updatedAt_score6_1_user2",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt_score6_2_user1": {
+          "name": "updatedAt_score6_2_user1",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt_score6_2_user2": {
+          "name": "updatedAt_score6_2_user2",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "Tabian_userId_idx": {
+          "name": "Tabian_userId_idx",
+          "columns": [
+            {
+              "expression": "userId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.Wichakarn": {
+      "name": "Wichakarn",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "userId": {
+          "name": "userId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "scoreAcademic": {
+          "name": "scoreAcademic",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "scoreChess": {
+          "name": "scoreChess",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'unlock'"
+        },
+        "staffUsername": {
+          "name": "staffUsername",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "NOW()"
+        }
+      },
+      "indexes": {
+        "Wichakarn_userId_idx": {
+          "name": "Wichakarn_userId_idx",
+          "columns": [
+            {
+              "expression": "userId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

@@ -66,79 +66,49 @@ export const tabian = pgTable(
     score6_1_user2_staffUsername: text(),
     score6_2_user1_staffUsername: text(),
     score6_2_user2_staffUsername: text(),
-    updatedAt_info: timestamp("updatedAt_info", { mode: "date" })
-      .default(sql`NOW()`)
-      .notNull(),
+    updatedAt_info: timestamp("updatedAt_info", { mode: "date" }),
     updatedAt_score1_user1: timestamp("updatedAt_score1_user1", {
       mode: "date",
-    })
-      .default(sql`NOW()`)
-      .notNull(),
+    }),
     updatedAt_score1_user2: timestamp("updatedAt_score1_user2", {
       mode: "date",
-    })
-      .default(sql`NOW()`)
-      .notNull(),
+    }),
     updatedAt_score2_user1: timestamp("updatedAt_score2_user1", {
       mode: "date",
-    })
-      .default(sql`NOW()`)
-      .notNull(),
+    }),
     updatedAt_score2_user2: timestamp("updatedAt_score2_user2", {
       mode: "date",
-    })
-      .default(sql`NOW()`)
-      .notNull(),
+    }),
     updatedAt_score3_user1: timestamp("updatedAt_score3_user1", {
       mode: "date",
-    })
-      .default(sql`NOW()`)
-      .notNull(),
+    }),
     updatedAt_score3_user2: timestamp("updatedAt_score3_user2", {
       mode: "date",
-    })
-      .default(sql`NOW()`)
-      .notNull(),
+    }),
     updatedAt_score4_user1: timestamp("updatedAt_score4_user1", {
       mode: "date",
-    })
-      .default(sql`NOW()`)
-      .notNull(),
+    }),
     updatedAt_score4_user2: timestamp("updatedAt_score4_user2", {
       mode: "date",
-    })
-      .default(sql`NOW()`)
-      .notNull(),
+    }),
     updatedAt_score5_user1: timestamp("updatedAt_score5_user1", {
       mode: "date",
-    })
-      .default(sql`NOW()`)
-      .notNull(),
+    }),
     updatedAt_score5_user2: timestamp("updatedAt_score5_user2", {
       mode: "date",
-    })
-      .default(sql`NOW()`)
-      .notNull(),
+    }),
     updatedAt_score6_1_user1: timestamp("updatedAt_score6_1_user1", {
       mode: "date",
-    })
-      .default(sql`NOW()`)
-      .notNull(),
+    }),
     updatedAt_score6_1_user2: timestamp("updatedAt_score6_1_user2", {
       mode: "date",
-    })
-      .default(sql`NOW()`)
-      .notNull(),
+    }),
     updatedAt_score6_2_user1: timestamp("updatedAt_score6_2_user1", {
       mode: "date",
-    })
-      .default(sql`NOW()`)
-      .notNull(),
+    }),
     updatedAt_score6_2_user2: timestamp("updatedAt_score6_2_user2", {
       mode: "date",
-    })
-      .default(sql`NOW()`)
-      .notNull(),
+    }),
   },
   (table) => [
     uniqueIndex("Tabian_userId_idx").using(

@@ -67,6 +67,9 @@ function TabianForm(props: TabianFormProps) {
             <div key={num} className="items-center0 flex justify-center">
               <div className="flex items-center">
                 <Input
+                  value={
+                    inputValue[`score${num}_user1` as keyof typeof inputValue]
+                  }
                   name={`score${num}_user1`}
                   onChange={handleChange}
                   placeholder={`กรอกคะแนน ${num} ผู้ตรวจคนที่ 1`}
@@ -92,6 +95,9 @@ function TabianForm(props: TabianFormProps) {
               </div>
               <div className="flex items-center">
                 <Input
+                  value={
+                    inputValue[`score${num}_user2` as keyof typeof inputValue]
+                  }
                   name={`score${num}_user2`}
                   onChange={handleChange}
                   placeholder={`กรอกคะแนน ${num} ผู้ตรวจคนที่ 2`}

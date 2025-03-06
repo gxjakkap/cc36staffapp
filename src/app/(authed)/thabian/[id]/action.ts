@@ -174,6 +174,7 @@ export const submitScoreTabians = authenticatedAction
           userId: input.userId,
           [input.field]: input.score,
           [`${input.field}_staffUsername`]: session.user.username,
+          [`updatedAt_${input.field}`]: new Date(),
         });
         return "success";
       }
@@ -183,6 +184,7 @@ export const submitScoreTabians = authenticatedAction
         .set({
           [input.field]: input.score,
           [`${input.field}_staffUsername`]: session.user.username,
+          [`updatedAt_${input.field}`]: new Date(),
         })
         .where(eq(tabian.userId, input.userId));
       return "success";
