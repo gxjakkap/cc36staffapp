@@ -125,7 +125,7 @@ export default async function Home() {
               <CardTitle className="text-lg font-semibold">
                 เอกสารประกอบ
               </CardTitle>
-              <CardDescription>ผู้สมัครที่อัพโหลดเอกสารครบถ้วน</CardDescription>
+              <CardDescription>ผู้สมัครที่อัปโหลดเอกสารครบถ้วน</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="text-4xl font-bold text-violet-500">
