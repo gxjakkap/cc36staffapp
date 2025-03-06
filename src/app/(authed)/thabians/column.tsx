@@ -34,7 +34,7 @@ export const columns: ColumnDef<Thabians>[] = [
   {
     accessorKey: "score",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="คะแนน (คำถามวิชาการ)" />
+      <DataTableColumnHeader column={column} title="คะแนน (คำถามฝ่ายทะเบียน)" />
     ),
     cell: ({ row }) => (
       <div>{row.original.score ? row.original.score : "ยังไม่ได้ตรวจ"}</div>
