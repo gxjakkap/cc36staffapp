@@ -97,6 +97,22 @@ export const columns: ColumnDef<Nongs>[] = [
       </div>
     ),
     size: 40,
+    filterFn: (row, _, filterValue) => {
+      if (
+        filterValue.includes("submitted") &&
+        filterValue.includes("not_submitted")
+      ) {
+        return true;
+      }
+
+      if (filterValue.includes("submitted")) {
+        return row.original.has_submit;
+      }
+
+      return filterValue.includes("not_submitted")
+        ? !row.original.has_submit
+        : true;
+    },
   },
   {
     id: "ตรวจสอบ",

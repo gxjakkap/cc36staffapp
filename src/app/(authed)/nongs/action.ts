@@ -1,6 +1,6 @@
 "use server";
 
-import { and, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 import { db, dbStaff } from "@/db";
 import { user } from "@/db/schema";
@@ -19,8 +19,7 @@ export const getAllTabiansInfoTable = authenticatedAction
         phone: user.telephone,
         has_submit: user.hasSubmitAnswer,
       })
-      .from(user)
-      .where(and(eq(user.infoDone, true), eq(user.filesDone, true)));
+      .from(user);
 
     const data = await Promise.all(
       users.map(async (user) => {
