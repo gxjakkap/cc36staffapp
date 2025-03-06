@@ -25,7 +25,7 @@ export function DataTableColumnHeader<TData, TValue>({
         variant="ghost"
         size="sm"
         className="data-[state=open]:bg-accent -ml-3 h-8"
-        onClick={() => column.toggleSorting(undefined, true)}
+        onClick={() => column.toggleSorting()}
       >
         <span>{title}</span>
         {column.getIsSorted() === "desc" ? (

@@ -38,6 +38,9 @@ export const columns: ColumnDef<Nongs>[] = [
     ),
     cell: ({ row }) => <div>{genderVal(row.getValue("gender"))}</div>,
     size: 40,
+    filterFn: (row, _, filterValue) => {
+      return filterValue.includes(row.original.gender);
+    },
   },
   {
     accessorKey: "phone",

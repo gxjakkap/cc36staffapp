@@ -1,5 +1,7 @@
 "use client";
 
+import { ListFilterIcon } from "lucide-react";
+
 import { DataTable } from "@/components/data-table";
 import { useServerActionQuery } from "@/hook/server-action-hooks";
 import { DataTableFilterField } from "@/types";
@@ -23,6 +25,22 @@ export default function NongsPage() {
       id: "fullname",
       label: "Title",
       placeholder: "ค้นหาด้วยชื่อ",
+    },
+    {
+      id: "gender",
+      label: "Gender",
+      options: [
+        {
+          label: "ชาย",
+          value: "man",
+          icon: ListFilterIcon,
+        },
+        {
+          label: "หญิง",
+          value: "woman",
+          icon: ListFilterIcon,
+        },
+      ],
     },
   ];
 

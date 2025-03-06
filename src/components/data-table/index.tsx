@@ -8,7 +8,6 @@ import {
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
-  SortingState,
   TableState,
   Updater,
   useReactTable,
@@ -18,7 +17,6 @@ import {
   parseAsArrayOf,
   parseAsString,
   Parser,
-  useQueryState,
   UseQueryStateOptions,
   useQueryStates,
 } from "nuqs";
@@ -32,7 +30,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useDebouncedCallback } from "@/hook/use-debounced-callback";
-import { getSortingStateParser } from "@/lib/parsers";
 import { DataTableFilterField, ExtendedSortingState } from "@/types";
 
 import { DataTableViewOptions } from "./column-toggle";
@@ -71,13 +68,6 @@ export function DataTable<TData, TValue>({
     initialState?.columnVisibility ?? {},
   );
 
-  const [sorting, setSorting] = useQueryState(
-    "sort",
-    getSortingStateParser<TData>()
-      .withOptions(queryStateOptions)
-      .withDefault(initialState?.sorting ?? []),
-  );
-
   const filterParsers = useMemo(() => {
     return (filterFields ?? []).reduce<
       Record<string, Parser<string> | Parser<string[]>>
@@ -101,13 +91,6 @@ export function DataTable<TData, TValue>({
     },
     300,
   );
-
-  function onSortingChange(updaterOrValue: Updater<SortingState>) {
-    if (typeof updaterOrValue === "function") {
-      const newSorting = updaterOrValue(sorting) as ExtendedSortingState<TData>;
-      void setSorting(newSorting);
-    }
-  }
 
   const initialColumnFilters: ColumnFiltersState = useMemo(() => {
     return Object.entries(filterValues).reduce<ColumnFiltersState>(
@@ -175,11 +158,9 @@ export function DataTable<TData, TValue>({
     columns,
     initialState,
     state: {
-      sorting,
       columnVisibility,
-      columnFilters: columnFilters,
+      columnFilters,
     },
-    onSortingChange,
     onColumnFiltersChange,
     onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
