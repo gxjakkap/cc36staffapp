@@ -66,12 +66,14 @@ export default async function Home() {
         <div className="lg:col-span-1">
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg font-semibold">ผู้ชาย</CardTitle>
-              <CardDescription>ผู้สมัครที่เป็นผู้ชาย</CardDescription>
+              <CardTitle className="text-lg font-semibold">
+                น้องผู้ชาย
+              </CardTitle>
+              <CardDescription>นับเฉพาะคนที่ข้อมูลส่วนตัวครบ</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="text-4xl font-bold text-indigo-500">
-                {Math.round((data.stats.isMan / data.totalUsers) * 100)}%
+                {Math.round((data.stats.isMan / data.stats.infoDone) * 100)}%
               </div>
               <div className="text-muted-foreground/80 mt-2 text-sm">
                 {data.stats.isMan} คน
@@ -83,12 +85,14 @@ export default async function Home() {
         <div className="lg:col-span-1 lg:col-start-3 lg:row-start-2">
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg font-semibold">ผู้หญิง</CardTitle>
-              <CardDescription>ผู้สมัครที่เป็นผู้หญิง</CardDescription>
+              <CardTitle className="text-lg font-semibold">
+                น้องผู้หญิง
+              </CardTitle>
+              <CardDescription>นับเฉพาะคนที่ข้อมูลส่วนตัวครบ</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="text-4xl font-bold text-pink-500">
-                {Math.round((data.stats.isWoman / data.totalUsers) * 100)}%
+                {Math.round((data.stats.isWoman / data.stats.infoDone) * 100)}%
               </div>
               <div className="text-muted-foreground/80 mt-2 text-sm">
                 {data.stats.isWoman} คน
