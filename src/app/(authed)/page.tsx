@@ -1,4 +1,5 @@
 import { getOverview } from "@/app/(authed)/actions";
+import { NumberFlow } from "@/components/number-flow";
 import {
   Card,
   CardContent,
@@ -40,17 +41,21 @@ export default async function Home() {
             <CardContent className="pt-6">
               <div className="space-y-8">
                 <div>
-                  <div className="text-primary text-6xl font-bold">
-                    {data.totalUsers} คน
-                  </div>
+                  <NumberFlow
+                    value={data.totalUsers}
+                    suffix=" คน"
+                    className="text-primary text-6xl font-bold"
+                  />
                   <div className="text-muted-foreground mt-3 text-base">
                     ผู้สมัครทั้งหมด
                   </div>
                 </div>
                 <div>
-                  <div className="text-5xl font-bold text-emerald-500">
-                    {data.stats.hasSubmit} คน
-                  </div>
+                  <NumberFlow
+                    value={data.stats.hasSubmit}
+                    suffix=" คน"
+                    className="text-5xl font-bold text-emerald-500"
+                  />
                   <div className="text-muted-foreground mt-3 text-base">
                     {((data.stats.hasSubmit / data.totalUsers) * 100).toFixed(
                       2,
@@ -72,9 +77,13 @@ export default async function Home() {
               <CardDescription>นับเฉพาะคนที่ข้อมูลส่วนตัวครบ</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-bold text-indigo-500">
-                {Math.round((data.stats.isMan / data.stats.infoDone) * 100)}%
-              </div>
+              <NumberFlow
+                value={Math.round(
+                  (data.stats.isMan / data.stats.infoDone) * 100,
+                )}
+                suffix="%"
+                className="text-4xl font-bold text-indigo-500"
+              />
               <div className="text-muted-foreground/80 mt-2 text-sm">
                 {data.stats.isMan} คน
               </div>
@@ -91,9 +100,13 @@ export default async function Home() {
               <CardDescription>นับเฉพาะคนที่ข้อมูลส่วนตัวครบ</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-bold text-pink-500">
-                {Math.round((data.stats.isWoman / data.stats.infoDone) * 100)}%
-              </div>
+              <NumberFlow
+                value={Math.round(
+                  (data.stats.isWoman / data.stats.infoDone) * 100,
+                )}
+                suffix="%"
+                className="text-4xl font-bold text-pink-500"
+              />
               <div className="text-muted-foreground/80 mt-2 text-sm">
                 {data.stats.isWoman} คน
               </div>
@@ -112,9 +125,11 @@ export default async function Home() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-bold text-blue-600">
-                {data.stats.infoDone} คน
-              </div>
+              <NumberFlow
+                value={data.stats.infoDone}
+                suffix=" คน"
+                className="text-4xl font-bold text-blue-600"
+              />
               <div className="text-muted-foreground/80 mt-2 text-sm">
                 {((data.stats.infoDone / data.totalUsers) * 100).toFixed(2)}% •
                 เสร็จสมบูรณ์
@@ -132,9 +147,11 @@ export default async function Home() {
               <CardDescription>ผู้สมัครที่อัปโหลดเอกสารครบถ้วน</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-bold text-violet-500">
-                {data.stats.filesDone} คน
-              </div>
+              <NumberFlow
+                value={data.stats.filesDone}
+                suffix=" คน"
+                className="text-4xl font-bold text-violet-500"
+              />
               <div className="text-muted-foreground/80 mt-2 text-sm">
                 {((data.stats.filesDone / data.totalUsers) * 100).toFixed(2)}% •
                 เสร็จสมบูรณ์
@@ -154,9 +171,11 @@ export default async function Home() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-bold text-amber-500">
-                {data.stats.regisDone} คน
-              </div>
+              <NumberFlow
+                value={data.stats.regisDone}
+                suffix=" คน"
+                className="text-4xl font-bold text-amber-500"
+              />
               <div className="text-muted-foreground/80 mt-2 text-sm">
                 {((data.stats.regisDone / data.totalUsers) * 100).toFixed(2)}% •
                 เสร็จสมบูรณ์
@@ -176,9 +195,11 @@ export default async function Home() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-bold text-rose-500">
-                {data.stats.academicDone} คน
-              </div>
+              <NumberFlow
+                value={data.stats.academicDone}
+                suffix=" คน"
+                className="text-4xl font-bold text-rose-500"
+              />
               <div className="text-muted-foreground/80 mt-2 text-sm">
                 {((data.stats.academicDone / data.totalUsers) * 100).toFixed(2)}
                 % • เสร็จสมบูรณ์
