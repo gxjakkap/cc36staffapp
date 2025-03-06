@@ -1,0 +1,16 @@
+export enum ScoreFieldEnum {
+  score1_user1 = "score1_user1",
+  score1_user2 = "score1_user2",
+  score2_user1 = "score2_user1",
+  score2_user2 = "score2_user2",
+  score3_user1 = "score3_user1",
+  score3_user2 = "score3_user2",
+  score4_user1 = "score4_user1",
+  score4_user2 = "score4_user2",
+  score5_user1 = "score5_user1",
+  score5_user2 = "score5_user2",
+  score6_1_user1 = "score6_1_user1",
+  score6_1_user2 = "score6_1_user2",
+  score6_2_user1 = "score6_2_user1",
+  score6_2_user2 = "score6_2_user2",
+}

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -35,6 +36,10 @@ function WichakanForm(props: WichakanProps) {
     },
   });
 
+  useEffect(() => {
+    form.reset(props.data);
+  }, [props.data, form.reset]);
+
   return (
     <Form {...form}>
       <form
@@ -46,6 +51,11 @@ function WichakanForm(props: WichakanProps) {
         </div>
         <div className="grid gap-10 p-7">
           <FormField
+            disabled={
+              props.status == "done" ||
+              props.status != "lock" ||
+              !props.isSameUser
+            }
             control={form.control}
             name="scoreAcademic"
             render={({ field }) => (
@@ -69,6 +79,11 @@ function WichakanForm(props: WichakanProps) {
             )}
           />
           <FormField
+            disabled={
+              props.status == "done" ||
+              props.status != "lock" ||
+              !props.isSameUser
+            }
             control={form.control}
             name="scoreChess"
             render={({ field }) => (

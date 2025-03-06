@@ -1,6 +1,6 @@
 {
-  "id": "8140e2fb-11fd-4fb2-878d-b98b40eb8d1c",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "0cdbb37d-11a0-41bd-a844-1535b45fb224",
+  "prevId": "51922a95-74a8-47a9-ba18-a46c82e6ca10",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -111,187 +111,192 @@
           "primaryKey": false,
           "notNull": false
         },
+        "info_status": {
+          "name": "info_status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'undone'"
+        },
+        "info_staffUsername": {
+          "name": "info_staffUsername",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "score1_user1_staffUsername": {
           "name": "score1_user1_staffUsername",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "score1_user2_staffUsername": {
           "name": "score1_user2_staffUsername",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "score2_user1_staffUsername": {
           "name": "score2_user1_staffUsername",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "score2_user2_staffUsername": {
           "name": "score2_user2_staffUsername",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "score3_user1_staffUsername": {
           "name": "score3_user1_staffUsername",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "score3_user2_staffUsername": {
           "name": "score3_user2_staffUsername",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "score4_user1_staffUsername": {
           "name": "score4_user1_staffUsername",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "score4_user2_staffUsername": {
           "name": "score4_user2_staffUsername",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "score5_user1_staffUsername": {
           "name": "score5_user1_staffUsername",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "score5_user2_staffUsername": {
           "name": "score5_user2_staffUsername",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "score6_1_user1_staffUsername": {
           "name": "score6_1_user1_staffUsername",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "score6_1_user2_staffUsername": {
           "name": "score6_1_user2_staffUsername",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "score6_2_user1_staffUsername": {
           "name": "score6_2_user1_staffUsername",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "score6_2_user2_staffUsername": {
           "name": "score6_2_user2_staffUsername",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
+        },
+        "updatedAt_info": {
+          "name": "updatedAt_info",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
         },
         "updatedAt_score1_user1": {
           "name": "updatedAt_score1_user1",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true,
-          "default": "NOW()"
+          "notNull": false
         },
         "updatedAt_score1_user2": {
           "name": "updatedAt_score1_user2",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true,
-          "default": "NOW()"
+          "notNull": false
         },
         "updatedAt_score2_user1": {
           "name": "updatedAt_score2_user1",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true,
-          "default": "NOW()"
+          "notNull": false
         },
         "updatedAt_score2_user2": {
           "name": "updatedAt_score2_user2",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true,
-          "default": "NOW()"
+          "notNull": false
         },
         "updatedAt_score3_user1": {
           "name": "updatedAt_score3_user1",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true,
-          "default": "NOW()"
+          "notNull": false
         },
         "updatedAt_score3_user2": {
           "name": "updatedAt_score3_user2",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true,
-          "default": "NOW()"
+          "notNull": false
         },
         "updatedAt_score4_user1": {
           "name": "updatedAt_score4_user1",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true,
-          "default": "NOW()"
+          "notNull": false
         },
         "updatedAt_score4_user2": {
           "name": "updatedAt_score4_user2",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true,
-          "default": "NOW()"
+          "notNull": false
         },
         "updatedAt_score5_user1": {
           "name": "updatedAt_score5_user1",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true,
-          "default": "NOW()"
+          "notNull": false
         },
         "updatedAt_score5_user2": {
           "name": "updatedAt_score5_user2",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true,
-          "default": "NOW()"
+          "notNull": false
         },
         "updatedAt_score6_1_user1": {
           "name": "updatedAt_score6_1_user1",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true,
-          "default": "NOW()"
+          "notNull": false
         },
         "updatedAt_score6_1_user2": {
           "name": "updatedAt_score6_1_user2",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true,
-          "default": "NOW()"
+          "notNull": false
         },
         "updatedAt_score6_2_user1": {
           "name": "updatedAt_score6_2_user1",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true,
-          "default": "NOW()"
+          "notNull": false
         },
         "updatedAt_score6_2_user2": {
           "name": "updatedAt_score6_2_user2",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true,
-          "default": "NOW()"
+          "notNull": false
         }
       },
       "indexes": {

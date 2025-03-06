@@ -1,6 +1,6 @@
 {
-  "id": "8140e2fb-11fd-4fb2-878d-b98b40eb8d1c",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "81b20230-b83a-4291-a79d-f8218a32a18b",
+  "prevId": "6a0e6cce-aded-4222-9104-f0c03c86fd3d",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -110,6 +110,19 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": false
+        },
+        "info_status": {
+          "name": "info_status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'undone'"
+        },
+        "info_staffUsername": {
+          "name": "info_staffUsername",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
         },
         "score1_user1_staffUsername": {
           "name": "score1_user1_staffUsername",

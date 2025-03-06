@@ -1,0 +1,1 @@
+ALTER TABLE "Tabian" ADD COLUMN "updatedAt_info" timestamp DEFAULT NOW() NOT NULL;
