@@ -4,6 +4,7 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
@@ -17,18 +18,22 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { DataTableFilterField } from "@/types";
 
 import { DataTableViewOptions } from "./column-toggle";
 import { DataTablePagination } from "./pagination";
+import { DataTableToolbar } from "./toolbar";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  filterFields?: DataTableFilterField<TData>[];
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  filterFields,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -36,12 +41,17 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
   });
 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex">
-        <DataTableViewOptions table={table} />
+        {filterFields ? (
+          <DataTableToolbar table={table} filterFields={filterFields} />
+        ) : (
+          <DataTableViewOptions table={table} />
+        )}
       </div>
       <div className="w-full rounded-sm border">
         <Table>
