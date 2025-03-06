@@ -134,7 +134,7 @@ export default function ChangePass() {
                       aria-invalid={!!form.formState.errors.currentPassword}
                     />
                     <button
-                      className="text-muted-foreground/80 hover:text-foreground focus-visible:outline-ring/70 absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-lg outline-offset-2 transition-colors focus:z-10 focus-visible:outline focus-visible:outline-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+                      className="text-muted-foreground/80 hover:text-foreground absolute top-1/2 right-3 -translate-y-1/2 transition-colors focus:outline-none"
                       type="button"
                       onClick={toggleCurrentPasswordVisibility}
                       aria-label={
@@ -175,7 +175,7 @@ export default function ChangePass() {
                       aria-describedby={`${newPasswordId}-description`}
                     />
                     <button
-                      className="text-muted-foreground/80 hover:text-foreground focus-visible:outline-ring/70 absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-lg outline-offset-2 transition-colors focus:z-10 focus-visible:outline focus-visible:outline-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+                      className="text-muted-foreground/80 hover:text-foreground absolute top-1/2 right-3 -translate-y-1/2 transition-colors focus:outline-none"
                       type="button"
                       onClick={toggleNewPasswordVisibility}
                       aria-label={
