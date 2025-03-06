@@ -1,5 +1,7 @@
 "use client";
 
+import { CheckCircle2Icon, ListFilterIcon, XCircleIcon } from "lucide-react";
+
 import { DataTable } from "@/components/data-table";
 import { useServerActionQuery } from "@/hook/server-action-hooks";
 import { DataTableFilterField } from "@/types";
@@ -23,6 +25,38 @@ export default function NongsPage() {
       id: "fullname",
       label: "Title",
       placeholder: "ค้นหาด้วยชื่อ",
+    },
+    {
+      id: "gender",
+      label: "เพศ",
+      options: [
+        {
+          label: "ชาย",
+          value: "man",
+          icon: ListFilterIcon,
+        },
+        {
+          label: "หญิง",
+          value: "woman",
+          icon: ListFilterIcon,
+        },
+      ],
+    },
+    {
+      id: "has_submit",
+      label: "สถานะใบสมัคร",
+      options: [
+        {
+          label: "ส่งแล้ว",
+          value: "submitted",
+          icon: CheckCircle2Icon,
+        },
+        {
+          label: "ยังไม่ส่ง",
+          value: "not_submitted",
+          icon: XCircleIcon,
+        },
+      ],
     },
   ];
 
