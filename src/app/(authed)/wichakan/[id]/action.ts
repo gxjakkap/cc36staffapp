@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 
+import { InspectStatus } from "@/components/data-table/status-badge";
 import { db, dbStaff } from "@/db";
 import { user } from "@/db/schema";
 import { wichakarn } from "@/db/staff-schema";
@@ -40,7 +41,7 @@ export const getUserWichakans = authenticatedAction
         scoreAcademic: wichakarn.scoreAcademic,
         status: wichakarn.status,
         staffUsername: wichakarn.staffUsername,
-        timestamp: wichakarn.updatedAt
+        timestamp: wichakarn.updatedAt,
       })
       .from(wichakarn)
       .where(eq(wichakarn.userId, users[0].id));
@@ -50,19 +51,19 @@ export const getUserWichakans = authenticatedAction
         id: users[0].id,
         scoreChess: null,
         scoreAcademic: null,
-        status: "unlock",
+        status: InspectStatus["UNLOCK"],
         staffUsername: null,
-        timestamp: null
+        timestamp: null,
       };
     }
 
     return {
-        id: users[0].id,
-        scoreChess: wichakansData[0].scoreChess,
-        scoreAcademic: wichakansData[0].scoreAcademic,
-        status: wichakansData[0].status,
-        staffUsername: wichakansData[0].staffUsername,
-        timestamp: wichakansData[0].timestamp
+      id: users[0].id,
+      scoreChess: wichakansData[0].scoreChess,
+      scoreAcademic: wichakansData[0].scoreAcademic,
+      status: wichakansData[0].status,
+      staffUsername: wichakansData[0].staffUsername,
+      timestamp: wichakansData[0].timestamp,
     };
   });
 
@@ -91,7 +92,7 @@ export const lockWichakarn = authenticatedAction
         .where(eq(wichakarn.userId, wichakarn.userId));
 
       if (wichakansData.length > 0) {
-        if (wichakansData[0].status == "lock") {
+        if (wichakansData[0].status == InspectStatus["LOCK"]) {
           if (wichakansData[0].staffUsername == session.user.username) {
             await dbStaff
               .update(wichakarn)
@@ -117,7 +118,7 @@ export const lockWichakarn = authenticatedAction
       } else {
         await dbStaff.insert(wichakarn).values({
           userId: input.userId,
-          status: "lock",
+          status: InspectStatus["LOCK"],
           staffUsername: session.user.username,
         });
         return "success";
@@ -133,7 +134,7 @@ export const submitScoreAcademics = authenticatedAction
     z.object({
       userId: z.string(),
       scoreAcademic: z.number(),
-      scoreChess: z.number()
+      scoreChess: z.number(),
     }),
   )
   .handler(async ({ input }) => {
@@ -156,7 +157,7 @@ export const submitScoreAcademics = authenticatedAction
           .set({
             scoreAcademic: input.scoreAcademic,
             scoreChess: input.scoreChess,
-            status: "done",
+            status: InspectStatus["DONE"],
             staffUsername: session.user.username,
             updatedAt: new Date(),
           })

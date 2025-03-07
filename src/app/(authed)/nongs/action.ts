@@ -2,6 +2,7 @@
 
 import { eq } from "drizzle-orm";
 
+import { InspectStatus } from "@/components/data-table/status-badge";
 import { db, dbStaff } from "@/db";
 import { user } from "@/db/schema";
 import { tabian } from "@/db/staff-schema";
@@ -43,7 +44,7 @@ export const getAllTabiansInfoTable = authenticatedAction
             phone: user.phone,
             has_submit: user.has_submit,
             info: null,
-            status: "unlock",
+            status: InspectStatus["LOCK"],
             staffUsername: null,
             timestamp: null,
           };

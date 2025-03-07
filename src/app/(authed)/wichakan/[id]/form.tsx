@@ -5,6 +5,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import {
+  InspectStatus,
+  InspectStatusKeys,
+} from "@/components/data-table/status-badge";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -24,7 +28,7 @@ export const formSchema = z.object({
 interface WichakanProps {
   data: z.infer<typeof formSchema>;
   onSubmit: (data: z.infer<typeof formSchema>) => void;
-  status: "lock" | "unlock" | "done";
+  status: InspectStatusKeys;
   isSameUser: boolean;
 }
 
@@ -52,8 +56,8 @@ function WichakanForm(props: WichakanProps) {
         <div className="grid gap-10 p-7">
           <FormField
             disabled={
-              props.status == "done" ||
-              props.status != "lock" ||
+              props.status == InspectStatus["DONE"] ||
+              props.status != InspectStatus["LOCK"] ||
               !props.isSameUser
             }
             control={form.control}
@@ -80,8 +84,8 @@ function WichakanForm(props: WichakanProps) {
           />
           <FormField
             disabled={
-              props.status == "done" ||
-              props.status != "lock" ||
+              props.status == InspectStatus["DONE"] ||
+              props.status != InspectStatus["LOCK"] ||
               !props.isSameUser
             }
             control={form.control}
@@ -110,8 +114,8 @@ function WichakanForm(props: WichakanProps) {
         <div className="flex justify-center">
           <Button
             disabled={
-              props.status == "done" ||
-              props.status != "lock" ||
+              props.status == InspectStatus["DONE"] ||
+              props.status != InspectStatus["LOCK"] ||
               !props.isSameUser
             }
             type="submit"

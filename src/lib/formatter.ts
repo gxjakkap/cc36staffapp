@@ -46,7 +46,10 @@ export const formatPhoneNumber = (tel: string) => {
 };
 
 export const formatId = (id: string) => {
-  return id.length > 6 ? id.substring(0, 6) : id;
+  const start = Math.floor(Math.random() * (id.length - 6 + 1));
+  let formattedId = id.substring(start, start + 6);
+  formattedId = formattedId.replace(/^-+|-+$/g, ""); // Remove leading or trailing hyphens
+  return formattedId;
 };
 
 export function formatThaiBuddhist(date: Date, withTime?: boolean) {
