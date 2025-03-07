@@ -31,10 +31,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useServerActionMutation } from "@/hook/server-action-hooks";
+import { StaffRolesEnum } from "@/lib/auth/role";
 import { defaultToastReactQuery } from "@/lib/toast";
-
-const ROLES = ["staff", "admin"] as const;
-const RoleEnum = z.enum(ROLES);
 
 const passwordSchema = z
   .string()
@@ -59,7 +57,7 @@ const formSchema = z.object({
   }),
   email: z.string().email("Must be a valid email address."),
   password: passwordSchema,
-  role: RoleEnum,
+  role: StaffRolesEnum,
 });
 
 export function AddStaffDialog() {
@@ -74,7 +72,7 @@ export function AddStaffDialog() {
       name: "",
       password: "",
       username: "",
-      role: RoleEnum.Enum.staff,
+      role: StaffRolesEnum.Enum["regis"],
     },
   });
 
@@ -167,8 +165,9 @@ export function AddStaffDialog() {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="staff">Staff</SelectItem>
                       <SelectItem value="admin">Admin</SelectItem>
+                      <SelectItem value="staff">Staff</SelectItem>
+                      <SelectItem value="regis">Regis</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />

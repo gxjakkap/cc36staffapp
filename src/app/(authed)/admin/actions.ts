@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { z } from "zod";
 
 import { auth } from "@/lib/auth";
+import { StaffRolesEnum } from "@/lib/auth/role";
 import { ForbiddenError } from "@/lib/errors";
 import { authenticatedAction } from "@/lib/safe-action";
 
@@ -12,7 +13,7 @@ export const addStaffAccount = authenticatedAction
   .input(
     z.object({
       name: z.string(),
-      role: z.enum(["staff", "admin"]),
+      role: StaffRolesEnum,
       email: z.string(),
       username: z.string(),
       password: z.string(),
@@ -63,7 +64,7 @@ export const editStaffAccount = authenticatedAction
     z.object({
       id: z.string(),
       password: z.string().optional(),
-      role: z.enum(["staff", "admin"]).optional(),
+      role: StaffRolesEnum.optional(),
     }),
   )
   .handler(async ({ ctx, input }) => {
