@@ -119,10 +119,8 @@ export function DataTableFacetedFilter<TData, TValue>({
                       />
                     )}
                     <span>{option.label}</span>
-                    {option.count && (
-                      <span className="ml-auto flex size-4 items-center justify-center font-mono text-xs">
-                        {option.count}
-                      </span>
+                    {option.count != null && option.count >= 0 && (
+                      <Badge variant="default">{option.count}</Badge>
                     )}
                   </CommandItem>
                 );
@@ -136,7 +134,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                     onSelect={() => column?.setFilterValue(undefined)}
                     className="justify-center text-center"
                   >
-                    Clear filters
+                    ล้างตัวกรอง
                   </CommandItem>
                 </CommandGroup>
               </>
