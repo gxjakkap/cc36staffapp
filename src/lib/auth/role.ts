@@ -1,4 +1,5 @@
 export const StaffRoles = {
+  SUPER_ADMIN: "super_admin",
   ADMIN: "admin",
   //
   REGIS: "regis",
