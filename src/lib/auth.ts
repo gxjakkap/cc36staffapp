@@ -6,6 +6,8 @@ import { admin, username } from "better-auth/plugins";
 import { dbStaff } from "@/db";
 import { account, session, user, verification } from "@/db/staff-schema";
 
+import { StaffRoles } from "./auth/role";
+
 export const auth = betterAuth({
   database: drizzleAdapter(dbStaff, {
     provider: "pg",
@@ -19,5 +21,12 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
-  plugins: [username(), nextCookies(), admin()],
+  plugins: [
+    username(),
+    nextCookies(),
+    admin({
+      defaultRole: StaffRoles["STAFF"],
+      adminRoles: StaffRoles["ADMIN"],
+    }),
+  ],
 });

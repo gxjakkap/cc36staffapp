@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 import { dbStaff } from "@/db";
 import { user as userTable } from "@/db/staff-schema";
 import { authClient } from "@/lib/auth-client";
+import { StaffRoles } from "@/lib/auth/role";
 
 const email = process.argv[2];
 const username = process.argv[3];
@@ -52,7 +53,7 @@ async function createAdmin() {
     await dbStaff
       .update(userTable)
       .set({
-        role: "admin",
+        role: StaffRoles["ADMIN"],
       })
       .where(eq(userTable.id, data.user.id));
 

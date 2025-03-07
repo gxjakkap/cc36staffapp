@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { StaffUsersTable } from "@/app/(authed)/admin/staff-table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { auth } from "@/lib/auth";
+import { StaffRoles } from "@/lib/auth/role";
 
 export default async function SettingsPage() {
   const session = await auth.api.getSession({
@@ -14,7 +15,7 @@ export default async function SettingsPage() {
     return;
   }
 
-  if (session.user.role !== "admin") redirect(`/`);
+  if (session.user.role !== StaffRoles["ADMIN"]) redirect(`/`);
 
   const staffsData = await auth.api.listUsers({
     headers: await headers(),
