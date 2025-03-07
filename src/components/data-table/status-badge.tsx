@@ -1,6 +1,7 @@
+import { createElement } from "react";
 import { cva } from "class-variance-authority";
+import { CircleCheckBigIcon, LockIcon, LockOpenIcon } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 export const InspectStatus = {
@@ -19,9 +20,9 @@ interface InspectStatusBadgeProps {
 const badgeVariants = cva("m-1", {
   variants: {
     variant: {
-      lock: "bg-yellow-500",
-      unlock: "bg-orange-500",
-      done: "bg-green-500",
+      lock: "text-yellow-500",
+      unlock: "text-orange-500",
+      done: "text-green-500",
     },
   },
   defaultVariants: {
@@ -35,19 +36,27 @@ const statusText: Record<InspectStatusKeys, string> = {
   done: "ตรวจแล้ว",
 };
 
+const statusIcon: Record<
+  InspectStatusKeys,
+  React.ComponentType<{ className?: string }>
+> = {
+  lock: LockOpenIcon,
+  unlock: LockIcon,
+  done: CircleCheckBigIcon,
+};
+
 export default function InspectStatusBadge({
   status,
 }: InspectStatusBadgeProps) {
   return (
-    <Badge variant="outline" className="gap-1.5">
-      <span
-        className={`${cn(
-          "size-1.5 rounded-full",
-          badgeVariants({ variant: status }),
-        )}`}
-        aria-hidden="true"
-      />
-      {statusText[status]}
-    </Badge>
+    <div
+      className={cn(
+        badgeVariants({ variant: status }),
+        "flex items-center gap-2",
+      )}
+    >
+      {status && createElement(statusIcon[status], { className: "size-4" })}
+      <p className="text-foreground">{statusText[status]}</p>
+    </div>
   );
 }
