@@ -43,6 +43,13 @@
       "when": 1741285242354,
       "tag": "0005_handy_bastion",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1741363759593,
+      "tag": "0006_left_red_shift",
+      "breakpoints": true
     }
   ]
 }

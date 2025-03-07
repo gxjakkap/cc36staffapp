@@ -1,8 +1,8 @@
-import { randomUUID } from "crypto";
-import { getRandomValues } from "@better-auth/utils";
-import { hex } from "@better-auth/utils/hex";
-import { scryptAsync } from "@noble/hashes/scrypt";
-import { Pool } from "pg";
+import { eq } from "drizzle-orm";
+
+import { dbStaff } from "@/db";
+import { user as userTable } from "@/db/staff-schema";
+import { authClient } from "@/lib/auth-client";
 
 const email = process.argv[2];
 const username = process.argv[3];
@@ -21,55 +21,50 @@ console.log(username);
 console.log(password);
 console.log(name);
 
-const config = {
-  N: 16384,
-  r: 16,
-  p: 1,
-  dkLen: 64,
-};
-
-async function generateKey(password: string, salt: string) {
-  return await scryptAsync(password.normalize("NFKC"), salt, {
-    N: config.N,
-    p: config.p,
-    r: config.r,
-    dkLen: config.dkLen,
-    maxmem: 128 * config.N * config.r * 2,
+function createCurrentDate() {
+  return new Date().toLocaleString("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
   });
 }
 
-export const hashPassword = async (password: string) => {
-  const salt = hex.encode(getRandomValues(new Uint8Array(16)));
-  const key = await generateKey(password, salt);
-  return `${salt}:${hex.encode(key)}`;
-};
-
 async function createAdmin() {
-  const pool = new Pool({
-    connectionString: `postgresql://postgres:${process.env.STAFFAPP_POSTGRES_PASSWORD}@${process.env.STAFFAPP_POSTGRES_HOST}:5432/postgres`,
-  });
-
   try {
-    const hash = await hashPassword(password);
+    const { data, error } = await authClient.signUp.email({
+      email,
+      password,
+      name,
+      username,
+    });
 
-    const userId = randomUUID();
-    const now = new Date();
+    if (error) {
+      throw error;
+    }
 
-    await pool.query(
-      'INSERT INTO "user" (id, name, email, "emailVerified", "createdAt", "updatedAt", username, role) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
-      [userId, name, email, 1, now, now, username, "admin"],
+    if (!data) {
+      return;
+    }
+
+    await dbStaff
+      .update(userTable)
+      .set({
+        role: "admin",
+      })
+      .where(eq(userTable.id, data.user.id));
+
+    console.log(
+      `✅ Admin user created successfully! at ${createCurrentDate()}`,
     );
-
-    await pool.query(
-      'INSERT INTO account (id, "userId", "providerId", "accountId", password, "createdAt", "updatedAt") VALUES ($1, $2, $3, $4, $5, $6, $7)',
-      [randomUUID(), userId, "credential", email, hash, now, now],
-    );
-
-    console.log("✅ Admin user created successfully!");
   } catch (error) {
-    console.error("❌ Failed to create admin user:", error);
+    console.error(
+      `❌ Failed to create admin user at with ${createCurrentDate()} \n error : `,
+      error,
+    );
   } finally {
-    await pool.end();
     process.exit();
   }
 }

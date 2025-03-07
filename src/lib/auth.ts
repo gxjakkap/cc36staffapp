@@ -1,21 +1,23 @@
 import { betterAuth } from "better-auth";
+import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
-import { admin, openAPI, username } from "better-auth/plugins";
-import { Pool } from "pg";
+import { admin, username } from "better-auth/plugins";
+
+import { dbStaff } from "@/db";
+import { account, session, user, verification } from "@/db/staff-schema";
 
 export const auth = betterAuth({
-  database: new Pool({
-    connectionString: `postgresql://postgres:${process.env.STAFFAPP_POSTGRES_PASSWORD}@${process.env.STAFFAPP_POSTGRES_HOST}:5432/postgres`,
+  database: drizzleAdapter(dbStaff, {
+    provider: "pg",
+    schema: {
+      user,
+      session,
+      account,
+      verification,
+    },
   }),
   emailAndPassword: {
     enabled: true,
   },
-  plugins: [
-    username(),
-    nextCookies(),
-    admin({
-      defaultRole: "staff",
-      adminRole: "admin",
-    }),
-  ],
+  plugins: [username(), nextCookies(), admin()],
 });
