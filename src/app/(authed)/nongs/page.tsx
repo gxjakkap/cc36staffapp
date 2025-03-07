@@ -3,6 +3,7 @@
 import { CheckCircle2Icon, ListFilterIcon, XCircleIcon } from "lucide-react";
 
 import { DataTable } from "@/components/data-table";
+import { InspectStatusKeys } from "@/components/data-table/status-badge";
 import { useServerActionQuery } from "@/hook/server-action-hooks";
 import { DataTableFilterField } from "@/types";
 
@@ -77,7 +78,7 @@ export default function NongsPage() {
                   status:
                     item.status == "done"
                       ? "done"
-                      : ("unlock" as "lock" | "unlock" | "done"),
+                      : ("unlock" as InspectStatusKeys),
                   timestamp: item.timestamp,
                 }))
               : []

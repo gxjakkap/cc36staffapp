@@ -1,6 +1,7 @@
 "use client";
 
 import { DataTable } from "@/components/data-table";
+import { InspectStatusKeys } from "@/components/data-table/status-badge";
 import { useServerActionQuery } from "@/hook/server-action-hooks";
 
 import getAllWichakansTable from "./action";
@@ -23,7 +24,7 @@ export default function WichakanPage() {
                   id: item.id,
                   score_academic: item.score_academic,
                   score_chess: item.score_chess,
-                  status: item.status as "lock" | "unlock" | "done",
+                  status: item.status as InspectStatusKeys,
                   timestamp: item.timestamp,
                 }))
               : []

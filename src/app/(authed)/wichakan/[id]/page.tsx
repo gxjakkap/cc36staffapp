@@ -1,24 +1,32 @@
-"use client"
+"use client";
 
 import { redirect, useParams } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { z } from "zod";
 
 import { getAcademicAnswer } from "@/app/(authed)/actions";
 import { AnswerWrapper } from "@/components/answer-wrapper";
+import {
+  InspectStatus,
+  InspectStatusKeys,
+} from "@/components/data-table/status-badge";
+import Spinner from "@/components/spinner";
+import { Button } from "@/components/ui/button";
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import WichakanForm from "./form";
-import { authClient } from "@/lib/auth-client";
-import { useQueryClient } from "@tanstack/react-query";
 import { useServerActionQuery } from "@/hook/server-action-hooks";
-import { getUserWichakans, lockWichakarn, submitScoreAcademics } from "./action";
-import { z } from "zod";
-import { formSchema } from "./form";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import Spinner from "@/components/spinner";
+import { authClient } from "@/lib/auth-client";
+
+import {
+  getUserWichakans,
+  lockWichakarn,
+  submitScoreAcademics,
+} from "./action";
+import WichakanForm, { formSchema } from "./form";
 
 export default function AnswerAcademicPage() {
   const { data } = authClient.useSession();
@@ -29,7 +37,7 @@ export default function AnswerAcademicPage() {
   const {
     data: wichakansData,
     error: wichakansError,
-    isLoading: wichakansLoading
+    isLoading: wichakansLoading,
   } = useServerActionQuery(getUserWichakans, {
     queryKey: ["userWichakans", id],
     input: { id: id ? id.toString() : null },
@@ -38,7 +46,7 @@ export default function AnswerAcademicPage() {
   const {
     data: academicAnswerData,
     error: academicAnswerError,
-    isLoading: academicAnswerLoading
+    isLoading: academicAnswerLoading,
   } = useServerActionQuery(getAcademicAnswer, {
     queryKey: ["academicAnswer", id],
     input: { userId: id ? id.toString() : null },
@@ -62,7 +70,7 @@ export default function AnswerAcademicPage() {
     const [code] = await submitScoreAcademics({
       userId: id.toString(),
       scoreChess: parseInt(data.scoreChess),
-      scoreAcademic: parseInt(data.scoreAcademic)
+      scoreAcademic: parseInt(data.scoreAcademic),
     });
     if (code == "This has lock by other user") {
       queryClient.invalidateQueries({ queryKey: ["userWichakans", id] });
@@ -73,42 +81,42 @@ export default function AnswerAcademicPage() {
         ...wichakansData,
         scoreChess: parseInt(data.scoreChess),
         scoreAcademic: parseInt(data.scoreAcademic),
-        status: "done",
+        status: InspectStatus["DONE"],
       });
       toast.success("ส่งคะแนนสำเร็จเรียบแล้ว!");
     }
   }
 
   async function lock() {
-      if (!id || !data?.user.username) return;
-  
-      if (wichakansData?.status == "lock") {
-        const [code] = await lockWichakarn({
-          userId: id.toString(),
-          status: "unlock",
+    if (!id || !data?.user.username) return;
+
+    if (wichakansData?.status == InspectStatus["LOCK"]) {
+      const [code] = await lockWichakarn({
+        userId: id.toString(),
+        status: InspectStatus["UNLOCK"],
+      });
+      if (code == "success")
+        queryClient.setQueryData(["userWichakans", id], {
+          ...wichakansData,
+          status: InspectStatus["UNLOCK"],
         });
-        if (code == "success")
-          queryClient.setQueryData(["userWichakans", id], {
-            ...wichakansData,
-            status: "unlock",
-          });
-      } else {
-        const [code] = await lockWichakarn({
-          userId: id.toString(),
-          status: "lock",
-        });
-        if (code == "This has lock by other user") {
-          queryClient.invalidateQueries({ queryKey: ["userWichakans", id] });
-          return toast.error("ใบสมัครนี้ถูกตรวจสอบโดยคนอื่นแล้ว");
-        }
-        if (code == "success")
-          queryClient.setQueryData(["userWichakans", id], {
-            ...wichakansData,
-            staffUsername: data.user.username,
-            status: "lock",
-          });
+    } else {
+      const [code] = await lockWichakarn({
+        userId: id.toString(),
+        status: InspectStatus["LOCK"],
+      });
+      if (code == "This has lock by other user") {
+        queryClient.invalidateQueries({ queryKey: ["userWichakans", id] });
+        return toast.error("ใบสมัครนี้ถูกตรวจสอบโดยคนอื่นแล้ว");
       }
+      if (code == "success")
+        queryClient.setQueryData(["userWichakans", id], {
+          ...wichakansData,
+          staffUsername: data.user.username,
+          status: InspectStatus["LOCK"],
+        });
     }
+  }
 
   return (
     <div className="p-6">
@@ -124,9 +132,9 @@ export default function AnswerAcademicPage() {
             Status:{" "}
             <span
               className={
-                wichakansData?.status == "lock"
+                wichakansData?.status == InspectStatus["LOCK"]
                   ? "text-yellow-500"
-                  : wichakansData?.status == "done"
+                  : wichakansData?.status == InspectStatus["DONE"]
                     ? "text-green-500"
                     : "text-orange-500"
               }
@@ -134,25 +142,27 @@ export default function AnswerAcademicPage() {
               {wichakansData?.status}
             </span>
           </p>
-          {wichakansData?.status == "lock" && (
+          {wichakansData?.status == InspectStatus["LOCK"] && (
             <p className="ml-2">
               Lock by:{" "}
               <span className="font-bold">{wichakansData.staffUsername}</span>
             </p>
           )}
           <div className="ml-2">
-              <Button
-                disabled={
-                  wichakansLoading ||
-                  (wichakansData?.status == "lock" &&
-                    wichakansData?.staffUsername != null &&
-                    wichakansData?.staffUsername != data?.user.username)
-                }
-                onClick={lock}
-                className="cursor-pointer"
-              >
-                {wichakansData?.status == "lock" ? "unlock" : "lock"}
-              </Button>
+            <Button
+              disabled={
+                wichakansLoading ||
+                (wichakansData?.status == InspectStatus["LOCK"] &&
+                  wichakansData?.staffUsername != null &&
+                  wichakansData?.staffUsername != data?.user.username)
+              }
+              onClick={lock}
+              className="cursor-pointer"
+            >
+              {wichakansData?.status == InspectStatus["LOCK"]
+                ? InspectStatus["UNLOCK"]
+                : InspectStatus["LOCK"]}
+            </Button>
           </div>
         </div>
         <ResizablePanel defaultSize={60}>
@@ -167,20 +177,26 @@ export default function AnswerAcademicPage() {
                 }}
                 answers={academicAnswerData.answers}
               />
-            ) : <Spinner />}
+            ) : (
+              <Spinner />
+            )}
           </div>
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={40}>
-          <WichakanForm 
+          <WichakanForm
             data={{
-              scoreChess: wichakansData?.scoreChess ? wichakansData.scoreChess.toString() : "",
-              scoreAcademic: wichakansData?.scoreAcademic ? wichakansData.scoreAcademic.toString() : ""
+              scoreChess: wichakansData?.scoreChess
+                ? wichakansData.scoreChess.toString()
+                : "",
+              scoreAcademic: wichakansData?.scoreAcademic
+                ? wichakansData.scoreAcademic.toString()
+                : "",
             }}
             status={
               wichakansData?.status
-                ? (wichakansData.status as "lock" | "unlock" | "done")
-                : "unlock"
+                ? (wichakansData.status as InspectStatusKeys)
+                : InspectStatus["UNLOCK"]
             }
             isSameUser={data?.user.username == wichakansData?.staffUsername}
             onSubmit={onSubmit}

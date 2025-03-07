@@ -3,10 +3,17 @@ import { cva } from "class-variance-authority";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-export type Status = "lock" | "unlock" | "done";
+export const InspectStatus = {
+  LOCK: "lock",
+  UNLOCK: "unlock",
+  DONE: "done",
+} as const;
 
-interface StatusBadgeProps {
-  status: Status;
+export type InspectStatusKeys =
+  (typeof InspectStatus)[keyof typeof InspectStatus];
+
+interface InspectStatusBadgeProps {
+  status: InspectStatusKeys;
 }
 
 const badgeVariants = cva("m-1", {
@@ -22,13 +29,15 @@ const badgeVariants = cva("m-1", {
   },
 });
 
-const statusText: Record<Status, string> = {
+const statusText: Record<InspectStatusKeys, string> = {
   lock: "มีคนตรวจ",
   unlock: "ไม่มีคนตรวจ",
   done: "ตรวจแล้ว",
 };
 
-export default function StatusBadge({ status }: StatusBadgeProps) {
+export default function InspectStatusBadge({
+  status,
+}: InspectStatusBadgeProps) {
   return (
     <Badge variant="outline" className="gap-1.5">
       <span

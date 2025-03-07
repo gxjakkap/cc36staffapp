@@ -3,13 +3,15 @@ import { ColumnDef } from "@tanstack/react-table";
 import { SearchIcon } from "lucide-react";
 
 import { DataTableColumnHeader } from "@/components/data-table/column-header";
-import StatusBadge from "@/components/data-table/status-badge";
+import StatusBadge, {
+  InspectStatusKeys,
+} from "@/components/data-table/status-badge";
 import { Button } from "@/components/ui/button";
 import { formatId, formatThaiBuddhist } from "@/lib/formatter";
 
 type Wichkans = {
   id: string;
-  status: "lock" | "unlock" | "done";
+  status: InspectStatusKeys;
   score_academic?: number | null;
   score_chess?: number | null;
   timestamp?: Date | null;
