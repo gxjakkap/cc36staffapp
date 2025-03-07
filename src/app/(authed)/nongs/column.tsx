@@ -32,6 +32,7 @@ export const columns: ColumnDef<Nongs>[] = [
     ),
     cell: ({ row }) => <div>{row.getValue("fullname")}</div>,
     size: 200,
+    filterFn: "includesString",
   },
   {
     accessorKey: "gender",

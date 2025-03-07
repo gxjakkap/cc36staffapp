@@ -24,7 +24,7 @@ export default function NongsPage() {
   const filterFields: DataTableFilterField<Nongs>[] = [
     {
       id: "fullname",
-      label: "Title",
+      label: "",
       placeholder: "ค้นหาด้วยชื่อ",
     },
     {
