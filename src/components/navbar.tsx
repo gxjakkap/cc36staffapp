@@ -28,19 +28,12 @@ export function Navbar({ isAdmin }: NavbarProps) {
     <div className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 flex border-b px-10 py-4 backdrop-blur">
       <nav className="flex w-full items-center justify-end gap-4 xl:gap-6">
         {NAVBARS.map(({ href, text }) => (
-          <Link key={href} href={href}>
-            <Button
-              className={cn(
-                "text-sm transition-colors",
-                pathname === href || pathname.startsWith(href + "/")
-                  ? "text-destructive font-bold hover:text-red-500"
-                  : "text-foreground/80",
-              )}
-              variant="ghost"
-            >
-              {text}
-            </Button>
-          </Link>
+          <NavbarChild
+            key={href}
+            href={href}
+            text={text}
+            isActive={pathname === href || pathname.startsWith(href + "/")}
+          />
         ))}
 
         {isAdmin && (
@@ -67,13 +60,17 @@ const NavbarChild = ({
   text: string;
   isActive: boolean;
 }) => (
-  <Link
-    href={href}
-    className={cn(
-      "text-sm transition-colors",
-      isActive ? "text-destructive font-bold" : "text-foreground/80",
-    )}
-  >
-    {text}
+  <Link key={href} href={href}>
+    <Button
+      className={cn(
+        "text-sm transition-colors",
+        isActive
+          ? "text-destructive font-bold hover:text-red-500"
+          : "text-foreground/80",
+      )}
+      variant="ghost"
+    >
+      {text}
+    </Button>
   </Link>
 );
