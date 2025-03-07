@@ -2,7 +2,7 @@ export const StaffRoles = {
   ADMIN: "admin",
   //
   REGIS: "regis",
-  ACADEMIC: "ACADEMIC",
+  ACADEMIC: "academic",
   STAFF: "staff",
 } as const;
 
