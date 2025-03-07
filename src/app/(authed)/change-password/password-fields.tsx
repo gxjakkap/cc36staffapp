@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
+import { CardContent, CardFooter } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -111,97 +112,113 @@ export default function ChangePass() {
   };
 
   return (
-    <div className="mx-auto space-y-8 px-6 pt-4">
+    <div className="">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="mx-auto flex w-[70vw] flex-col gap-y-4 lg:w-[30vw]"
         >
-          <FormField
-            control={form.control}
-            name="currentPassword"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>กรอกรหัสผ่านเดิม</FormLabel>
-                <FormControl>
-                  <div className="relative">
-                    <PasswordInput
-                      id={currentPasswordId}
-                      className="pe-9"
-                      placeholder="รหัสผ่านเดิม"
-                      type={isCurrentPasswordVisible ? "text" : "password"}
-                      {...field}
-                      aria-invalid={!!form.formState.errors.currentPassword}
-                    />
-                    <button
-                      className="text-muted-foreground/80 hover:text-foreground absolute top-1/2 right-3 -translate-y-1/2 transition-colors focus:outline-none"
-                      type="button"
-                      onClick={toggleCurrentPasswordVisibility}
-                      aria-label={
-                        isCurrentPasswordVisible
-                          ? "Hide password"
-                          : "Show password"
-                      }
-                      aria-pressed={isCurrentPasswordVisible}
-                      aria-controls={currentPasswordId}
-                    >
-                      {isCurrentPasswordVisible ? (
-                        <Eye size={16} strokeWidth={2} aria-hidden="true" />
-                      ) : (
-                        <EyeOff size={16} strokeWidth={2} aria-hidden="true" />
-                      )}
-                    </button>
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="newPassword"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>ตั้งรหัสผ่านใหม่</FormLabel>
-                <FormControl>
-                  <div className="relative">
-                    <PasswordInput
-                      id={newPasswordId}
-                      className="pe-9"
-                      placeholder="รหัสผ่านใหม่"
-                      type={isNewPasswordVisible ? "text" : "password"}
-                      {...field}
-                      aria-invalid={strengthScore < 4}
-                      aria-describedby={`${newPasswordId}-description`}
-                    />
-                    <button
-                      className="text-muted-foreground/80 hover:text-foreground absolute top-1/2 right-3 -translate-y-1/2 transition-colors focus:outline-none"
-                      type="button"
-                      onClick={toggleNewPasswordVisibility}
-                      aria-label={
-                        isNewPasswordVisible ? "Hide password" : "Show password"
-                      }
-                      aria-pressed={isNewPasswordVisible}
-                      aria-controls={newPasswordId}
-                    >
-                      {isNewPasswordVisible ? (
-                        <Eye size={16} strokeWidth={2} aria-hidden="true" />
-                      ) : (
-                        <EyeOff size={16} strokeWidth={2} aria-hidden="true" />
-                      )}
-                    </button>
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <CardContent className="flex flex-col">
+            <FormField
+              control={form.control}
+              name="currentPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>กรอกรหัสผ่านเดิม</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <PasswordInput
+                        id={currentPasswordId}
+                        className="pe-9"
+                        placeholder="รหัสผ่านเดิม"
+                        type={isCurrentPasswordVisible ? "text" : "password"}
+                        {...field}
+                        aria-invalid={!!form.formState.errors.currentPassword}
+                      />
+                      <button
+                        className="text-muted-foreground/80 hover:text-foreground absolute top-1/2 right-3 -translate-y-1/2 transition-colors focus:outline-none"
+                        type="button"
+                        onClick={toggleCurrentPasswordVisibility}
+                        aria-label={
+                          isCurrentPasswordVisible
+                            ? "Hide password"
+                            : "Show password"
+                        }
+                        aria-pressed={isCurrentPasswordVisible}
+                        aria-controls={currentPasswordId}
+                      >
+                        {isCurrentPasswordVisible ? (
+                          <Eye size={16} strokeWidth={2} aria-hidden="true" />
+                        ) : (
+                          <EyeOff
+                            size={16}
+                            strokeWidth={2}
+                            aria-hidden="true"
+                          />
+                        )}
+                      </button>
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="newPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>ตั้งรหัสผ่านใหม่</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <PasswordInput
+                        id={newPasswordId}
+                        className="pe-9"
+                        placeholder="รหัสผ่านใหม่"
+                        type={isNewPasswordVisible ? "text" : "password"}
+                        {...field}
+                        aria-invalid={strengthScore < 4}
+                        aria-describedby={`${newPasswordId}-description`}
+                      />
+                      <button
+                        className="text-muted-foreground/80 hover:text-foreground absolute top-1/2 right-3 -translate-y-1/2 transition-colors focus:outline-none"
+                        type="button"
+                        onClick={toggleNewPasswordVisibility}
+                        aria-label={
+                          isNewPasswordVisible
+                            ? "Hide password"
+                            : "Show password"
+                        }
+                        aria-pressed={isNewPasswordVisible}
+                        aria-controls={newPasswordId}
+                      >
+                        {isNewPasswordVisible ? (
+                          <Eye size={16} strokeWidth={2} aria-hidden="true" />
+                        ) : (
+                          <EyeOff
+                            size={16}
+                            strokeWidth={2}
+                            aria-hidden="true"
+                          />
+                        )}
+                      </button>
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <PasswordStrength password={newPassword} passwordId={newPasswordId} />
-
-          <Button type="submit" className="w-full" disabled={isPending}>
-            ยืนยัน
-          </Button>
+            <PasswordStrength
+              password={newPassword}
+              passwordId={newPasswordId}
+            />
+          </CardContent>
+          <CardFooter className="pt-4">
+            <Button type="submit" className="w-full" disabled={isPending}>
+              ยืนยัน
+            </Button>
+          </CardFooter>
         </form>
       </Form>
     </div>

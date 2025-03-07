@@ -3,7 +3,12 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { auth } from "@/lib/auth";
 
 import ChangePass from "./password-fields";
@@ -22,15 +27,15 @@ export default async function PasswordPage() {
   return (
     <>
       <div className="flex w-full items-center justify-center pt-8">
-        <Card className="">
+        <Card>
           <CardHeader>
-            <CardTitle className="text-lg">เปลี่ยนรหัสผ่าน</CardTitle>
+            <CardTitle className="text-2xl">เปลี่ยนรหัสผ่าน</CardTitle>
+            <CardDescription>
+              <span className="font-bold">ชื่อผู้ใช้งาน :</span>{" "}
+              {session.user.username}
+            </CardDescription>
           </CardHeader>
-          <CardContent>
-            <span className="font-bold">ชื่อผู้ใช้งาน :</span>{" "}
-            {session.user.username}
-          </CardContent>
-          <ChangePass></ChangePass>
+          <ChangePass />
         </Card>
       </div>
     </>
