@@ -81,9 +81,11 @@ export const columns: ColumnDef<Nongs>[] = [
     ),
     cell: ({ row }) => (
       <div>
-        {row.original.timestamp
-          ? formatThaiBuddhist(row.original.timestamp)
-          : "ยังไม่ได้ตรวจสอบ"}
+        {row.original.timestamp ? (
+          <div>{formatThaiBuddhist(row.original.timestamp)}</div>
+        ) : (
+          <div className="text-foreground/25">ยังไม่ได้ตรวจสอบ</div>
+        )}
       </div>
     ),
     size: 40,
