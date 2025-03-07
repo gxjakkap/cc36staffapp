@@ -33,11 +33,10 @@ export function Navbar({ isAdmin }: NavbarProps) {
               className={cn(
                 "text-sm transition-colors",
                 pathname === href || pathname.startsWith(href + "/")
-                  ? "text-destructive font-bold"
+                  ? "text-destructive font-bold hover:text-red-500"
                   : "text-foreground/80",
               )}
-              variant="link"
-              effect="hoverUnderline"
+              variant="ghost"
             >
               {text}
             </Button>
