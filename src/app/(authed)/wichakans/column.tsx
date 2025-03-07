@@ -41,11 +41,13 @@ export const columns: ColumnDef<Wichkans>[] = [
       />
     ),
     cell: ({ row }) => (
-      <div>
-        {row.original.score_academic
-          ? row.original.score_academic
-          : "ยังไม่ได้ตรวจ"}
-      </div>
+      <>
+        {row.original.score_academic ? (
+          <div>{row.original.score_academic}</div>
+        ) : (
+          <p className="text-foreground/25">ยังไม่ได้ตรวจ</p>
+        )}
+      </>
     ),
     size: 200,
   },
@@ -55,9 +57,13 @@ export const columns: ColumnDef<Wichkans>[] = [
       <DataTableColumnHeader column={column} title="คะแนนพาร์ทที่ 2 (chess)" />
     ),
     cell: ({ row }) => (
-      <div>
-        {row.original.score_chess ? row.original.score_chess : "ยังไม่ได้ตรวจ"}
-      </div>
+      <>
+        {row.original.score_chess ? (
+          <div>{row.original.score_chess}</div>
+        ) : (
+          <p className="text-foreground/25">ยังไม่ได้ตรวจ</p>
+        )}
+      </>
     ),
     size: 200,
   },
@@ -67,11 +73,13 @@ export const columns: ColumnDef<Wichkans>[] = [
       <DataTableColumnHeader column={column} title="เวลาที่ตรวจสอบ" />
     ),
     cell: ({ row }) => (
-      <div>
-        {row.original.timestamp
-          ? formatThaiBuddhist(row.original.timestamp)
-          : ""}
-      </div>
+      <>
+        {row.original.timestamp ? (
+          <div>{formatThaiBuddhist(row.original.timestamp)}</div>
+        ) : (
+          <p className="text-foreground/25">ยังไม่ได้ตรวจ</p>
+        )}
+      </>
     ),
     size: 200,
   },
