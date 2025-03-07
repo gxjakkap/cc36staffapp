@@ -9,6 +9,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  PaginationState,
   TableState,
   Updater,
   useReactTable,
@@ -16,8 +17,10 @@ import {
 } from "@tanstack/react-table";
 import {
   parseAsArrayOf,
+  parseAsInteger,
   parseAsString,
   Parser,
+  useQueryState,
   UseQueryStateOptions,
   useQueryStates,
 } from "nuqs";
@@ -56,9 +59,9 @@ export function DataTable<TData, TValue>({
     Omit<UseQueryStateOptions<string>, "parse">
   >(() => {
     return {
-      history: "replace",
+      history: "push",
       scroll: false,
-      shallow: false,
+      shallow: true,
       throttleMs: 50,
       debounceMs: 300,
       clearOnDefault: false,
@@ -67,6 +70,18 @@ export function DataTable<TData, TValue>({
 
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
     initialState?.columnVisibility ?? {},
+  );
+
+  const [page, setPage] = useQueryState(
+    "page",
+    parseAsInteger.withOptions(queryStateOptions).withDefault(1),
+  );
+
+  const [perPage, setPerPage] = useQueryState(
+    "perPage",
+    parseAsInteger
+      .withOptions(queryStateOptions)
+      .withDefault(initialState?.pagination?.pageSize ?? 10),
   );
 
   const filterParsers = useMemo(() => {
@@ -154,6 +169,23 @@ export function DataTable<TData, TValue>({
     [debouncedSetFilterValues, filterableColumns, searchableColumns],
   );
 
+  // Paginate
+  const pagination: PaginationState = {
+    pageIndex: page - 1, // zero-based index -> one-based index
+    pageSize: perPage,
+  };
+
+  function onPaginationChange(updaterOrValue: Updater<PaginationState>) {
+    if (typeof updaterOrValue === "function") {
+      const newPagination = updaterOrValue(pagination);
+      void setPage(newPagination.pageIndex + 1);
+      void setPerPage(newPagination.pageSize);
+    } else {
+      void setPage(updaterOrValue.pageIndex + 1);
+      void setPerPage(updaterOrValue.pageSize);
+    }
+  }
+
   const table = useReactTable({
     data,
     columns,
@@ -161,8 +193,10 @@ export function DataTable<TData, TValue>({
     state: {
       columnVisibility,
       columnFilters,
+      pagination,
     },
     onColumnFiltersChange,
+    onPaginationChange,
     onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),

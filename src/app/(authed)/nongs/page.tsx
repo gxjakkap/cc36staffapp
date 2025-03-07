@@ -24,7 +24,7 @@ export default function NongsPage() {
   const filterFields: DataTableFilterField<Nongs>[] = [
     {
       id: "fullname",
-      label: "Title",
+      label: "",
       placeholder: "ค้นหาด้วยชื่อ",
     },
     {
@@ -35,11 +35,44 @@ export default function NongsPage() {
           label: "ชาย",
           value: "man",
           icon: ListFilterIcon,
+          count:
+            tabiansInfoData?.filter((item) => item.gender === "man").length ||
+            0,
         },
         {
           label: "หญิง",
           value: "woman",
           icon: ListFilterIcon,
+          count:
+            tabiansInfoData?.filter((item) => item.gender === "woman").length ||
+            0,
+        },
+      ],
+    },
+    {
+      id: "status",
+      label: "สถานะการตรวจ",
+      options: [
+        {
+          label: "มีคนตรวจอยู่",
+          value: "lock",
+          count:
+            tabiansInfoData?.filter((item) => item.status === "lock").length ||
+            0,
+        },
+        {
+          label: "ไม่มีคนตรวจ",
+          value: "unlock",
+          count:
+            tabiansInfoData?.filter((item) => item.status === "unlock")
+              .length || 0,
+        },
+        {
+          label: "ตรวจแล้ว",
+          value: "done",
+          count:
+            tabiansInfoData?.filter((item) => item.status === "done").length ||
+            0,
         },
       ],
     },
@@ -51,11 +84,17 @@ export default function NongsPage() {
           label: "ส่งแล้ว",
           value: "submitted",
           icon: CheckCircle2Icon,
+          count:
+            tabiansInfoData?.filter((item) => item.has_submit == true).length ||
+            0,
         },
         {
           label: "ยังไม่ส่ง",
           value: "not_submitted",
           icon: XCircleIcon,
+          count:
+            tabiansInfoData?.filter((item) => item.has_submit === false)
+              .length || 0,
         },
       ],
     },

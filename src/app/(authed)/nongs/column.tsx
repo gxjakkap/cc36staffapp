@@ -32,6 +32,7 @@ export const columns: ColumnDef<Nongs>[] = [
     ),
     cell: ({ row }) => <div>{row.getValue("fullname")}</div>,
     size: 200,
+    filterFn: "includesString",
   },
   {
     accessorKey: "gender",
@@ -73,6 +74,9 @@ export const columns: ColumnDef<Nongs>[] = [
     ),
     cell: ({ row }) => <StatusBadge status={row.original.status} />,
     size: 60,
+    filterFn: (row, _, filterValue) => {
+      return filterValue.includes(row.original.status);
+    },
   },
   {
     accessorKey: "timestamp",
