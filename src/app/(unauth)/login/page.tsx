@@ -58,9 +58,7 @@ export default function StaffLogin() {
           style={{ width: "100%", height: "auto" }}
           width={250}
           height={130}
-          src={
-            resolvedTheme === "light" ? "/logo-black.png" : "/logo-white.png"
-          }
+          src={resolvedTheme === "dark" ? "/logo-white.png" : "/logo-black.png"}
           alt="ComCamp36Logo"
           priority
         />
