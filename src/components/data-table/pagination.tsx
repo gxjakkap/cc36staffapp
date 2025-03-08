@@ -45,7 +45,7 @@ export function DataTablePagination<TData>({
           </Select>
           <p className="text-sm font-medium">แถวต่อหน้า</p>
         </div>
-        <div className="flex w-[120px] items-center justify-center text-sm font-medium">
+        <div className="flex w-auto items-center justify-center text-sm font-medium">
           หน้าที่ {table.getState().pagination.pageIndex + 1} จาก{" "}
           {table.getPageCount()} หน้า
         </div>
