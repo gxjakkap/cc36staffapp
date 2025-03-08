@@ -34,13 +34,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useServerActionMutation } from "@/hook/server-action-hooks";
+import { StaffRolesEnum } from "@/lib/auth/role";
 import { defaultToastReactQuery } from "@/lib/toast";
 
 import { EditStaffContext } from ".";
 import { editStaffAccount } from "../actions";
 
-const ROLES = ["staff", "admin"] as const;
-const RoleEnum = z.enum(ROLES);
 const passwordSchema = z
   .string()
   .min(6, { message: "Password must be longer than 6 characters" })
@@ -57,7 +56,7 @@ const passwordSchema = z
 
 const editFormSchema = z.object({
   password: passwordSchema,
-  role: RoleEnum,
+  role: StaffRolesEnum,
 });
 
 const DropdownMenuEditStaff = () => {
@@ -137,8 +136,10 @@ const DropdownMenuEditStaff = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="staff">Staff</SelectItem>
                       <SelectItem value="admin">Admin</SelectItem>
+                      <SelectItem value="staff">Staff</SelectItem>
+                      <SelectItem value="regis">Regis</SelectItem>
+                      <SelectItem value="academic">Academic</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />

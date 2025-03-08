@@ -1,7 +1,6 @@
 "use server";
 
 import { headers } from "next/headers";
-import { redirect } from "next/navigation";
 
 import {
   Card,
@@ -21,8 +20,6 @@ export default async function PasswordPage() {
   if (!session) {
     return;
   }
-
-  if (session.user.role !== "admin") redirect(`/`);
 
   return (
     <>
