@@ -174,3 +174,7 @@
 .shine {
   animation: shine 3s ease-out infinite;
 }
+
+.slot[data-swapy-highlighted] {
+  background: var(--muted);
+}
