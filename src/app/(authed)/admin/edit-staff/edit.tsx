@@ -136,8 +136,10 @@ const DropdownMenuEditStaff = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="staff">Staff</SelectItem>
                       <SelectItem value="admin">Admin</SelectItem>
+                      <SelectItem value="staff">Staff</SelectItem>
+                      <SelectItem value="regis">Regis</SelectItem>
+                      <SelectItem value="academic">Academic</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
