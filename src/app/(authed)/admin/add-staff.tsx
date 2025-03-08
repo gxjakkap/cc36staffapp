@@ -85,8 +85,8 @@ export function AddStaffDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="default" className="absolute top-8 right-8 p-2">
-          <UserPlus className="size-6" /> Add
+        <Button>
+          <UserPlus /> Add
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

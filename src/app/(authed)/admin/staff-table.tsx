@@ -35,8 +35,10 @@ export function StaffUsersTable({ data }: StaffUsersTableProps) {
   return (
     <Card className="relative">
       <CardHeader>
-        <AddStaffDialog />
-        <CardTitle className="text-lg">Staff Accounts</CardTitle>
+        <CardTitle className="flex items-center justify-between text-lg">
+          Staff Accounts
+          <AddStaffDialog />
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
