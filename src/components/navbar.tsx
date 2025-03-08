@@ -29,7 +29,7 @@ export function Navbar({ isAdmin }: NavbarProps) {
 
   if (isDesktop) {
     return (
-      <div className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 flex border-b px-6 py-3 shadow-sm backdrop-blur">
+      <div className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 flex border-b px-6 py-3 backdrop-blur">
         <nav className="flex w-full items-center justify-between">
           <div className="flex items-center">
             {NAVBARS.map(({ href, text }) => (
@@ -61,7 +61,7 @@ export function Navbar({ isAdmin }: NavbarProps) {
     );
   }
   return (
-    <div className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 flex border-b px-4 py-3 shadow-sm backdrop-blur">
+    <div className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 flex border-b px-4 py-3 backdrop-blur">
       <nav className="flex w-full items-center justify-between">
         <MobileNav isAdmin={isAdmin} />
         <div className="flex items-center gap-2">
