@@ -48,15 +48,14 @@ const DropdownMenuDeleteStaff = () => {
           variant="ghost"
           className="text-destructive hover:text-destructive w-full justify-start"
         >
-          <TrashIcon /> Delete User
+          <TrashIcon /> ลบบัญชี
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Confirm Deletion</DialogTitle>
+          <DialogTitle>ยืนยันการลบ</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete this account? This action cannot be
-            undone.
+            คุณแน่ใจหรือไม่ว่าต้องการลบบัญชีนี้? การกระทำนี้ไม่สามารถย้อนคืนได้
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
@@ -73,11 +72,11 @@ const DropdownMenuDeleteStaff = () => {
                   });
                 }}
               >
-                Confirm
+                ยืนยัน
               </Button>
               <DialogClose asChild>
                 <Button type="button" variant="outline">
-                  Cancel
+                  ยกเลิก
                 </Button>
               </DialogClose>
             </>
