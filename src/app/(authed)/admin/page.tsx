@@ -35,7 +35,7 @@ export default async function SettingsPage() {
           </p>
         </CardContent>
       </Card>
-      <StaffUsersTable data={staffsData} />
+      <StaffUsersTable data={staffsData} isLoading={false} />
     </div>
   );
 }
