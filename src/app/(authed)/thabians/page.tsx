@@ -1,16 +1,27 @@
 "use client";
 
+import { useMemo } from "react";
+
 import { DataTable } from "@/components/data-table";
 import { useServerActionQuery } from "@/hook/server-action-hooks";
 
 import getAllTabiansTable from "./action";
-import { columns } from "./column";
+import { createColumns } from "./column";
 
 export default function ThabiansPage() {
-  const { data } = useServerActionQuery(getAllTabiansTable, {
+  const { data, isLoading } = useServerActionQuery(getAllTabiansTable, {
     queryKey: ["tabians"],
     input: undefined,
   });
+
+  const placeholderData = useMemo(() => {
+    if (!isLoading) return [];
+    return Array(10).fill({
+      id: "",
+    });
+  }, [isLoading]);
+
+  const columns = useMemo(() => createColumns(isLoading), [isLoading]);
 
   return (
     <div className="flex w-full items-center justify-center pt-10">
@@ -18,11 +29,13 @@ export default function ThabiansPage() {
         <DataTable
           columns={columns}
           data={
-            data && data.length > 0
-              ? data.map((item) => ({
-                  id: item.id,
-                }))
-              : []
+            isLoading
+              ? placeholderData
+              : data && data.length > 0
+                ? data.map((item) => ({
+                    id: item.id,
+                  }))
+                : []
           }
         />
       </div>
