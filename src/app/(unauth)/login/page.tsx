@@ -95,7 +95,7 @@ export default function StaffLogin() {
             )}
           />
           <Button type="submit" className="w-full" disabled={isPending}>
-            Sign in
+            เข้าสู่ระบบ
           </Button>
         </form>
       </Form>

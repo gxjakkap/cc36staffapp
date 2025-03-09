@@ -39,7 +39,7 @@ export function StaffUsersTable({ data, isLoading }: StaffUsersTableProps) {
       {
         id: "name",
         label: "",
-        placeholder: "ค้นหาด้ว Name",
+        placeholder: "ค้นหาด้วย Name",
       },
       {
         id: "role",

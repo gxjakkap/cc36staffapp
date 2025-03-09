@@ -94,15 +94,15 @@ export function AddStaffDialog() {
     <Dialog>
       <DialogTrigger asChild>
         <Button>
-          <UserPlus /> Add
+          <UserPlus /> เพิ่ม
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Add new staff account</DialogTitle>
+          <DialogTitle>เพิ่มบัญชี staff ใหม่</DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="name"
@@ -189,10 +189,10 @@ export function AddStaffDialog() {
         </Form>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="destructive">Cancel</Button>
+            <Button variant="destructive">ยกเลิก</Button>
           </DialogClose>
           <Button type="submit" onClick={form.handleSubmit(onSubmit)}>
-            Confirm
+            ยืนยัน
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -9,7 +9,7 @@ export function SignOutButton({
   return (
     <form action={signOutAction}>
       <Button type="submit" {...props}>
-        Sign Out
+        ออกจากระบบ
       </Button>
     </form>
   );

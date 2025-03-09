@@ -91,14 +91,14 @@ const DropdownMenuEditStaff = () => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost" className="w-full justify-start">
-          <Edit2Icon /> Edit user
+          <Edit2Icon /> แก้ไขบัญชี
         </Button>
       </DialogTrigger>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle>Edit staff account</DialogTitle>
+              <DialogTitle>แก้ไขบัญชี staff</DialogTitle>
               <DialogDescription>
                 {user.name} - {user.username}
               </DialogDescription>
@@ -151,10 +151,10 @@ const DropdownMenuEditStaff = () => {
                 <LoadingSpinner className="size-4" />
               ) : (
                 <>
-                  <Button type="submit">Confirm</Button>
+                  <Button type="submit">ยืนยัน</Button>
                   <DialogClose asChild>
                     <Button type="button" variant="outline">
-                      Cancel
+                      ยกเลิก
                     </Button>
                   </DialogClose>
                 </>
