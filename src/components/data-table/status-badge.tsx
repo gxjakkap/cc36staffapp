@@ -18,7 +18,7 @@ interface InspectStatusBadgeProps {
   translate?: Record<InspectStatusKeys, string>;
 }
 
-const badgeVariants = cva("m-1", {
+export const inspectStatusBadgeVariants = cva("m-1", {
   variants: {
     variant: {
       lock: "text-red-800",
@@ -53,7 +53,7 @@ export default function InspectStatusBadge({
   return (
     <div
       className={cn(
-        badgeVariants({ variant: status }),
+        inspectStatusBadgeVariants({ variant: status }),
         "flex items-center gap-2",
       )}
     >
