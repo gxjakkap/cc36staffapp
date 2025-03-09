@@ -7,13 +7,41 @@ import type { InspectStatusKeys } from "@/components/data-table/status-badge";
 import StatusBadge from "@/components/data-table/status-badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { formatId, formatThaiBuddhist } from "@/lib/formatter";
+import { formatId } from "@/lib/formatter";
 
 type Thabians = {
   id: string;
-  status: InspectStatusKeys;
-  score?: number | null;
-  timestamp?: Date | null;
+  score1_user1: number | null;
+  score1_user2: number | null;
+  score2_user1: number | null;
+  score2_user2: number | null;
+  score3_user1: number | null;
+  score3_user2: number | null;
+  score4_user1: number | null;
+  score4_user2: number | null;
+  score5_user1: number | null;
+  score5_user2: number | null;
+  score6_1_user1: number | null;
+  score6_1_user2: number | null;
+  score6_2_user1: number | null;
+  score6_2_user2: number | null;
+  info: boolean | null;
+  info_status: string | null;
+  updatedAt_info: Date | null;
+  updatedAt_score1_user1: Date | null;
+  updatedAt_score1_user2: Date | null;
+  updatedAt_score2_user1: Date | null;
+  updatedAt_score2_user2: Date | null;
+  updatedAt_score3_user1: Date | null;
+  updatedAt_score3_user2: Date | null;
+  updatedAt_score4_user1: Date | null;
+  updatedAt_score4_user2: Date | null;
+  updatedAt_score5_user1: Date | null;
+  updatedAt_score5_user2: Date | null;
+  updatedAt_score6_1_user1: Date | null;
+  updatedAt_score6_1_user2: Date | null;
+  updatedAt_score6_2_user1: Date | null;
+  updatedAt_score6_2_user2: Date | null;
 };
 
 export const createColumns = (isLoading: boolean): ColumnDef<Thabians>[] => [
@@ -28,50 +56,20 @@ export const createColumns = (isLoading: boolean): ColumnDef<Thabians>[] => [
     size: 200,
   },
   {
-    accessorKey: "status",
+    accessorKey: "info_status",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="สถานะ" />
+      <DataTableColumnHeader column={column} title="สถานะข้อมูล" />
     ),
     cell: isLoading
-      ? () => <Skeleton className="h-5 w-20" />
-      : ({ row }) => <StatusBadge status={row.original.status} />,
-    size: 200,
-  },
-  {
-    accessorKey: "score",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="คะแนน (คำถามฝ่ายทะเบียน)" />
-    ),
-    cell: isLoading
-      ? () => <Skeleton className="h-5 w-16" />
+      ? () => <Skeleton className="h-5 w-24" />
       : ({ row }) => (
-          <>
-            {row.original.score ? (
-              <div>{row.original.score}</div>
-            ) : (
-              <p className="text-foreground/25">ยังไม่ได้ตรวจ</p>
-            )}
-          </>
+          <div>
+            <StatusBadge
+              status={row.original.info_status as InspectStatusKeys}
+            />
+          </div>
         ),
-    size: 200,
-  },
-  {
-    accessorKey: "timestamp",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="เวลาที่ตรวจสอบ" />
-    ),
-    cell: isLoading
-      ? () => <Skeleton className="h-5 w-28" />
-      : ({ row }) => (
-          <>
-            {row.original.timestamp ? (
-              <div>{formatThaiBuddhist(row.original.timestamp)}</div>
-            ) : (
-              <p className="text-foreground/25">ยังไม่ได้ตรวจ</p>
-            )}
-          </>
-        ),
-    size: 200,
+    size: 150,
   },
   {
     id: "ตรวจสอบ",

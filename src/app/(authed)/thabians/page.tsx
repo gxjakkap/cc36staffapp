@@ -29,13 +29,7 @@ export default function ThabiansPage() {
         <DataTable
           columns={columns}
           data={
-            isLoading
-              ? placeholderData
-              : data && data.length > 0
-                ? data.map((item) => ({
-                    id: item.id,
-                  }))
-                : []
+            isLoading ? placeholderData : data && data.length > 0 ? data : []
           }
         />
       </div>

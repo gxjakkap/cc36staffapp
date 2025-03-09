@@ -1,6 +1,11 @@
 import { createElement } from "react";
 import { cva } from "class-variance-authority";
-import { CircleCheckBigIcon, LockIcon, LockOpenIcon } from "lucide-react";
+import {
+  CircleCheckBigIcon,
+  LockIcon,
+  LockOpenIcon,
+  XIcon,
+} from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -8,6 +13,7 @@ export const InspectStatus = {
   LOCK: "lock",
   UNLOCK: "unlock",
   DONE: "done",
+  UNDONE: "undone",
 } as const;
 
 export type InspectStatusKeys =
@@ -15,6 +21,7 @@ export type InspectStatusKeys =
 
 interface InspectStatusBadgeProps {
   status: InspectStatusKeys;
+  translate?: Record<InspectStatusKeys, string>;
 }
 
 const badgeVariants = cva("m-1", {
@@ -23,6 +30,7 @@ const badgeVariants = cva("m-1", {
       lock: "text-yellow-500",
       unlock: "text-orange-500",
       done: "text-green-500",
+      undone: "text-red-500",
     },
   },
   defaultVariants: {
@@ -34,6 +42,7 @@ const statusText: Record<InspectStatusKeys, string> = {
   lock: "มีคนตรวจ",
   unlock: "ไม่มีคนตรวจ",
   done: "ตรวจแล้ว",
+  undone: "ตรวจแล้วบางส่วน",
 };
 
 const statusIcon: Record<
@@ -43,10 +52,12 @@ const statusIcon: Record<
   lock: LockOpenIcon,
   unlock: LockIcon,
   done: CircleCheckBigIcon,
+  undone: XIcon,
 };
 
 export default function InspectStatusBadge({
   status,
+  translate,
 }: InspectStatusBadgeProps) {
   return (
     <div
@@ -56,7 +67,9 @@ export default function InspectStatusBadge({
       )}
     >
       {status && createElement(statusIcon[status], { className: "size-4" })}
-      <p className="text-foreground">{statusText[status]}</p>
+      <p className="text-foreground">
+        {translate?.[status] ?? statusText[status]}
+      </p>
     </div>
   );
 }
