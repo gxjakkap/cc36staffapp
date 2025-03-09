@@ -52,9 +52,15 @@ const formSchema = z.object({
   name: z.string().min(2, {
     message: "Name must be at least 2 characters.",
   }),
-  username: z.string().min(4, {
-    message: "Username must be at least 4 characters.",
-  }),
+  username: z
+    .string()
+    .min(4, {
+      message: "Username must be at least 4 characters.",
+    })
+    .regex(/^[a-z0-9_]+$/, {
+      message:
+        "Username can only contain lowercase letters, numbers, and underscores.",
+    }),
   email: z.string().email("Must be a valid email address."),
   password: passwordSchema,
   role: StaffRolesEnum,
