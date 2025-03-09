@@ -113,6 +113,12 @@ export const createColumns = (isLoading: boolean): ColumnDef<Thabians>[] => {
       : ({ row }: { row: Row<Thabians> }) => (
           <ScoreColumn
             score={row.original[key as keyof Thabians["score1"]]}
+            score_sep={{
+              user1:
+                row.original[`${key}_user1` as keyof Thabians["score1_user1"]],
+              user2:
+                row.original[`${key}_user2` as keyof Thabians["score1_user1"]],
+            }}
             who={{
               user1:
                 row.original[
@@ -199,7 +205,7 @@ export const createColumns = (isLoading: boolean): ColumnDef<Thabians>[] => {
                   <TooltipContent>
                     <p>
                       <span className="font-bold">ตรวจเมื่อ :</span>{" "}
-                      {formatThaiBuddhist(row.original.updatedAt_info)}
+                      {formatThaiBuddhist(row.original.updatedAt_info, true)}
                     </p>
                   </TooltipContent>
                 ) : null}
@@ -222,12 +228,12 @@ export const createColumns = (isLoading: boolean): ColumnDef<Thabians>[] => {
   ];
 };
 
-const ScoreColumn = ({
-  score,
-  who,
-  when,
-}: {
+interface ScoreColumnProp {
   score: number | null;
+  score_sep: {
+    user1: number | null;
+    user2: number | null;
+  };
   who: {
     user1: string | null;
     user2: string | null;
@@ -236,13 +242,15 @@ const ScoreColumn = ({
     user1: Date | null;
     user2: Date | null;
   };
-}) => {
+}
+
+const ScoreColumn = ({ score, who, when, score_sep }: ScoreColumnProp) => {
   return (
     <div
       className={cn(score !== null ? "text-foreground" : "text-foreground/20")}
     >
       {score !== null ? (
-        <HoverCard openDelay={0} closeDelay={0}>
+        <HoverCard openDelay={0} closeDelay={10}>
           <HoverCardTrigger asChild>
             <Button size="icon" variant="ghost" className="cursor-pointer p-0">
               {score}
@@ -250,25 +258,30 @@ const ScoreColumn = ({
           </HoverCardTrigger>
           <HoverCardContent>
             <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>ผู้ตรวจ</TableHead>
+                  <TableHead>คะแนน</TableHead>
+                  <TableHead>วันที่ตรวจ</TableHead>
+                </TableRow>
+              </TableHeader>
               <TableBody>
                 <TableRow>
-                  <TableCell className="font-bold">คนตรวจคนที่ 1</TableCell>
                   <TableCell>{who.user1 ? who.user1 : "N/A"}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-bold">ตรวจเมื่อ</TableCell>
                   <TableCell>
-                    {when.user1 ? formatThaiBuddhist(when.user1) : "N/A"}
+                    {score_sep.user1 ? score_sep.user1 : "N/A"}
+                  </TableCell>
+                  <TableCell>
+                    {when.user1 ? formatThaiBuddhist(when.user1, true) : "N/A"}
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className="font-bold">คนตรวจคนที่ 2</TableCell>
                   <TableCell>{who.user2 ? who.user2 : "N/A"}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-bold">ตรวจเมื่อ</TableCell>
                   <TableCell>
-                    {when.user2 ? formatThaiBuddhist(when.user2) : "N/A"}
+                    {score_sep.user2 ? score_sep.user2 : "N/A"}
+                  </TableCell>
+                  <TableCell>
+                    {when.user2 ? formatThaiBuddhist(when.user2, true) : "N/A"}
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -285,37 +298,37 @@ const ScoreColumn = ({
 const OverallScoreCol = ({ row }: { row: Row<Thabians> }) => {
   const inspectorsData = [
     {
-      label: "ข้อที่ 1",
+      label: "1",
       user_1: row.original.score1_user1_staffUsername || "N/A",
       user_2: row.original.score1_user2_staffUsername || "N/A",
     },
     {
-      label: "ข้อที่ 2",
+      label: "2",
       user_1: row.original.score2_user1_staffUsername || "N/A",
       user_2: row.original.score2_user2_staffUsername || "N/A",
     },
     {
-      label: "ข้อที่ 3",
+      label: "3",
       user_1: row.original.score3_user1_staffUsername || "N/A",
       user_2: row.original.score3_user2_staffUsername || "N/A",
     },
     {
-      label: "ข้อที่ 4",
+      label: "4",
       user_1: row.original.score4_user1_staffUsername || "N/A",
       user_2: row.original.score4_user2_staffUsername || "N/A",
     },
     {
-      label: "ข้อที่ 5",
+      label: "5",
       user_1: row.original.score5_user1_staffUsername || "N/A",
       user_2: row.original.score5_user2_staffUsername || "N/A",
     },
     {
-      label: "ข้อที่ 6.1",
+      label: "6.1",
       user_1: row.original.score6_1_user1_staffUsername || "N/A",
       user_2: row.original.score6_1_user2_staffUsername || "N/A",
     },
     {
-      label: "ข้อที่ 6.2",
+      label: "6.2",
       user_1: row.original.score6_2_user1_staffUsername || "N/A",
       user_2: row.original.score6_2_user2_staffUsername || "N/A",
     },
@@ -324,7 +337,7 @@ const OverallScoreCol = ({ row }: { row: Row<Thabians> }) => {
   return (
     <>
       {row.original.overall_score !== null ? (
-        <HoverCard openDelay={0} closeDelay={0}>
+        <HoverCard openDelay={0} closeDelay={10}>
           <HoverCardTrigger asChild>
             <Button size="icon" variant="ghost" className="cursor-pointer p-0">
               {row.original.overall_score}
@@ -348,7 +361,7 @@ const OverallScoreCol = ({ row }: { row: Row<Thabians> }) => {
                         {inspector.label.split(" ")[1]}
                       </span>
                     </TableCell>
-                    <TableCell>{inspector.user_1}</TableCell>
+                    <TableCell>{inspector.user_1} </TableCell>
                     <TableCell>{inspector.user_2}</TableCell>
                   </TableRow>
                 ))}
