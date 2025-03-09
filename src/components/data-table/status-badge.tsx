@@ -1,11 +1,6 @@
 import { createElement } from "react";
 import { cva } from "class-variance-authority";
-import {
-  CircleCheckBigIcon,
-  LockIcon,
-  LockOpenIcon,
-  XIcon,
-} from "lucide-react";
+import { CircleCheckBigIcon, LockIcon, LockOpenIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -13,7 +8,6 @@ export const InspectStatus = {
   LOCK: "lock",
   UNLOCK: "unlock",
   DONE: "done",
-  UNDONE: "undone",
 } as const;
 
 export type InspectStatusKeys =
@@ -27,10 +21,9 @@ interface InspectStatusBadgeProps {
 const badgeVariants = cva("m-1", {
   variants: {
     variant: {
-      lock: "text-yellow-500",
+      lock: "text-red-800",
       unlock: "text-orange-500",
       done: "text-green-500",
-      undone: "text-red-500",
     },
   },
   defaultVariants: {
@@ -39,20 +32,18 @@ const badgeVariants = cva("m-1", {
 });
 
 const statusText: Record<InspectStatusKeys, string> = {
-  lock: "มีคนตรวจ",
-  unlock: "ไม่มีคนตรวจ",
+  lock: "มีคนกำลังตรวจอยู่",
+  unlock: "ยังไม่มีคนตรวจ",
   done: "ตรวจแล้ว",
-  undone: "ตรวจแล้วบางส่วน",
 };
 
 const statusIcon: Record<
   InspectStatusKeys,
   React.ComponentType<{ className?: string }>
 > = {
-  lock: LockOpenIcon,
-  unlock: LockIcon,
+  lock: LockIcon,
+  unlock: LockOpenIcon,
   done: CircleCheckBigIcon,
-  undone: XIcon,
 };
 
 export default function InspectStatusBadge({
