@@ -50,7 +50,7 @@ export const tabian = pgTable(
     score6_1_user2: integer(),
     score6_2_user1: integer(),
     score6_2_user2: integer(),
-    info_status: text().default("undone"),
+    info_status: text().default("unlock"),
     info_staffUsername: text(),
     score1_user1_staffUsername: text(),
     score1_user2_staffUsername: text(),

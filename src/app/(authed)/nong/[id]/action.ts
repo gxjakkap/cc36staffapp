@@ -88,6 +88,7 @@ export const submitNongInfo = authenticatedAction
         })
         .from(tabian)
         .where(eq(tabian.userId, input.userId));
+
       if (tabiansData.length <= 0) {
         await dbStaff.insert(tabian).values({
           userId: input.userId,
