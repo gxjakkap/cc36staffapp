@@ -47,6 +47,26 @@ export default function ThabiansPage() {
           },
         ],
       },
+      {
+        id: "overall_score",
+        label: "สถานะการตรวจข้อมูล",
+        options: [
+          {
+            label: "ยังไม่ได้ตรวจ",
+            value: "unlock",
+            icon: CheckCircle2Icon,
+            count:
+              data?.filter((item) => item.overall_score == null).length || 0,
+          },
+          {
+            label: "ตรวจแล้ว",
+            value: "done",
+            icon: XCircleIcon,
+            count:
+              data?.filter((item) => item.overall_score !== null).length || 0,
+          },
+        ],
+      },
     ],
     [data],
   );

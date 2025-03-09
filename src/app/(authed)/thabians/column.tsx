@@ -172,7 +172,15 @@ export const createColumns = (isLoading: boolean): ColumnDef<Thabians>[] => {
               )}
             </div>
           ),
-      size: 150,
+      filterFn: (row, _, filterValue) => {
+        if (filterValue.length >= 2) {
+          return true;
+        }
+
+        return filterValue[0] === "done"
+          ? row.original.overall_score !== null
+          : row.original.overall_score === null;
+      },
     },
     {
       accessorKey: "info_status",
