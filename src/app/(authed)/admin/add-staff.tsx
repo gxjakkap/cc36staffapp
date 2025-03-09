@@ -83,7 +83,11 @@ export function AddStaffDialog() {
   });
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    mutate(data);
+    mutate(data, {
+      onSuccess: () => {
+        window.location.reload();
+      },
+    });
   };
 
   return (
