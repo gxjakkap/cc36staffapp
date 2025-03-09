@@ -44,7 +44,7 @@ export const getAllTabiansInfoTable = authenticatedAction
             phone: user.phone,
             has_submit: user.has_submit,
             info: null,
-            status: InspectStatus["LOCK"],
+            status: InspectStatus["UNLOCK"],
             staffUsername: null,
             timestamp: null,
           };
