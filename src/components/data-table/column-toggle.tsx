@@ -41,7 +41,7 @@ export function DataTableViewOptions<TData>({
           className="focus:ring-ring ml-auto hidden h-8 gap-2 focus:ring-1 focus:outline-none focus-visible:ring-0 lg:flex"
         >
           <Settings2 className="size-4" />
-          View
+          แก้ไขคอลัมบ์
           <ChevronsUpDown className="ml-auto size-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -51,9 +51,9 @@ export function DataTableViewOptions<TData>({
         onCloseAutoFocus={() => triggerRef.current?.focus()}
       >
         <Command>
-          <CommandInput placeholder="Search columns..." />
+          <CommandInput placeholder="ค้นหาคอลัมบ์..." />
           <CommandList>
-            <CommandEmpty>No columns found.</CommandEmpty>
+            <CommandEmpty>ไม่พบคอลัมบ์ที่ค้นหาอยู่</CommandEmpty>
             <CommandGroup>
               {table
                 .getAllColumns()
