@@ -17,7 +17,7 @@ export const createColumns = (
     ),
     cell: isLoading
       ? () => <Skeleton className="h-5 w-32" />
-      : ({ row }) => <div>{row.original.name}</div>,
+      : ({ row }) => <div>{row.original.username}</div>,
     size: 200,
     filterFn: "includesString",
   },
