@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatId, formatThaiBuddhist } from "@/lib/formatter";
 
-type Wichkans = {
+export type Wichkans = {
   id: string;
   status: InspectStatusKeys;
   score_academic?: number | null;

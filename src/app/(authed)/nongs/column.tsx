@@ -99,7 +99,7 @@ export const createColumns = (isLoading: boolean): ColumnDef<Nongs>[] => [
       : ({ row }) => (
           <div>
             {row.original.timestamp ? (
-              <div>{formatThaiBuddhist(row.original.timestamp)}</div>
+              <div>{formatThaiBuddhist(row.original.timestamp, true)}</div>
             ) : (
               <div className="text-foreground/25">ยังไม่ได้ตรวจสอบ</div>
             )}

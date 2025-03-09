@@ -152,20 +152,22 @@ export default function AnswerAcademicPage() {
             )}
           </div>
           <div>
-            <Button
-              disabled={
-                wichakansLoading ||
-                (wichakansData?.status == InspectStatus["LOCK"] &&
-                  wichakansData?.staffUsername != null &&
-                  wichakansData?.staffUsername != data?.user.username)
-              }
-              onClick={lock}
-              className="cursor-pointer"
-            >
-              {wichakansData?.status == InspectStatus["LOCK"]
-                ? InspectStatus["UNLOCK"]
-                : InspectStatus["LOCK"]}
-            </Button>
+            {wichakansData?.status !== InspectStatus["DONE"] && (
+              <Button
+                disabled={
+                  wichakansLoading ||
+                  (wichakansData?.status == InspectStatus["LOCK"] &&
+                    wichakansData?.staffUsername != null &&
+                    wichakansData?.staffUsername != data?.user.username)
+                }
+                onClick={lock}
+                className="cursor-pointer"
+              >
+                {wichakansData?.status == InspectStatus["LOCK"]
+                  ? InspectStatus["UNLOCK"]
+                  : InspectStatus["LOCK"]}
+              </Button>
+            )}
           </div>
         </div>
       </div>
