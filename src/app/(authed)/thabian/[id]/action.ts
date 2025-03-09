@@ -5,7 +5,7 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { db, dbStaff } from "@/db";
-import { user } from "@/db/schema";
+import { answerRegis, user } from "@/db/schema";
 import { tabian } from "@/db/staff-schema";
 import { auth } from "@/lib/auth";
 import { NotFoundError } from "@/lib/errors";
@@ -191,4 +191,40 @@ export const submitScoreTabians = authenticatedAction
     } catch (error) {
       console.log(error);
     }
+  });
+
+export const getRegisAnswer = authenticatedAction
+  .createServerAction()
+  .input(
+    z.object({
+      userId: z.string().nullable(),
+    }),
+  )
+  .handler(async ({ input }) => {
+    if (!input.userId) {
+      return;
+    }
+
+    const [answers] = await db
+      .select({
+        id: answerRegis.id,
+        userId: answerRegis.userId,
+        answer1: answerRegis.answer1,
+        answer2: answerRegis.answer2,
+        answer3: answerRegis.answer3,
+        answer4: answerRegis.answer4,
+        answer5: answerRegis.answer5,
+        answer61: answerRegis.answer61,
+        answer62: answerRegis.answer62,
+      })
+      .from(answerRegis)
+      .where(eq(answerRegis.userId, input.userId));
+
+    if (!answers) {
+      throw NotFoundError;
+    }
+
+    return {
+      answers,
+    };
   });

@@ -6,7 +6,7 @@ import { z } from "zod";
 
 import { InspectStatus } from "@/components/data-table/status-badge";
 import { db, dbStaff } from "@/db";
-import { user } from "@/db/schema";
+import { answerAcademic, user } from "@/db/schema";
 import { wichakarn } from "@/db/staff-schema";
 import { auth } from "@/lib/auth";
 import { NotFoundError } from "@/lib/errors";
@@ -169,4 +169,36 @@ export const submitScoreAcademics = authenticatedAction
     } catch (error) {
       console.log(error);
     }
+  });
+
+export const getAcademicAnswer = authenticatedAction
+  .createServerAction()
+  .input(
+    z.object({
+      userId: z.string().nullable(),
+    }),
+  )
+  .handler(async ({ input }) => {
+    if (!input.userId) {
+      return;
+    }
+
+    const [answers] = await db
+      .select({
+        id: answerAcademic.id,
+        userId: answerAcademic.userId,
+        algoAnswer: answerAcademic.algoAnswer,
+        chessNotation: answerAcademic.chessNotation,
+        chessScore: answerAcademic.chessScore,
+      })
+      .from(answerAcademic)
+      .where(eq(answerAcademic.userId, input.userId));
+
+    if (!answers) {
+      throw NotFoundError;
+    }
+
+    return {
+      answers,
+    };
   });

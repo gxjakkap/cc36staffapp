@@ -1,13 +1,11 @@
 "use server";
 
 import { headers } from "next/headers";
-import { count, eq, sql } from "drizzle-orm";
-import { z } from "zod";
+import { count, sql } from "drizzle-orm";
 
 import { db } from "@/db";
-import { answerAcademic, answerRegis, user } from "@/db/schema";
+import { user } from "@/db/schema";
 import { auth } from "@/lib/auth";
-import { NotFoundError } from "@/lib/errors";
 import { authenticatedAction } from "@/lib/safe-action";
 
 export async function signOutAction() {
@@ -39,73 +37,5 @@ export const getOverview = authenticatedAction
     return {
       totalUsers,
       stats,
-    };
-  });
-
-export const getAcademicAnswer = authenticatedAction
-  .createServerAction()
-  .input(
-    z.object({
-      userId: z.string().nullable(),
-    }),
-  )
-  .handler(async ({ input }) => {
-    if (!input.userId) {
-      return;
-    }
-
-    const [answers] = await db
-      .select({
-        id: answerAcademic.id,
-        userId: answerAcademic.userId,
-        algoAnswer: answerAcademic.algoAnswer,
-        chessNotation: answerAcademic.chessNotation,
-        chessScore: answerAcademic.chessScore,
-      })
-      .from(answerAcademic)
-      .where(eq(answerAcademic.userId, input.userId));
-
-    if (!answers) {
-      throw NotFoundError;
-    }
-
-    return {
-      answers,
-    };
-  });
-
-export const getRegisAnswer = authenticatedAction
-  .createServerAction()
-  .input(
-    z.object({
-      userId: z.string().nullable(),
-    }),
-  )
-  .handler(async ({ input }) => {
-    if (!input.userId) {
-      return;
-    }
-
-    const [answers] = await db
-      .select({
-        id: answerRegis.id,
-        userId: answerRegis.userId,
-        answer1: answerRegis.answer1,
-        answer2: answerRegis.answer2,
-        answer3: answerRegis.answer3,
-        answer4: answerRegis.answer4,
-        answer5: answerRegis.answer5,
-        answer61: answerRegis.answer61,
-        answer62: answerRegis.answer62,
-      })
-      .from(answerRegis)
-      .where(eq(answerRegis.userId, input.userId));
-
-    if (!answers) {
-      throw NotFoundError;
-    }
-
-    return {
-      answers,
     };
   });

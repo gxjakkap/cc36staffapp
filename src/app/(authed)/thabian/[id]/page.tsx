@@ -3,7 +3,6 @@
 import { redirect, useParams } from "next/navigation";
 import { toast } from "sonner";
 
-import { getRegisAnswer } from "@/app/(authed)/actions";
 import { AnswerWrapper } from "@/components/answer-wrapper";
 import Spinner from "@/components/spinner";
 import {
@@ -13,7 +12,7 @@ import {
 } from "@/components/ui/resizable";
 import { useServerActionQuery } from "@/hook/server-action-hooks";
 
-import { getUserTabians, submitScoreTabians } from "./action";
+import { getRegisAnswer, getUserTabians, submitScoreTabians } from "./action";
 import { ScoreFieldEnum } from "./enum";
 import TabianForm from "./form";
 

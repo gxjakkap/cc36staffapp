@@ -5,7 +5,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { getAcademicAnswer } from "@/app/(authed)/actions";
 import { AnswerWrapper } from "@/components/answer-wrapper";
 import {
   InspectStatus,
@@ -22,6 +21,7 @@ import { useServerActionQuery } from "@/hook/server-action-hooks";
 import { authClient } from "@/lib/auth-client";
 
 import {
+  getAcademicAnswer,
   getUserWichakans,
   lockWichakarn,
   submitScoreAcademics,
