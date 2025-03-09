@@ -53,6 +53,21 @@ const getAllTabiansTable = authenticatedAction
             updatedAt_score6_1_user2: tabian.updatedAt_score6_1_user2,
             updatedAt_score6_2_user1: tabian.updatedAt_score6_2_user1,
             updatedAt_score6_2_user2: tabian.updatedAt_score6_2_user2,
+
+            score1_user1_staffUsername: tabian.score1_user1_staffUsername,
+            score1_user2_staffUsername: tabian.score1_user2_staffUsername,
+            score2_user1_staffUsername: tabian.score2_user1_staffUsername,
+            score2_user2_staffUsername: tabian.score2_user2_staffUsername,
+            score3_user1_staffUsername: tabian.score3_user1_staffUsername,
+            score3_user2_staffUsername: tabian.score3_user2_staffUsername,
+            score4_user1_staffUsername: tabian.score4_user1_staffUsername,
+            score4_user2_staffUsername: tabian.score4_user2_staffUsername,
+            score5_user1_staffUsername: tabian.score5_user1_staffUsername,
+            score5_user2_staffUsername: tabian.score5_user2_staffUsername,
+            score6_1_user1_staffUsername: tabian.score6_1_user1_staffUsername,
+            score6_1_user2_staffUsername: tabian.score6_1_user2_staffUsername,
+            score6_2_user1_staffUsername: tabian.score6_2_user1_staffUsername,
+            score6_2_user2_staffUsername: tabian.score6_2_user2_staffUsername,
           })
           .from(tabian)
           .where(eq(tabian.userId, user.id));
@@ -99,6 +114,23 @@ const getAllTabiansTable = authenticatedAction
             score5: null,
             score6_1: null,
             score6_2: null,
+
+            overall_score: null,
+
+            score1_user1_staffUsername: null,
+            score1_user2_staffUsername: null,
+            score2_user1_staffUsername: null,
+            score2_user2_staffUsername: null,
+            score3_user1_staffUsername: null,
+            score3_user2_staffUsername: null,
+            score4_user1_staffUsername: null,
+            score4_user2_staffUsername: null,
+            score5_user1_staffUsername: null,
+            score5_user2_staffUsername: null,
+            score6_1_user1_staffUsername: null,
+            score6_1_user2_staffUsername: null,
+            score6_2_user1_staffUsername: null,
+            score6_2_user2_staffUsername: null,
           };
         }
 
@@ -164,6 +196,56 @@ const getAllTabiansTable = authenticatedAction
             tabiansData[0].score6_2_user1,
             tabiansData[0].score6_2_user2,
           ),
+
+          overall_score: calculateOverallScore([
+            calculateScore(
+              tabiansData[0].score1_user1,
+              tabiansData[0].score1_user2,
+            ),
+            calculateScore(
+              tabiansData[0].score2_user1,
+              tabiansData[0].score2_user2,
+            ),
+            calculateScore(
+              tabiansData[0].score3_user1,
+              tabiansData[0].score3_user2,
+            ),
+            calculateScore(
+              tabiansData[0].score4_user1,
+              tabiansData[0].score4_user2,
+            ),
+            calculateScore(
+              tabiansData[0].score5_user1,
+              tabiansData[0].score5_user2,
+            ),
+            calculateScore(
+              tabiansData[0].score6_1_user1,
+              tabiansData[0].score6_1_user2,
+            ),
+            calculateScore(
+              tabiansData[0].score6_2_user1,
+              tabiansData[0].score6_2_user2,
+            ),
+          ]),
+
+          score1_user1_staffUsername: tabiansData[0].score1_user1_staffUsername,
+          score1_user2_staffUsername: tabiansData[0].score1_user2_staffUsername,
+          score2_user1_staffUsername: tabiansData[0].score2_user1_staffUsername,
+          score2_user2_staffUsername: tabiansData[0].score2_user2_staffUsername,
+          score3_user1_staffUsername: tabiansData[0].score3_user1_staffUsername,
+          score3_user2_staffUsername: tabiansData[0].score3_user2_staffUsername,
+          score4_user1_staffUsername: tabiansData[0].score4_user1_staffUsername,
+          score4_user2_staffUsername: tabiansData[0].score4_user2_staffUsername,
+          score5_user1_staffUsername: tabiansData[0].score5_user1_staffUsername,
+          score5_user2_staffUsername: tabiansData[0].score5_user2_staffUsername,
+          score6_1_user1_staffUsername:
+            tabiansData[0].score6_1_user1_staffUsername,
+          score6_1_user2_staffUsername:
+            tabiansData[0].score6_1_user2_staffUsername,
+          score6_2_user1_staffUsername:
+            tabiansData[0].score6_2_user1_staffUsername,
+          score6_2_user2_staffUsername:
+            tabiansData[0].score6_2_user2_staffUsername,
         };
       }),
     );
@@ -176,6 +258,11 @@ const calculateScore = (score1: number | null, score2: number | null) => {
   if (score1 === null) return score2;
   if (score2 === null) return score1;
   return (score1 + score2) / 2;
+};
+
+const calculateOverallScore = (scores: (number | null)[]) => {
+  if (scores.some((score) => score === null)) return null;
+  return scores.reduce((acc, score) => (acc ?? 0) + (score as number), 0);
 };
 
 export default getAllTabiansTable;

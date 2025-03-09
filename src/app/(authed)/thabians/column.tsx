@@ -3,10 +3,21 @@ import { Column, ColumnDef, Row } from "@tanstack/react-table";
 import { SearchIcon } from "lucide-react";
 
 import { DataTableColumnHeader } from "@/components/data-table/column-header";
-import type { InspectStatusKeys } from "@/components/data-table/status-badge";
-import StatusBadge from "@/components/data-table/status-badge";
 import { Button } from "@/components/ui/button";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import {
   Tooltip,
   TooltipContent,
@@ -16,8 +27,9 @@ import {
 import { formatId, formatThaiBuddhist } from "@/lib/formatter";
 import { cn } from "@/lib/utils";
 
-type Thabians = {
+export type Thabians = {
   id: string;
+
   score1_user1: number | null;
   score1_user2: number | null;
   score2_user1: number | null;
@@ -32,9 +44,11 @@ type Thabians = {
   score6_1_user2: number | null;
   score6_2_user1: number | null;
   score6_2_user2: number | null;
+
   info: boolean | null;
   info_status: string | null;
   updatedAt_info: Date | null;
+
   updatedAt_score1_user1: Date | null;
   updatedAt_score1_user2: Date | null;
   updatedAt_score2_user1: Date | null;
@@ -57,15 +71,35 @@ type Thabians = {
   score5: number | null;
   score6_1: number | null;
   score6_2: number | null;
+
+  score_done: boolean;
+
+  overall_score: number | null;
+
+  score1_user1_staffUsername: string | null;
+  score1_user2_staffUsername: string | null;
+  score2_user1_staffUsername: string | null;
+  score2_user2_staffUsername: string | null;
+  score3_user1_staffUsername: string | null;
+  score3_user2_staffUsername: string | null;
+  score4_user1_staffUsername: string | null;
+  score4_user2_staffUsername: string | null;
+  score5_user1_staffUsername: string | null;
+  score5_user2_staffUsername: string | null;
+  score6_1_user1_staffUsername: string | null;
+  score6_1_user2_staffUsername: string | null;
+  score6_2_user1_staffUsername: string | null;
+  score6_2_user2_staffUsername: string | null;
 };
 
 const scoreColumns = [
-  { key: "score1", title: "คะแนน 1" },
-  { key: "score2", title: "คะแนน 2" },
-  { key: "score3", title: "คะแนน 3" },
-  { key: "score4", title: "คะแนน 4" },
-  { key: "score5", title: "คะแนน 5" },
-  { key: "score6_1", title: "คะแนน 6.1" },
+  { key: "score1", title: "ข้อที่ 1" },
+  { key: "score2", title: "ข้อที่ 2" },
+  { key: "score3", title: "ข้อที่ 3" },
+  { key: "score4", title: "ข้อที่ 4" },
+  { key: "score5", title: "ข้อที่ 5" },
+  { key: "score6_1", title: "ข้อที่ 6.1" },
+  { key: "score6_2", title: "ข้อที่ 6.2" },
 ];
 
 export const createColumns = (isLoading: boolean): ColumnDef<Thabians>[] => {
@@ -77,7 +111,29 @@ export const createColumns = (isLoading: boolean): ColumnDef<Thabians>[] => {
     cell: isLoading
       ? () => <Skeleton className="h-5 w-24" />
       : ({ row }: { row: Row<Thabians> }) => (
-          <ScoreColumn score={row.original[key as keyof Thabians["score1"]]} />
+          <ScoreColumn
+            score={row.original[key as keyof Thabians["score1"]]}
+            who={{
+              user1:
+                row.original[
+                  `${key}_user1_staffUsername` as keyof Thabians["score1_user1"]
+                ],
+              user2:
+                row.original[
+                  `${key}_user2_staffUsername` as keyof Thabians["score1_user1"]
+                ],
+            }}
+            when={{
+              user1:
+                row.original[
+                  `updatedAt_${key}_user1` as keyof Thabians["updatedAt_score1_user1"]
+                ],
+              user2:
+                row.original[
+                  `updatedAt_${key}_user2` as keyof Thabians["updatedAt_score1_user1"]
+                ],
+            }}
+          />
         ),
     size: 200,
   }));
@@ -95,19 +151,33 @@ export const createColumns = (isLoading: boolean): ColumnDef<Thabians>[] => {
     },
     ...scoreColumnDefs,
     {
-      accessorKey: "score6_2",
+      accessorKey: "overall_score",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="คะแนน 6.2" />
+        <DataTableColumnHeader column={column} title="คะแนนรวม" />
       ),
       cell: isLoading
         ? () => <Skeleton className="h-5 w-24" />
-        : ({ row }) => <ScoreColumn score={row.original.score6_2} />,
-      size: 200,
+        : ({ row }) => (
+            <div
+              className={cn(
+                row.original.overall_score !== null
+                  ? "text-foreground"
+                  : "text-foreground/20",
+              )}
+            >
+              {row.original.overall_score !== null ? (
+                <OverallScoreCol row={row} />
+              ) : (
+                "N/A"
+              )}
+            </div>
+          ),
+      size: 150,
     },
     {
       accessorKey: "info_status",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="ข้อมูลส่วนตัว" />
+        <DataTableColumnHeader column={column} title="สถานะข้อมูลส่วนตัว" />
       ),
       cell: isLoading
         ? () => <Skeleton className="h-5 w-24" />
@@ -115,9 +185,7 @@ export const createColumns = (isLoading: boolean): ColumnDef<Thabians>[] => {
             <TooltipProvider delayDuration={0}>
               <Tooltip>
                 <TooltipTrigger>
-                  <StatusBadge
-                    status={row.original.info_status as InspectStatusKeys}
-                  />
+                  {row.original.info_status === "done" ? "✅" : "❌"}
                 </TooltipTrigger>
                 {row.original.updatedAt_info ? (
                   <TooltipContent>
@@ -146,12 +214,143 @@ export const createColumns = (isLoading: boolean): ColumnDef<Thabians>[] => {
   ];
 };
 
-const ScoreColumn = ({ score }: { score: number | null }) => {
+const ScoreColumn = ({
+  score,
+  who,
+  when,
+}: {
+  score: number | null;
+  who: {
+    user1: string | null;
+    user2: string | null;
+  };
+  when: {
+    user1: Date | null;
+    user2: Date | null;
+  };
+}) => {
   return (
     <div
       className={cn(score !== null ? "text-foreground" : "text-foreground/20")}
     >
-      {score !== null ? score : "N/A"}
+      {score !== null ? (
+        <HoverCard openDelay={0} closeDelay={0}>
+          <HoverCardTrigger asChild>
+            <Button size="icon" variant="ghost" className="cursor-pointer p-0">
+              {score}
+            </Button>
+          </HoverCardTrigger>
+          <HoverCardContent>
+            <Table>
+              <TableBody>
+                <TableRow>
+                  <TableCell className="font-bold">คนตรวจคนที่ 1</TableCell>
+                  <TableCell>{who.user1 ? who.user1 : "N/A"}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-bold">ตรวจเมื่อ</TableCell>
+                  <TableCell>
+                    {when.user1 ? formatThaiBuddhist(when.user1) : "N/A"}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-bold">คนตรวจคนที่ 2</TableCell>
+                  <TableCell>{who.user2 ? who.user2 : "N/A"}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-bold">ตรวจเมื่อ</TableCell>
+                  <TableCell>
+                    {when.user2 ? formatThaiBuddhist(when.user2) : "N/A"}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </HoverCardContent>
+        </HoverCard>
+      ) : (
+        "N/A"
+      )}
     </div>
+  );
+};
+
+const OverallScoreCol = ({ row }: { row: Row<Thabians> }) => {
+  const inspectorsData = [
+    {
+      label: "ข้อที่ 1",
+      user_1: row.original.score1_user1_staffUsername || "N/A",
+      user_2: row.original.score1_user2_staffUsername || "N/A",
+    },
+    {
+      label: "ข้อที่ 2",
+      user_1: row.original.score2_user1_staffUsername || "N/A",
+      user_2: row.original.score2_user2_staffUsername || "N/A",
+    },
+    {
+      label: "ข้อที่ 3",
+      user_1: row.original.score3_user1_staffUsername || "N/A",
+      user_2: row.original.score3_user2_staffUsername || "N/A",
+    },
+    {
+      label: "ข้อที่ 4",
+      user_1: row.original.score4_user1_staffUsername || "N/A",
+      user_2: row.original.score4_user2_staffUsername || "N/A",
+    },
+    {
+      label: "ข้อที่ 5",
+      user_1: row.original.score5_user1_staffUsername || "N/A",
+      user_2: row.original.score5_user2_staffUsername || "N/A",
+    },
+    {
+      label: "ข้อที่ 6.1",
+      user_1: row.original.score6_1_user1_staffUsername || "N/A",
+      user_2: row.original.score6_1_user2_staffUsername || "N/A",
+    },
+    {
+      label: "ข้อที่ 6.2",
+      user_1: row.original.score6_2_user1_staffUsername || "N/A",
+      user_2: row.original.score6_2_user2_staffUsername || "N/A",
+    },
+  ];
+
+  return (
+    <>
+      {row.original.overall_score !== null ? (
+        <HoverCard openDelay={0} closeDelay={0}>
+          <HoverCardTrigger asChild>
+            <Button size="icon" variant="ghost" className="cursor-pointer p-0">
+              {row.original.overall_score}
+            </Button>
+          </HoverCardTrigger>
+          <HoverCardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[70px]">ข้อที่</TableHead>
+                  <TableHead>คนที่ 1</TableHead>
+                  <TableHead>คนที่ 2</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {inspectorsData.map((inspector, index) => (
+                  <TableRow key={index}>
+                    <TableCell>
+                      {inspector.label.split(" ")[0]}{" "}
+                      <span className="font-bold">
+                        {inspector.label.split(" ")[1]}
+                      </span>
+                    </TableCell>
+                    <TableCell>{inspector.user_1}</TableCell>
+                    <TableCell>{inspector.user_2}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </HoverCardContent>
+        </HoverCard>
+      ) : (
+        "N/A"
+      )}
+    </>
   );
 };
