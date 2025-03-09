@@ -118,7 +118,7 @@ export default function ChangePass() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="mx-auto flex w-[70vw] flex-col gap-y-4 lg:w-[30vw]"
         >
-          <CardContent className="flex flex-col">
+          <CardContent className="flex flex-col gap-4">
             <FormField
               control={form.control}
               name="currentPassword"
