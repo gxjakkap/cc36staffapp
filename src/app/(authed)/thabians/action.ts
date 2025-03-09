@@ -91,6 +91,14 @@ const getAllTabiansTable = authenticatedAction
             updatedAt_score6_1_user2: null,
             updatedAt_score6_2_user1: null,
             updatedAt_score6_2_user2: null,
+
+            score1: null,
+            score2: null,
+            score3: null,
+            score4: null,
+            score5: null,
+            score6_1: null,
+            score6_2: null,
           };
         }
 
@@ -127,11 +135,47 @@ const getAllTabiansTable = authenticatedAction
           updatedAt_score6_1_user2: tabiansData[0].updatedAt_score6_1_user2,
           updatedAt_score6_2_user1: tabiansData[0].updatedAt_score6_2_user1,
           updatedAt_score6_2_user2: tabiansData[0].updatedAt_score6_2_user2,
+
+          score1: calculateScore(
+            tabiansData[0].score1_user1,
+            tabiansData[0].score1_user2,
+          ),
+          score2: calculateScore(
+            tabiansData[0].score2_user1,
+            tabiansData[0].score2_user2,
+          ),
+          score3: calculateScore(
+            tabiansData[0].score3_user1,
+            tabiansData[0].score3_user2,
+          ),
+          score4: calculateScore(
+            tabiansData[0].score4_user1,
+            tabiansData[0].score4_user2,
+          ),
+          score5: calculateScore(
+            tabiansData[0].score5_user1,
+            tabiansData[0].score5_user2,
+          ),
+          score6_1: calculateScore(
+            tabiansData[0].score6_1_user1,
+            tabiansData[0].score6_1_user2,
+          ),
+          score6_2: calculateScore(
+            tabiansData[0].score6_2_user1,
+            tabiansData[0].score6_2_user2,
+          ),
         };
       }),
     );
 
     return data;
   });
+
+const calculateScore = (score1: number | null, score2: number | null) => {
+  if (score1 === null && score2 === null) return null;
+  if (score1 === null) return score2;
+  if (score2 === null) return score1;
+  return (score1 + score2) / 2;
+};
 
 export default getAllTabiansTable;
