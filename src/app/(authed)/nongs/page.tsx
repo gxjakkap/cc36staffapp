@@ -66,14 +66,7 @@ export default function NongsPage() {
         label: "สถานะการตรวจ",
         options: [
           {
-            label: "มีคนตรวจอยู่",
-            value: "lock",
-            count:
-              tabiansInfoData?.filter((item) => item.status === "lock")
-                .length || 0,
-          },
-          {
-            label: "ไม่มีคนตรวจ",
+            label: "ยังไม่ได้ตรวจ",
             value: "unlock",
             count:
               tabiansInfoData?.filter((item) => item.status === "unlock")

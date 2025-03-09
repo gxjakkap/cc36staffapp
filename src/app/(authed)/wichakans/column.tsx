@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatId, formatThaiBuddhist } from "@/lib/formatter";
 
-type Wichkans = {
+export type Wichkans = {
   id: string;
   status: InspectStatusKeys;
   score_academic?: number | null;
@@ -81,7 +81,7 @@ export const createColumns = (isLoading: boolean): ColumnDef<Wichkans>[] => [
   {
     accessorKey: "timestamp",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="เวลาที่ตรวจสอบ" />
+      <DataTableColumnHeader column={column} title="ตรวจล่าสุด" />
     ),
     cell: isLoading
       ? () => <Skeleton className="h-5 w-28" />
@@ -90,7 +90,7 @@ export const createColumns = (isLoading: boolean): ColumnDef<Wichkans>[] => [
             {row.original.timestamp ? (
               <div>{formatThaiBuddhist(row.original.timestamp)}</div>
             ) : (
-              <p className="text-foreground/25">ยังไม่ได้ตรวจ</p>
+              <p className="text-foreground/25">ยังไม่มีการตรวจ</p>
             )}
           </>
         ),

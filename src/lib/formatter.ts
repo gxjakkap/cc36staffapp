@@ -47,8 +47,7 @@ export const formatPhoneNumber = (tel: string) => {
 
 export const formatId = (id: string) => {
   const start = Math.floor(Math.random() * (id.length - 6 + 1));
-  let formattedId = id.substring(start, start + 6);
-  formattedId = formattedId.replace(/^-+|-+$/g, ""); // Remove leading or trailing hyphens
+  const formattedId = id.substring(start, start + 6);
   return formattedId;
 };
 
@@ -66,4 +65,8 @@ export function formatThaiBuddhist(date: Date, withTime?: boolean) {
     date.getFullYear().toString(),
     buddhistYear.toString(),
   );
+}
+
+export function capitalizeFirstLetter(val: string) {
+  return String(val).charAt(0).toUpperCase() + String(val).slice(1);
 }

@@ -5,10 +5,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { getAcademicAnswer } from "@/app/(authed)/actions";
 import { AnswerWrapper } from "@/components/answer-wrapper";
 import {
   InspectStatus,
+  inspectStatusBadgeVariants,
   InspectStatusKeys,
 } from "@/components/data-table/status-badge";
 import Spinner from "@/components/spinner";
@@ -20,8 +20,10 @@ import {
 } from "@/components/ui/resizable";
 import { useServerActionQuery } from "@/hook/server-action-hooks";
 import { authClient } from "@/lib/auth-client";
+import { cn } from "@/lib/utils";
 
 import {
+  getAcademicAnswer,
   getUserWichakans,
   lockWichakarn,
   submitScoreAcademics,
@@ -72,10 +74,12 @@ export default function AnswerAcademicPage() {
       scoreChess: parseInt(data.scoreChess),
       scoreAcademic: parseInt(data.scoreAcademic),
     });
+
     if (code == "This has lock by other user") {
       queryClient.invalidateQueries({ queryKey: ["userWichakans", id] });
       return toast.error("ใบสมัครนี้ถูกตรวจสอบโดยคนอื่นแล้ว");
     }
+
     if (code == "success") {
       queryClient.setQueryData(["userWichakans", id], {
         ...wichakansData,
@@ -120,51 +124,57 @@ export default function AnswerAcademicPage() {
 
   return (
     <div className="p-6">
-      <h1 className="mb-4 text-center text-4xl font-bold">
-        คำถามจากฝ่ายวิชาการ
-      </h1>
+      <div className="flex w-full items-center justify-between">
+        <h1 className="mb-4 text-center text-4xl font-bold">
+          คำถามจากฝ่ายวิชาการ
+        </h1>
+
+        <div className="flex items-start gap-2 p-4">
+          <div className="flex flex-col items-start justify-start">
+            <p>
+              <span>สถานะ: </span>
+              <span
+                className={cn(
+                  inspectStatusBadgeVariants({
+                    variant: wichakansData?.status as InspectStatusKeys,
+                  }),
+                  "font-bold capitalize",
+                )}
+              >
+                {wichakansData?.status}
+              </span>
+            </p>
+            {wichakansData?.status == InspectStatus["LOCK"] && (
+              <p>
+                Lock โดย:{" "}
+                <span className="font-bold">{wichakansData.staffUsername}</span>
+              </p>
+            )}
+          </div>
+          <div>
+            {wichakansData?.status !== InspectStatus["DONE"] && (
+              <Button
+                disabled={
+                  wichakansLoading ||
+                  (wichakansData?.status == InspectStatus["LOCK"] &&
+                    wichakansData?.staffUsername != null &&
+                    wichakansData?.staffUsername != data?.user.username)
+                }
+                onClick={lock}
+                className="cursor-pointer"
+              >
+                {wichakansData?.status == InspectStatus["LOCK"]
+                  ? InspectStatus["UNLOCK"]
+                  : InspectStatus["LOCK"]}
+              </Button>
+            )}
+          </div>
+        </div>
+      </div>
       <ResizablePanelGroup
         direction="horizontal"
         className="h-full w-full rounded-lg border"
       >
-        <div className="absolute flex items-center p-2">
-          <p>
-            Status:{" "}
-            <span
-              className={
-                wichakansData?.status == InspectStatus["LOCK"]
-                  ? "text-yellow-500"
-                  : wichakansData?.status == InspectStatus["DONE"]
-                    ? "text-green-500"
-                    : "text-orange-500"
-              }
-            >
-              {wichakansData?.status}
-            </span>
-          </p>
-          {wichakansData?.status == InspectStatus["LOCK"] && (
-            <p className="ml-2">
-              Lock by:{" "}
-              <span className="font-bold">{wichakansData.staffUsername}</span>
-            </p>
-          )}
-          <div className="ml-2">
-            <Button
-              disabled={
-                wichakansLoading ||
-                (wichakansData?.status == InspectStatus["LOCK"] &&
-                  wichakansData?.staffUsername != null &&
-                  wichakansData?.staffUsername != data?.user.username)
-              }
-              onClick={lock}
-              className="cursor-pointer"
-            >
-              {wichakansData?.status == InspectStatus["LOCK"]
-                ? InspectStatus["UNLOCK"]
-                : InspectStatus["LOCK"]}
-            </Button>
-          </div>
-        </div>
         <ResizablePanel defaultSize={60}>
           <div className="flex items-center justify-center p-6">
             {academicAnswerData?.answers ? (
@@ -175,7 +185,12 @@ export default function AnswerAcademicPage() {
                   chessNotation: "อัศวินห่านห้าวหาญนักล่าแต้ม (notation)",
                   chessScore: "อัศวินห่านห้าวหาญนักล่าแต้ม (score)",
                 }}
-                answers={academicAnswerData.answers}
+                answers={{
+                  ...academicAnswerData.answers,
+                  algoAnswer: (
+                    academicAnswerData.answers.algoAnswer ?? ""
+                  ).replace(/<-----ALGO-ANSWER-SPLITTER----->/g, ""),
+                }}
               />
             ) : (
               <Spinner />

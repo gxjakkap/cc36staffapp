@@ -15,12 +15,13 @@ export type InspectStatusKeys =
 
 interface InspectStatusBadgeProps {
   status: InspectStatusKeys;
+  translate?: Record<InspectStatusKeys, string>;
 }
 
-const badgeVariants = cva("m-1", {
+export const inspectStatusBadgeVariants = cva("m-1", {
   variants: {
     variant: {
-      lock: "text-yellow-500",
+      lock: "text-red-800",
       unlock: "text-orange-500",
       done: "text-green-500",
     },
@@ -31,8 +32,8 @@ const badgeVariants = cva("m-1", {
 });
 
 const statusText: Record<InspectStatusKeys, string> = {
-  lock: "มีคนตรวจ",
-  unlock: "ไม่มีคนตรวจ",
+  lock: "มีคนกำลังตรวจอยู่",
+  unlock: "ยังไม่มีคนตรวจ",
   done: "ตรวจแล้ว",
 };
 
@@ -40,23 +41,26 @@ const statusIcon: Record<
   InspectStatusKeys,
   React.ComponentType<{ className?: string }>
 > = {
-  lock: LockOpenIcon,
-  unlock: LockIcon,
+  lock: LockIcon,
+  unlock: LockOpenIcon,
   done: CircleCheckBigIcon,
 };
 
 export default function InspectStatusBadge({
   status,
+  translate,
 }: InspectStatusBadgeProps) {
   return (
     <div
       className={cn(
-        badgeVariants({ variant: status }),
+        inspectStatusBadgeVariants({ variant: status }),
         "flex items-center gap-2",
       )}
     >
       {status && createElement(statusIcon[status], { className: "size-4" })}
-      <p className="text-foreground">{statusText[status]}</p>
+      <p className="text-foreground">
+        {translate?.[status] ?? statusText[status]}
+      </p>
     </div>
   );
 }

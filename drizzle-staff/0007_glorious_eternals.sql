@@ -1,0 +1,1 @@
+ALTER TABLE "Tabian" ALTER COLUMN "info_status" SET DEFAULT 'unlock';
