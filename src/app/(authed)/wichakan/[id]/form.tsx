@@ -77,9 +77,12 @@ function WichakanForm(props: WichakanProps) {
               <FormItem>
                 <FormLabel>
                   <Collapsible>
-                    <CollapsibleTrigger className="flex items-center gap-2 text-xl">
-                      เกณฑ์การให้คะแนน 1{" "}
+                    <CollapsibleTrigger
+                      className="flex items-center gap-2 text-xl"
+                      asChild
+                    >
                       <div>
+                        เกณฑ์การให้คะแนน 1
                         <Button
                           type="button"
                           size="icon"
