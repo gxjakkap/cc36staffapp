@@ -38,18 +38,18 @@ export default function ThabiansPage() {
         only_one: true,
         options: [
           {
-            label: "ยังไม่มีใครตรวจ",
-            value: "no_one",
+            label: "ตรวจครบแล้ว",
+            value: "done",
             icon: CheckCircle2Icon,
             count:
               data?.filter(
                 (item) =>
                   item[
                     `score${scoreNumber}_user1` as keyof Thabians["score1_user1"]
-                  ] == null &&
+                  ] !== null &&
                   item[
                     `score${scoreNumber}_user2` as keyof Thabians["score1_user1"]
-                  ] == null,
+                  ] !== null,
               ).length || 0,
           },
           {
@@ -74,6 +74,21 @@ export default function ThabiansPage() {
                   item[
                     `score${scoreNumber}_user2` as keyof Thabians["score1_user1"]
                   ] !== null,
+              ).length || 0,
+          },
+          {
+            label: "ยังไม่มีใครตรวจ",
+            value: "no_one",
+            icon: CheckCircle2Icon,
+            count:
+              data?.filter(
+                (item) =>
+                  item[
+                    `score${scoreNumber}_user1` as keyof Thabians["score1_user1"]
+                  ] == null &&
+                  item[
+                    `score${scoreNumber}_user2` as keyof Thabians["score1_user1"]
+                  ] == null,
               ).length || 0,
           },
           {
