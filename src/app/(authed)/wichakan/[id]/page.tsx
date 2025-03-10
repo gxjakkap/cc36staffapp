@@ -18,6 +18,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { ViewControls } from "@/components/view-controls";
 import { useServerActionQuery } from "@/hook/server-action-hooks";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
@@ -171,6 +172,7 @@ export default function AnswerAcademicPage() {
           </div>
         </div>
       </div>
+      <ViewControls className="mb-3 justify-end" />
       <ResizablePanelGroup
         direction="horizontal"
         className="h-full w-full rounded-lg border"

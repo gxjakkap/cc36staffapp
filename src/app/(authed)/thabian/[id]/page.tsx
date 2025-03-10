@@ -10,6 +10,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { ViewControls } from "@/components/view-controls";
 import { useServerActionQuery } from "@/hook/server-action-hooks";
 
 import { getRegisAnswer, getUserTabians, submitScoreTabians } from "./action";
@@ -65,6 +66,9 @@ export default function AnswerRegisPage() {
       <h1 className="mb-4 text-center text-4xl font-bold">
         คำถามจากฝ่ายทะเบียน
       </h1>
+      <div className="flex w-full justify-between">
+        <ViewControls className="mb-3 justify-end" />
+      </div>
       <ResizablePanelGroup
         direction="horizontal"
         className="h-full w-full rounded-lg border"
