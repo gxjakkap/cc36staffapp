@@ -25,12 +25,14 @@ interface DataTableFacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>;
   title?: string;
   options: Option[];
+  only_one?: boolean;
 }
 
 export function DataTableFacetedFilter<TData, TValue>({
   column,
   title,
   options,
+  only_one,
 }: DataTableFacetedFilterProps<TData, TValue>) {
   const unknownValue = column?.getFilterValue();
   const selectedValues = new Set(
@@ -91,6 +93,10 @@ export function DataTableFacetedFilter<TData, TValue>({
                   <CommandItem
                     key={option.value}
                     onSelect={() => {
+                      if (only_one) {
+                        selectedValues.clear();
+                      }
+
                       if (isSelected) {
                         selectedValues.delete(option.value);
                       } else {

@@ -35,6 +35,7 @@ export default function ThabiansPage() {
       {
         id: `score${scoreNumber}` as keyof Thabians["score1_user1"],
         label: `ข้อที่ ${scoreNumber.replace("_", ".")}`,
+        only_one: true,
         options: [
           {
             label: "ยังไม่มีใครตรวจ",
@@ -73,6 +74,30 @@ export default function ThabiansPage() {
                   item[
                     `score${scoreNumber}_user2` as keyof Thabians["score1_user1"]
                   ] !== null,
+              ).length || 0,
+          },
+          {
+            label: "คนที่ 1 ยังไม่ได้ตรวจ",
+            value: "not_done1",
+            icon: UserIcon,
+            count:
+              data?.filter(
+                (item) =>
+                  item[
+                    `score${scoreNumber}_user1` as keyof Thabians["score1_user1"]
+                  ] == null,
+              ).length || 0,
+          },
+          {
+            label: "คนที่ 2 ยังไม่ได้ตรวจ",
+            value: "not_done2",
+            icon: User2Icon,
+            count:
+              data?.filter(
+                (item) =>
+                  item[
+                    `score${scoreNumber}_user2` as keyof Thabians["score1_user1"]
+                  ] == null,
               ).length || 0,
           },
         ],

@@ -65,7 +65,7 @@ export function DataTableToolbar<TData>({
       )}
       {...props}
     >
-      <div className="flex flex-1 items-center gap-2">
+      <div className="flex flex-1 flex-wrap items-center gap-2">
         {searchableColumns.length > 0 &&
           searchableColumns.map(
             (column) =>
@@ -96,6 +96,7 @@ export function DataTableToolbar<TData>({
                   column={table.getColumn(column.id ? String(column.id) : "")}
                   title={column.label}
                   options={column.options ?? []}
+                  only_one={column.only_one}
                 />
               ),
           )}
@@ -111,7 +112,7 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         {children}
         <DataTableViewOptions table={table} />
       </div>

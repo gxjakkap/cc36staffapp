@@ -173,6 +173,19 @@ export const createColumns = (isLoading: boolean): ColumnDef<Thabians>[] => {
         );
       }
 
+      if (
+        filterValue.includes("not_done1") &&
+        row.original[`${key}_user1` as keyof Thabians["score1_user1"]] !== null
+      ) {
+        return false;
+      }
+      if (
+        filterValue.includes("not_done2") &&
+        row.original[`${key}_user2` as keyof Thabians["score1_user1"]] !== null
+      ) {
+        return false;
+      }
+
       return true;
     },
   }));
