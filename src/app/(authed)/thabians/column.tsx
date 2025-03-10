@@ -142,6 +142,39 @@ export const createColumns = (isLoading: boolean): ColumnDef<Thabians>[] => {
           />
         ),
     size: 200,
+    filterFn: (row: Row<Thabians>, _: unknown, filterValue: string[]) => {
+      if (
+        filterValue.includes("done1") &&
+        row.original[`${key}_user1` as keyof Thabians["score1_user1"]] === null
+      ) {
+        return false;
+      }
+      if (
+        filterValue.includes("done2") &&
+        row.original[`${key}_user2` as keyof Thabians["score1_user1"]] === null
+      ) {
+        return false;
+      }
+      if (
+        filterValue.includes("no_one") &&
+        (row.original[`${key}_user1` as keyof Thabians["score1_user1"]] !==
+          null ||
+          row.original[`${key}_user2` as keyof Thabians["score1_user1"]] !==
+            null)
+      ) {
+        return false;
+      }
+      if (filterValue.includes("done1") && filterValue.includes("done2")) {
+        return (
+          row.original[`${key}_user1` as keyof Thabians["score1_user1"]] !==
+            null &&
+          row.original[`${key}_user2` as keyof Thabians["score1_user1"]] !==
+            null
+        );
+      }
+
+      return true;
+    },
   }));
 
   return [
