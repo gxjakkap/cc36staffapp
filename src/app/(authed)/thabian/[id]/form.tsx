@@ -1,10 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { CheckIcon, ChevronDownIcon } from "lucide-react";
 import { z } from "zod";
 
+import { THABIANS_CITERIAS } from "@/components/cite/thanbian";
 import { Button } from "@/components/ui/button";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 import { ScoreFieldEnum } from "./enum";
 
@@ -57,22 +65,41 @@ function TabianForm(props: TabianFormProps) {
   }
 
   return (
-    <div>
-      <div className="font-noto-sans-thai-looped">
-        <div className="flex items-center justify-center p-6">
-          เกณฑ์การให้คะแนน
-        </div>
-        <div className="grid gap-10 p-7">
-          {["1", "2", "3", "4", "5", "6_1", "6_2"].map((num) => (
-            <div key={num} className="items-center0 flex justify-center">
-              <div className="flex items-center">
+    <ScrollArea className="font-noto-sans-thai-looped h-[calc(100vh-15rem)] w-full">
+      <div className="flex items-center justify-center p-6">
+        เกณฑ์การให้คะแนน
+      </div>
+      <div className="grid w-full gap-4 px-8">
+        {["1", "2", "3", "4", "5", "6_1", "6_2"].map((num) => (
+          <div key={num} className="flex flex-col gap-4">
+            {THABIANS_CITERIAS[num] && (
+              <Collapsible>
+                <CollapsibleTrigger asChild>
+                  <div className="flex cursor-pointer text-base font-semibold">
+                    {THABIANS_CITERIAS[num].question}
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="cursor-pointer"
+                    >
+                      <ChevronDownIcon />
+                    </Button>
+                  </div>
+                </CollapsibleTrigger>
+                <CollapsibleContent asChild>
+                  {THABIANS_CITERIAS[num].citeria}
+                </CollapsibleContent>
+              </Collapsible>
+            )}
+            <div className="items-center0 flex w-full justify-center gap-4">
+              <div className="flex w-full items-center gap-2">
                 <Input
                   value={
                     inputValue[`score${num}_user1` as keyof typeof inputValue]
                   }
                   name={`score${num}_user1`}
                   onChange={handleChange}
-                  placeholder={`กรอกคะแนน ${num} ผู้ตรวจคนที่ 1`}
+                  placeholder={`กรอกคะแนน ${num.replace("_", ".")} ผู้ตรวจคนที่ 1`}
                   type="number"
                   min={0}
                 />
@@ -89,18 +116,19 @@ function TabianForm(props: TabianFormProps) {
                   }
                   type="submit"
                   className="cursor-pointer"
+                  size="icon"
                 >
-                  ส่งคะแนน
+                  <CheckIcon />
                 </Button>
               </div>
-              <div className="flex items-center">
+              <div className="flex w-full items-center gap-2">
                 <Input
                   value={
                     inputValue[`score${num}_user2` as keyof typeof inputValue]
                   }
                   name={`score${num}_user2`}
                   onChange={handleChange}
-                  placeholder={`กรอกคะแนน ${num} ผู้ตรวจคนที่ 2`}
+                  placeholder={`กรอกคะแนน ${num.replace("_", ".")} ผู้ตรวจคนที่ 2`}
                   type="number"
                   min={0}
                 />
@@ -117,15 +145,16 @@ function TabianForm(props: TabianFormProps) {
                   }
                   type="submit"
                   className="cursor-pointer"
+                  size="icon"
                 >
-                  ส่งคะแนน
+                  <CheckIcon />
                 </Button>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
-    </div>
+    </ScrollArea>
   );
 }
 export default TabianForm;
