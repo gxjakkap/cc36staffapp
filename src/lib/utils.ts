@@ -14,3 +14,18 @@ export function toSentenceCase(str: string) {
     .replace(/\s+/g, " ")
     .trim();
 }
+
+export function calculateTimeLeft(target: Date) {
+  const now = new Date();
+  const diffMs = target.getTime() - now.getTime();
+  const isLate = diffMs < 0;
+
+  const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+  return {
+    isLate,
+    daysLeft: days,
+    hoursLeft: hours,
+  };
+}

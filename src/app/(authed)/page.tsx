@@ -1,5 +1,6 @@
 import { getOverview } from "@/app/(authed)/actions";
 import { Overview } from "@/components/overview";
+import { calculateTimeLeft } from "@/lib/utils";
 
 export default async function Home() {
   const [data] = await getOverview();
@@ -13,12 +14,15 @@ export default async function Home() {
       <div className="flex justify-between text-4xl font-bold">
         <h1>Overview</h1>
         <h1 className="text-destructive">
-          เหลืออีก{" "}
-          {Math.ceil(
-            (new Date("2025-03-13").getTime() - new Date().getTime()) /
-              (1000 * 60 * 60 * 24),
-          )}{" "}
-          วันปิดรับสมัคร
+          {(() => {
+            const { isLate, daysLeft, hoursLeft } = calculateTimeLeft(
+              new Date("2025-03-13T23:59:59+07:00"),
+            );
+
+            if (isLate) return "หมดเขตรับสมัครแล้ว 🥳";
+
+            return `เหลืออีก ${daysLeft > 0 ? `${daysLeft} วัน` : `${hoursLeft} ชั่วโมง`} ปิดรับสมัคร`;
+          })()}
         </h1>
       </div>
       <Overview data={data} />
