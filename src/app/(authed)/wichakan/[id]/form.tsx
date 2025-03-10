@@ -2,14 +2,25 @@
 
 import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ChevronDownIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import {
+  WichakanCite1,
+  WichakanCite2,
+  WichakanCite3,
+} from "@/components/cite/wichakan";
 import {
   InspectStatus,
   InspectStatusKeys,
 } from "@/components/data-table/status-badge";
 import { Button } from "@/components/ui/button";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import {
   Form,
   FormControl,
@@ -51,7 +62,7 @@ function WichakanForm(props: WichakanProps) {
         className="font-noto-sans-thai-looped"
       >
         <div className="flex items-center justify-center p-6">
-          เกณฑ์การให้คะแนน
+          เกณฑ์การให้คะแนน 10 สหายในเงามืด
         </div>
         <div className="grid gap-10 p-7">
           <FormField
@@ -65,10 +76,26 @@ function WichakanForm(props: WichakanProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  1. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Dicta rem repellat, quia harum voluptas deleniti culpa unde.
-                  Magni provident, aperiam officiis fugiat quod molestias, at
-                  labore inventore minus, quae fuga!
+                  <Collapsible>
+                    <CollapsibleTrigger className="flex items-center gap-2 text-xl">
+                      เกณฑ์การให้คะแนน 1{" "}
+                      <div>
+                        <Button
+                          type="button"
+                          size="icon"
+                          effect="shineHover"
+                          variant="outline"
+                        >
+                          <ChevronDownIcon />
+                        </Button>
+                      </div>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <WichakanCite1 />
+                      <WichakanCite2 />
+                      <WichakanCite3 />
+                    </CollapsibleContent>
+                  </Collapsible>
                 </FormLabel>
                 <FormControl>
                   <Input
@@ -92,11 +119,8 @@ function WichakanForm(props: WichakanProps) {
             name="scoreChess"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>
-                  2. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Dicta rem repellat, quia harum voluptas deleniti culpa unde.
-                  Magni provident, aperiam officiis fugiat quod molestias, at
-                  labore inventore minus, quae fuga!
+                <FormLabel className="text-xl font-semibold">
+                  อัศวินห่านห้าวหาญนักล่าแต้ม
                 </FormLabel>
                 <FormControl>
                   <Input
