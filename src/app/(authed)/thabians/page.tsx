@@ -1,7 +1,12 @@
 "use client";
 
-import { useMemo } from "react";
-import { CheckCircle2Icon, XCircleIcon } from "lucide-react";
+import { useCallback, useMemo } from "react";
+import {
+  CheckCircle2Icon,
+  User2Icon,
+  UserIcon,
+  XCircleIcon,
+} from "lucide-react";
 
 import { DataTable } from "@/components/data-table";
 import { useServerActionQuery } from "@/hook/server-action-hooks";
@@ -24,6 +29,97 @@ export default function ThabiansPage() {
   }, [isLoading]);
 
   const columns = useMemo(() => createColumns(isLoading), [isLoading]);
+
+  const mapScores = useCallback(
+    (scoreNumber: string) => [
+      {
+        id: `score${scoreNumber}` as keyof Thabians["score1_user1"],
+        label: `ข้อที่ ${scoreNumber.replace("_", ".")}`,
+        only_one: true,
+        options: [
+          {
+            label: "ตรวจครบแล้ว",
+            value: "done",
+            icon: CheckCircle2Icon,
+            count:
+              data?.filter(
+                (item) =>
+                  item[
+                    `score${scoreNumber}_user1` as keyof Thabians["score1_user1"]
+                  ] !== null &&
+                  item[
+                    `score${scoreNumber}_user2` as keyof Thabians["score1_user1"]
+                  ] !== null,
+              ).length || 0,
+          },
+          {
+            label: "คนที่ 1 ตรวจแล้ว",
+            value: "done1",
+            icon: UserIcon,
+            count:
+              data?.filter(
+                (item) =>
+                  item[
+                    `score${scoreNumber}_user1` as keyof Thabians["score1_user1"]
+                  ] !== null,
+              ).length || 0,
+          },
+          {
+            label: "คนที่ 2 ตรวจแล้ว",
+            value: "done2",
+            icon: User2Icon,
+            count:
+              data?.filter(
+                (item) =>
+                  item[
+                    `score${scoreNumber}_user2` as keyof Thabians["score1_user1"]
+                  ] !== null,
+              ).length || 0,
+          },
+          {
+            label: "ยังไม่มีใครตรวจ",
+            value: "no_one",
+            icon: CheckCircle2Icon,
+            count:
+              data?.filter(
+                (item) =>
+                  item[
+                    `score${scoreNumber}_user1` as keyof Thabians["score1_user1"]
+                  ] == null &&
+                  item[
+                    `score${scoreNumber}_user2` as keyof Thabians["score1_user1"]
+                  ] == null,
+              ).length || 0,
+          },
+          {
+            label: "คนที่ 1 ยังไม่ได้ตรวจ",
+            value: "not_done1",
+            icon: UserIcon,
+            count:
+              data?.filter(
+                (item) =>
+                  item[
+                    `score${scoreNumber}_user1` as keyof Thabians["score1_user1"]
+                  ] == null,
+              ).length || 0,
+          },
+          {
+            label: "คนที่ 2 ยังไม่ได้ตรวจ",
+            value: "not_done2",
+            icon: User2Icon,
+            count:
+              data?.filter(
+                (item) =>
+                  item[
+                    `score${scoreNumber}_user2` as keyof Thabians["score1_user1"]
+                  ] == null,
+              ).length || 0,
+          },
+        ],
+      },
+    ],
+    [data],
+  );
 
   const filterFields: DataTableFilterField<Thabians>[] = useMemo(
     () => [
@@ -67,8 +163,9 @@ export default function ThabiansPage() {
           },
         ],
       },
+      ...["1", "2", "3", "4", "5", "6_1", "6_2"].flatMap(mapScores),
     ],
-    [data],
+    [data, mapScores],
   );
 
   return (

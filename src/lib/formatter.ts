@@ -46,8 +46,7 @@ export const formatPhoneNumber = (tel: string) => {
 };
 
 export const formatId = (id: string) => {
-  const start = Math.floor(Math.random() * (id.length - 6 + 1));
-  const formattedId = id.substring(start, start + 6);
+  const formattedId = id.substring(0, 6);
   return formattedId;
 };
 

@@ -39,6 +39,21 @@ export function DataTableViewOptions<TData>({
           role="combobox"
           size="sm"
           className="focus:ring-ring ml-auto hidden h-8 gap-2 focus:ring-1 focus:outline-none focus-visible:ring-0 lg:flex"
+          onPointerDown={(event) => {
+            const target = event.target;
+            if (!(target instanceof Element)) return;
+            if (target.hasPointerCapture(event.pointerId)) {
+              target.releasePointerCapture(event.pointerId);
+            }
+
+            if (
+              event.button === 0 &&
+              event.ctrlKey === false &&
+              event.pointerType === "mouse"
+            ) {
+              event.preventDefault();
+            }
+          }}
         >
           <Settings2 className="size-4" />
           แก้ไขคอลัมบ์

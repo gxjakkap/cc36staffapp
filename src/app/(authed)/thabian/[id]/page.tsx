@@ -10,6 +10,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { ViewControls } from "@/components/view-controls";
 import { useServerActionQuery } from "@/hook/server-action-hooks";
 
 import { getRegisAnswer, getUserTabians, submitScoreTabians } from "./action";
@@ -65,6 +66,9 @@ export default function AnswerRegisPage() {
       <h1 className="mb-4 text-center text-4xl font-bold">
         คำถามจากฝ่ายทะเบียน
       </h1>
+      <div className="flex w-full justify-between">
+        <ViewControls className="mb-3 justify-end" />
+      </div>
       <ResizablePanelGroup
         direction="horizontal"
         className="h-full w-full rounded-lg border"
@@ -79,7 +83,7 @@ export default function AnswerRegisPage() {
                   answer2:
                     "2. ในยุคที่ AI และหุ่นยนต์สามารถทำงานแทนมนุษย์ได้มากขึ้น น้องคิดว่าวิศวกรคอมพิวเตอร์ยังมีความสำคัญอย่างไร?",
                   answer3:
-                    "3. หากน้องและทีมจำนวน 5 คน กำลังอยู่บนยานอวกาศที่ติดอยู่ในวงโคจรของดาวเคราะห์ดวงหนึ่ง ยานน้องได้รับความเสียหายจากอุกกาบาตที่ชนเข้ามา ระบบอื่น ๆ ของยานได้รับความเสียหายเล็กน้อย แต่ระบบกรองน้ำของยานเสียหายมาก น้ำสะอาดที่เหลือมีเพียง 40 ลิตร ทีมของคุณต้องอยู่รอดให้ได้อีก 60 วันก่อนที่ทีมกู้ภัยจากโลกจะมาถึง จงระบุปัญหาทั้งหมดที่เกิดขึ้น พร้อมเสนอแนวทางการแก้ปัญหาและอธิบายหลักการมาพอสังเขป",
+                    "3. หากน้องและทีมจำนวน 5 คน กำลังอยู่บนยานอวกาศที่ติดอยู่ในวงโคจรของดาวเคราะห์ดวงหนึ่ง...",
                   answer4:
                     "4. หากในค่ายมี Group Project แล้วน้องได้อยู่ในกลุ่มที่มีคนไม่ค่อยทำงาน นิ่งเฉย หรือทิ้งงาน น้องจะจัดการกับปัญหานี้อย่างไร?",
                   answer5:

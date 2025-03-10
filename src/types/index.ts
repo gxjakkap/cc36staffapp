@@ -32,6 +32,7 @@ export interface DataTableFilterField<TData> {
   label: string;
   placeholder?: string;
   options?: Option[];
+  only_one?: boolean;
 }
 
 export type Filter<TData> = Prettify<
