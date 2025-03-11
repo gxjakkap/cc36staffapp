@@ -1,4 +1,6 @@
 import { getOverview } from "@/app/(authed)/actions";
+import { DragProvider } from "@/components/drag-context";
+import { DragOverviewControl } from "@/components/drag-overview-control";
 import { Overview } from "@/components/overview";
 import { calculateTimeLeft } from "@/lib/utils";
 
@@ -25,7 +27,10 @@ export default async function Home() {
           })()}
         </h1>
       </div>
-      <Overview data={data} />
+      <DragProvider>
+        <Overview data={data} />
+        <DragOverviewControl />
+      </DragProvider>
     </div>
   );
 }

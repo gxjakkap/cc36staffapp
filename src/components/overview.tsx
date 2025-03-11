@@ -12,6 +12,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
+import { useDrag } from "./drag-context";
+
 interface OverviewProps {
   data: {
     totalUsers: number;
@@ -30,16 +32,19 @@ interface OverviewProps {
 export function Overview({ data }: OverviewProps) {
   const swapy = useRef<Swapy | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
+  const { isDragDisabled } = useDrag();
 
   useEffect(() => {
     if (container.current) {
-      swapy.current = createSwapy(container.current);
+      swapy.current = createSwapy(container.current, {
+        enabled: !isDragDisabled,
+      });
     }
 
     return () => {
       swapy.current?.destroy();
     };
-  }, []);
+  }, [isDragDisabled]);
 
   return (
     <div ref={container}>
