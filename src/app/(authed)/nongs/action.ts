@@ -6,11 +6,19 @@ import { InspectStatus } from "@/components/data-table/status-badge";
 import { db, dbStaff } from "@/db";
 import { user } from "@/db/schema";
 import { tabian } from "@/db/staff-schema";
+import { StaffRoles } from "@/lib/auth/role";
+import { ForbiddenError } from "@/lib/errors";
 import { authenticatedAction } from "@/lib/safe-action";
 
 export const getAllTabiansInfoTable = authenticatedAction
   .createServerAction()
-  .handler(async () => {
+  .handler(async ({ ctx }) => {
+    if (
+      ctx.user.role !== StaffRoles.ADMIN &&
+      ctx.user.role !== StaffRoles.REGIS
+    ) {
+      throw new ForbiddenError();
+    }
     const users = await db
       .select({
         id: user.id,

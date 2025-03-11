@@ -1,11 +1,11 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import Link, { type LinkProps } from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Menu } from "lucide-react";
 
-import { NAVBARS } from "@/components/navbar";
+import { THABIANS_NAV } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -15,13 +15,38 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { VisuallyHidden } from "@/components/ui/visually-hidden";
+import { StaffRoles } from "@/lib/auth/role";
 import { cn } from "@/lib/utils";
 
 interface MobileNavProps {
   isAdmin?: boolean;
+  role?: string | null;
 }
 
-export function MobileNav({ isAdmin }: MobileNavProps) {
+const ThabianNavItems = ({
+  pathname,
+  setOpen,
+}: {
+  pathname: string;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+}) => {
+  return (
+    <>
+      {THABIANS_NAV.map(({ href, text }) => (
+        <MobileLink
+          key={href}
+          href={href}
+          onOpenChange={setOpen}
+          isActive={pathname === href || pathname.startsWith(href + "/")}
+        >
+          {text}
+        </MobileLink>
+      ))}
+    </>
+  );
+};
+
+export function MobileNav({ isAdmin, role }: MobileNavProps) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -45,22 +70,46 @@ export function MobileNav({ isAdmin }: MobileNavProps) {
         </VisuallyHidden>
         <div className="overflow-auto p-6">
           <div className="flex flex-col space-y-1">
-            {NAVBARS.map(
-              (item) =>
-                item.href && (
-                  <MobileLink
-                    key={item.href}
-                    href={item.href}
-                    onOpenChange={setOpen}
-                    isActive={
-                      pathname === item.href ||
-                      pathname.startsWith(item.href + "/")
-                    }
-                  >
-                    {item.text}
-                  </MobileLink>
-                ),
-            )}
+            <MobileLink
+              key="/"
+              href="/"
+              onOpenChange={setOpen}
+              isActive={pathname === "/"}
+            >
+              หน้าหลัก
+            </MobileLink>
+
+            {!!role &&
+              (role === StaffRoles.REGIS || role === StaffRoles.ADMIN) && (
+                <ThabianNavItems pathname={pathname} setOpen={setOpen} />
+              )}
+            {!!role &&
+              (role === StaffRoles.ACADEMIC || role === StaffRoles.ADMIN) && (
+                <MobileLink
+                  key="/wichakans"
+                  href="/wichakans"
+                  onOpenChange={setOpen}
+                  isActive={
+                    pathname === "/wichakans" ||
+                    pathname.startsWith("/wichakans" + "/")
+                  }
+                >
+                  คำถามวิชาการ
+                </MobileLink>
+              )}
+
+            <MobileLink
+              key="/change-password"
+              href="/change-password"
+              onOpenChange={setOpen}
+              isActive={
+                pathname === "/change-password" ||
+                pathname.startsWith("/change-password" + "/")
+              }
+            >
+              เปลี่ยนรหัสผ่าน
+            </MobileLink>
+
             {isAdmin && (
               <MobileLink
                 href="/admin"

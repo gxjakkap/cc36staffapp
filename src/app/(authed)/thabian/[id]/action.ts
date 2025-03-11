@@ -8,7 +8,8 @@ import { db, dbStaff } from "@/db";
 import { answerRegis, user } from "@/db/schema";
 import { tabian } from "@/db/staff-schema";
 import { auth } from "@/lib/auth";
-import { NotFoundError } from "@/lib/errors";
+import { StaffRoles } from "@/lib/auth/role";
+import { ForbiddenError, NotFoundError } from "@/lib/errors";
 import { authenticatedAction } from "@/lib/safe-action";
 
 import { ScoreFieldEnum } from "./enum";
@@ -20,9 +21,16 @@ export const getUserTabians = authenticatedAction
       id: z.string().nullable(),
     }),
   )
-  .handler(async ({ input }) => {
+  .handler(async ({ ctx, input }) => {
     if (!input.id) {
       return;
+    }
+
+    if (
+      ctx.user.role !== StaffRoles.ADMIN &&
+      ctx.user.role !== StaffRoles.REGIS
+    ) {
+      throw new ForbiddenError();
     }
 
     const users = await db
