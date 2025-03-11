@@ -1,13 +1,23 @@
 "use client";
 
+import { Fragment } from "react";
 import Image from "next/image";
 import { redirect, useParams } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
+import { CircleCheck, CircleX, Download, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
 
 import Spinner from "@/components/spinner";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { useServerActionQuery } from "@/hook/server-action-hooks";
 import { formatDateString, genderVal, titleVal } from "@/lib/formatter";
 
@@ -179,127 +189,152 @@ function ApplicantPage() {
   }
 
   return (
-    <div className="flex w-full max-w-screen justify-center py-12">
-      <Card className="w-full max-w-[80rem]">
-        <CardContent className="grid grid-cols-[1fr_2fr] gap-4">
-          <div className="flex h-fit w-[25rem] flex-col justify-center">
-            <div className="text-3xl font-bold">
-              {titleVal(data.user.title || "")}
-              {data.user.fullname || "ยังไม่ได้ระบุชื่อเต็ม"}
-            </div>
-            {data.files.imgUrl.includes(".heic") ? (
-              <div className="bg-muted text-muted-foreground flex h-80 w-full flex-col items-center justify-center p-4 text-center">
-                <p className="text-red-500">ไม่สามารถแสดงรูป HEIC ได้</p>
-                <a
-                  href={data.files.imgUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-2 text-blue-500 hover:underline"
-                >
-                  Download เพื่อดูรูป
-                </a>
-              </div>
-            ) : (
-              <Image
-                style={{ width: "100%", height: "auto" }}
-                width={1000}
-                height={0}
-                src={data.files.imgUrl}
-                alt="ComCamp36Logo"
-                priority
-              />
-            )}
-          </div>
-          <div className="flex flex-col gap-1">
-            <div className="flex flex-col gap-2">
-              <div className="grid grid-cols-[auto_auto] gap-2">
-                <span className="flex items-center gap-1">
-                  <span className="text-foreground/80 font-bold">
-                    ข้อมูลส่วนตัว:
-                  </span>
-                  {data.user.infoDone ? "✅" : "❌"}
-                </span>
-                <span className="flex items-center gap-1">
-                  <span className="text-foreground/80 font-bold">
-                    คำถามทะเบียน:
-                  </span>
-                  {data.user.regisDone ? "✅" : "❌"}
-                </span>
-                <span className="flex items-center gap-1">
-                  <span className="text-foreground/80 font-bold">
-                    คำถามวิชาการ:
-                  </span>
-                  {data.user.academicDone ? "✅" : "❌"}
-                </span>
-                <span className="flex items-center gap-1">
-                  <span className="text-foreground/80 font-bold">
-                    ส่งคำตอบ:
-                  </span>
-                  {data.user.hasSubmitAnswer ? "✅" : "❌"}
-                </span>
-                <span className="col-span-2 flex items-center gap-2">
-                  <span className="text-foreground/80 font-bold">ไฟล์:</span>
-                  {data.user.filesDone ? "✅" : "❌"}
-                  <div className="ml-1 flex flex-wrap gap-2">
-                    {data.files.thaiIdUrl && (
+    <div className="mx-auto px-4 py-8">
+      <Card className="mx-auto w-full max-w-7xl">
+        <CardHeader>
+          <CardTitle className="text-2xl font-bold md:text-3xl">
+            {titleVal(data.user.title || "")}{" "}
+            {data.user.fullname || "ยังไม่ได้ระบุชื่อเต็ม"}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-[1fr_2fr]">
+            <div className="flex flex-col gap-6">
+              <div className="border-border overflow-hidden rounded-lg border">
+                {data.files.imgUrl.includes(".heic") ? (
+                  <div className="bg-muted text-muted-foreground flex h-80 w-full flex-col items-center justify-center rounded-md p-6 text-center">
+                    <p className="font-medium text-red-500">
+                      ไม่สามารถแสดงรูป HEIC ได้
+                    </p>
+                    <Button
+                      variant="link"
+                      size="sm"
+                      className="mt-3 gap-2"
+                      asChild
+                    >
                       <a
-                        href={data.files.thaiIdUrl}
+                        href={data.files.imgUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-accent-foreground hover:text-accent-foreground/80 bg-accent rounded px-2 py-1 underline transition-colors"
                       >
-                        สำเนาบัตรประชาชน
+                        <Download size={16} /> ดาวน์โหลดรูป
                       </a>
-                    )}
-                    {data.files.parentFormUrl && (
-                      <a
-                        href={data.files.parentFormUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-accent-foreground hover:text-accent-foreground/80 bg-accent rounded px-2 py-1 underline transition-colors"
-                      >
-                        เอกสารขออนุญาตผู้ปกครอง
-                      </a>
-                    )}
-                    {data.files.p1Url && (
-                      <a
-                        href={data.files.p1Url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-accent-foreground hover:text-accent-foreground/80 bg-accent rounded px-2 py-1 underline transition-colors"
-                      >
-                        ปพ.1
-                      </a>
-                    )}
-                    {data.files.p7Url && (
-                      <a
-                        href={data.files.p7Url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-accent-foreground hover:text-accent-foreground/80 bg-accent rounded px-2 py-1 underline transition-colors"
-                      >
-                        ปพ.7
-                      </a>
-                    )}
+                    </Button>
                   </div>
-                </span>
+                ) : (
+                  <Image
+                    style={{ width: "100%", height: "auto" }}
+                    width={1000}
+                    height={0}
+                    src={data.files.imgUrl}
+                    alt="ComCamp36Logo"
+                    priority
+                  />
+                )}
+              </div>
+
+              <div className="border-border rounded-lg border p-4">
+                <h3 className="mb-4 text-xl font-semibold">สถานะการสมัคร</h3>
+                <div className="grid grid-cols-2 gap-3">
+                  <StatusItem
+                    label="ข้อมูลส่วนตัว"
+                    isDone={data.user.infoDone}
+                  />
+                  <StatusItem
+                    label="คำถามทะเบียน"
+                    isDone={data.user.regisDone}
+                  />
+                  <StatusItem
+                    label="คำถามวิชาการ"
+                    isDone={data.user.academicDone}
+                  />
+                  <StatusItem
+                    label="ส่งคำตอบ"
+                    isDone={data.user.hasSubmitAnswer}
+                  />
+                  <div className="col-span-full">
+                    <StatusItem label="ไฟล์" isDone={data.user.filesDone} />
+                    <div className="mt-2 flex flex-wrap gap-2 pl-3">
+                      {data.files.thaiIdUrl && (
+                        <Badge variant="outline" className="hover:bg-accent">
+                          <a
+                            href={data.files.thaiIdUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="flex items-center gap-1"
+                          >
+                            สำเนาบัตรประชาชน <ExternalLink size={12} />
+                          </a>
+                        </Badge>
+                      )}
+                      {data.files.parentFormUrl && (
+                        <Badge variant="outline" className="hover:bg-accent">
+                          <a
+                            href={data.files.parentFormUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="flex items-center gap-1"
+                          >
+                            เอกสารขออนุญาตผู้ปกครอง <ExternalLink size={12} />
+                          </a>
+                        </Badge>
+                      )}
+                      {data.files.p1Url && (
+                        <Badge variant="outline" className="hover:bg-accent">
+                          <a
+                            href={data.files.p1Url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="flex items-center gap-1"
+                          >
+                            ปพ.1 <ExternalLink size={12} />
+                          </a>
+                        </Badge>
+                      )}
+                      {data.files.p7Url && (
+                        <Badge variant="outline" className="hover:bg-accent">
+                          <a
+                            href={data.files.p7Url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="flex items-center gap-1"
+                          >
+                            ปพ.7 <ExternalLink size={12} />
+                          </a>
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            {ApplicantInfo.map((item, index) => (
-              <ApplicantItems key={index} {...item} />
-            ))}
+
+            <div className="border-border rounded-lg border p-4 md:p-6">
+              <div className="space-y-6">
+                {ApplicantInfo.map((item, index) => (
+                  <Fragment key={index}>
+                    {item.isHeader && index > 0 && (
+                      <Separator className="my-4" />
+                    )}
+                    <ApplicantItems {...item} />
+                  </Fragment>
+                ))}
+              </div>
+            </div>
           </div>
         </CardContent>
-        <div className="flex justify-center">
+
+        <CardFooter className="flex justify-center gap-4 border-t pt-6">
           <Button
             onClick={() => submitInfo(true)}
             disabled={
               tabiansLoading ||
               (tabiansData?.info_status == "done" && tabiansData?.info == true)
             }
-            className="cursor-pointer bg-green-500 text-white"
+            className="min-w-32 bg-green-600 text-white hover:bg-green-700"
+            size="lg"
           >
-            ถูกต้อง
+            <CircleCheck className="!size-5" /> ข้อมูลถูกต้อง
           </Button>
           <Button
             onClick={() => submitInfo(false)}
@@ -307,11 +342,13 @@ function ApplicantPage() {
               tabiansLoading ||
               (tabiansData?.info_status == "done" && !tabiansData?.info == true)
             }
-            className="ml-2 cursor-pointer bg-red-500 text-white"
+            variant="destructive"
+            className="min-w-32"
+            size="lg"
           >
-            ไม่ถูกต้อง
+            <CircleX className="!size-5" /> ข้อมูลไม่ถูกต้อง
           </Button>
-        </div>
+        </CardFooter>
       </Card>
     </div>
   );
@@ -329,15 +366,27 @@ const ApplicantItems: React.FC<ApplicantItemsProps> = ({
   isHeader,
 }) => {
   if (isHeader) {
-    return <h2 className="pt-4 text-xl font-bold">{label}</h2>;
+    return <h2 className="text-xl font-bold not-first:pt-2">{label}</h2>;
   }
 
   return (
-    <div className="text-foreground/80 grid w-full grid-cols-[1fr_3fr] gap-4 text-lg">
-      <span className="text-foreground/60 font-semibold">{label}</span>
-      <span className="text-foreground/60">{data}</span>
+    <div className="grid grid-cols-[1fr_2fr] gap-4 text-sm md:text-base">
+      <span className="text-muted-foreground font-medium">{label}:</span>
+      <span className="text-foreground">{data}</span>
     </div>
   );
 };
+
+interface StatusItemProps {
+  label: string;
+  isDone: boolean;
+}
+
+const StatusItem: React.FC<StatusItemProps> = ({ label, isDone }) => (
+  <div className="flex items-center gap-2">
+    <span className="text-muted-foreground text-sm font-medium">{label}:</span>
+    {isDone ? "✅" : "❌"}
+  </div>
+);
 
 export default ApplicantPage;
