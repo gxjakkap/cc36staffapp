@@ -261,16 +261,18 @@ const getAllTabiansTable = authenticatedAction
     return data;
   });
 
-const calculateScore = (score1: number | null, score2: number | null) => {
+const calculateScore = (score1: string | null, score2: string | null) => {
   if (score1 === null && score2 === null) return null;
   if (score1 === null) return score2;
   if (score2 === null) return score1;
-  return (score1 + score2) / 2;
+  return ((parseFloat(score1) + parseFloat(score2)) / 2).toFixed(2);
 };
 
-const calculateOverallScore = (scores: (number | null)[]) => {
+const calculateOverallScore = (scores: (string | null)[]) => {
   if (scores.some((score) => score === null)) return null;
-  return scores.reduce((acc, score) => (acc ?? 0) + (score as number), 0);
+  return scores
+    .reduce((acc, score) => (acc ?? 0) + parseFloat(score!), 0)
+    .toFixed(2);
 };
 
 export default getAllTabiansTable;
