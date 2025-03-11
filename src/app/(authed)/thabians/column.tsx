@@ -304,7 +304,7 @@ const ScoreColumn = ({ score, who, when, score_sep }: ScoreColumnProp) => {
               {score}
             </Button>
           </HoverCardTrigger>
-          <HoverCardContent>
+          <HoverCardContent className="w-auto">
             <Table>
               <TableHeader>
                 <TableRow>
