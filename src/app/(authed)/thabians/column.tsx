@@ -391,7 +391,7 @@ const OverallScoreCol = ({ row }: { row: Row<Thabians> }) => {
               {row.original.overall_score}
             </Button>
           </HoverCardTrigger>
-          <HoverCardContent>
+          <HoverCardContent className="w-auto">
             <Table>
               <TableHeader>
                 <TableRow>
