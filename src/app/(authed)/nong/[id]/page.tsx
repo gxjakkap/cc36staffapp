@@ -187,14 +187,28 @@ function ApplicantPage() {
               {titleVal(data.user.title || "")}
               {data.user.fullname || "ยังไม่ได้ระบุชื่อเต็ม"}
             </div>
-            <Image
-              style={{ width: "100%", height: "auto" }}
-              width={1000}
-              height={0}
-              src={data.files.imgUrl}
-              alt="ComCamp36Logo"
-              priority
-            />
+            {data.files.imgUrl.includes(".heic") ? (
+              <div className="bg-muted text-muted-foreground flex h-80 w-full flex-col items-center justify-center p-4 text-center">
+                <p className="text-red-500">ไม่สามารถแสดงรูป HEIC ได้</p>
+                <a
+                  href={data.files.imgUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-2 text-blue-500 hover:underline"
+                >
+                  Download เพื่อดูรูป
+                </a>
+              </div>
+            ) : (
+              <Image
+                style={{ width: "100%", height: "auto" }}
+                width={1000}
+                height={0}
+                src={data.files.imgUrl}
+                alt="ComCamp36Logo"
+                priority
+              />
+            )}
           </div>
           <div className="flex flex-col gap-1">
             <div className="flex flex-col gap-2">
