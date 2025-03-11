@@ -5,11 +5,19 @@ import { and, eq } from "drizzle-orm";
 import { db, dbStaff } from "@/db";
 import { user } from "@/db/schema";
 import { wichakarn } from "@/db/staff-schema";
+import { StaffRoles } from "@/lib/auth/role";
+import { ForbiddenError } from "@/lib/errors";
 import { authenticatedAction } from "@/lib/safe-action";
 
 const getAllWichakansTable = authenticatedAction
   .createServerAction()
-  .handler(async () => {
+  .handler(async ({ ctx }) => {
+    if (
+      ctx.user.role !== StaffRoles.ADMIN &&
+      ctx.user.role !== StaffRoles.ACADEMIC
+    ) {
+      throw new ForbiddenError();
+    }
     const users = await db
       .select({
         id: user.id,

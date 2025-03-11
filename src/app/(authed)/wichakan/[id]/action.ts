@@ -9,7 +9,8 @@ import { db, dbStaff } from "@/db";
 import { answerAcademic, user } from "@/db/schema";
 import { wichakarn } from "@/db/staff-schema";
 import { auth } from "@/lib/auth";
-import { NotFoundError } from "@/lib/errors";
+import { StaffRoles } from "@/lib/auth/role";
+import { ForbiddenError, NotFoundError } from "@/lib/errors";
 import { authenticatedAction } from "@/lib/safe-action";
 
 export const getUserWichakans = authenticatedAction
@@ -19,9 +20,16 @@ export const getUserWichakans = authenticatedAction
       id: z.string().nullable(),
     }),
   )
-  .handler(async ({ input }) => {
+  .handler(async ({ ctx, input }) => {
     if (!input.id) {
       return;
+    }
+
+    if (
+      ctx.user.role !== StaffRoles.ADMIN &&
+      ctx.user.role !== StaffRoles.ACADEMIC
+    ) {
+      throw new ForbiddenError();
     }
 
     const users = await db

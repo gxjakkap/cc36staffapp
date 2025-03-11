@@ -6,6 +6,7 @@ import { useMediaQuery } from "usehooks-ts";
 
 import { MobileNav } from "@/components/mobile-nav";
 import { SignOutButton } from "@/components/sign-out-button";
+import { StaffRoles } from "@/lib/auth/role";
 import { cn } from "@/lib/utils";
 
 import { ThemeToggle } from "./theme-toggle";
@@ -13,17 +14,30 @@ import { Button } from "./ui/button";
 
 interface NavbarProps {
   isAdmin?: boolean;
+  role?: string | null;
 }
 
-export const NAVBARS = [
-  { href: "/", text: "หน้าหลัก" },
+export const THABIANS_NAV = [
   { href: "/nongs", text: "ข้อมูลส่วนตัว" },
   { href: "/thabians", text: "คำถามทะเบียน" },
-  { href: "/wichakans", text: "คำถามวิชาการ" },
-  { href: "/change-password", text: "เปลี่ยนรหัสผ่าน" },
 ];
 
-export function Navbar({ isAdmin }: NavbarProps) {
+const ThabianNavItems = ({ pathname }: { pathname: string }) => {
+  return (
+    <>
+      {THABIANS_NAV.map(({ href, text }) => (
+        <NavbarChild
+          key={href}
+          href={href}
+          text={text}
+          isActive={pathname === href || pathname.startsWith(href + "/")}
+        />
+      ))}
+    </>
+  );
+};
+
+export function Navbar({ isAdmin, role }: NavbarProps) {
   const pathname = usePathname();
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
@@ -32,14 +46,39 @@ export function Navbar({ isAdmin }: NavbarProps) {
       <div className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 flex border-b px-6 py-3 backdrop-blur">
         <nav className="flex w-full items-center justify-between">
           <div className="flex items-center">
-            {NAVBARS.map(({ href, text }) => (
-              <NavbarChild
-                key={href}
-                href={href}
-                text={text}
-                isActive={pathname === href || pathname.startsWith(href + "/")}
-              />
-            ))}
+            <NavbarChild
+              key="/"
+              href="/"
+              text="หน้าหลัก"
+              isActive={pathname === "/"}
+            />
+
+            {!!role &&
+              (role === StaffRoles.REGIS || role === StaffRoles.ADMIN) && (
+                <ThabianNavItems pathname={pathname} />
+              )}
+            {!!role &&
+              (role === StaffRoles.ACADEMIC || role === StaffRoles.ADMIN) && (
+                <NavbarChild
+                  key="/wichakans"
+                  href="/wichakans"
+                  text="คำถามวิชาการ"
+                  isActive={
+                    pathname === "/wichakans" ||
+                    pathname.startsWith("/wichakans/")
+                  }
+                />
+              )}
+
+            <NavbarChild
+              key="/change-password"
+              href="/change-password"
+              text="เปลี่ยนรหัสผ่าน"
+              isActive={
+                pathname === "/change-password" ||
+                pathname.startsWith("/change-password/")
+              }
+            />
 
             {isAdmin && (
               <NavbarChild
