@@ -57,6 +57,13 @@
       "when": 1741512767369,
       "tag": "0007_glorious_eternals",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1741704235276,
+      "tag": "0008_sharp_annihilus",
+      "breakpoints": true
     }
   ]
 }

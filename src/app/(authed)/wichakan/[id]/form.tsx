@@ -105,6 +105,7 @@ function WichakanForm(props: WichakanProps) {
                     placeholder="กรอกคะแนน 1"
                     type="number"
                     min={0}
+                    step={0.01}
                     {...field}
                   />
                 </FormControl>

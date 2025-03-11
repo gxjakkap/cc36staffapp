@@ -103,11 +103,12 @@ function TabianForm(props: TabianFormProps) {
                     placeholder={`กรอกคะแนน ${num.replace("_", ".")} ผู้ตรวจคนที่ 1`}
                     type="number"
                     min={0}
+                    step="0.01"
                   />
                   <Button
                     onClick={() =>
                       props.submitScore(
-                        parseInt(
+                        parseFloat(
                           inputValue[
                             `score${num}_user1` as keyof typeof inputValue
                           ],
@@ -132,11 +133,12 @@ function TabianForm(props: TabianFormProps) {
                     placeholder={`กรอกคะแนน ${num.replace("_", ".")} ผู้ตรวจคนที่ 2`}
                     type="number"
                     min={0}
+                    step="0.01"
                   />
                   <Button
                     onClick={() =>
                       props.submitScore(
-                        parseInt(
+                        parseFloat(
                           inputValue[
                             `score${num}_user2` as keyof typeof inputValue
                           ],
