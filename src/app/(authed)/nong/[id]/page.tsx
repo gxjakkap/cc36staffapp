@@ -198,7 +198,7 @@ function ApplicantPage() {
     <div className="mx-auto px-4 py-8">
       <Card className="mx-auto w-full max-w-7xl">
         <CardHeader>
-          <CardTitle className="flex gap-2 text-2xl font-bold md:text-3xl">
+          <CardTitle className="flex items-center gap-2 text-2xl font-bold md:text-3xl">
             <BackwardButton />
             {titleVal(data.user.title || "")}{" "}
             {data.user.fullname || "ยังไม่ได้ระบุชื่อเต็ม"}
