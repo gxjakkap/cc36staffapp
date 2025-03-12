@@ -159,6 +159,8 @@ export function DataTable<TData, TValue>({
           return acc;
         }, {});
 
+        setPage(1);
+
         for (const prevFilter of prev) {
           if (!next.some((filter) => filter.id === prevFilter.id)) {
             filterUpdates[prevFilter.id] = null;
@@ -169,7 +171,7 @@ export function DataTable<TData, TValue>({
         return next;
       });
     },
-    [debouncedSetFilterValues, filterableColumns, searchableColumns],
+    [debouncedSetFilterValues, filterableColumns, searchableColumns, setPage],
   );
 
   // Paginate
