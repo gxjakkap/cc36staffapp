@@ -348,7 +348,8 @@ function ApplicantPage() {
                 (tabiansData?.info_status == "done" &&
                   tabiansData?.info == true)
               }
-              className="min-w-32 bg-green-600 text-white hover:bg-green-700"
+              variant="success"
+              className="min-w-32"
               size="lg"
             >
               <CircleCheck className="!size-5" /> ข้อมูลถูกต้อง
