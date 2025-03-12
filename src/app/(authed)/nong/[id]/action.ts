@@ -6,7 +6,7 @@ import { z } from "zod";
 
 import { db, dbStaff } from "@/db";
 import { file, user } from "@/db/schema";
-import { tabian } from "@/db/staff-schema";
+import { remarks, tabian } from "@/db/staff-schema";
 import { auth } from "@/lib/auth";
 import { StaffRoles } from "@/lib/auth/role";
 import { ForbiddenError, NotFoundError } from "@/lib/errors";
@@ -64,6 +64,11 @@ export const getUserInfo = authenticatedAction
       }),
     );
 
+    const [nongsRemark] = await dbStaff
+      .select()
+      .from(remarks)
+      .where(eq(remarks.userId, input.id));
+
     const result = Object.fromEntries(urls) as Record<
       keyof typeof filePaths,
       string
@@ -72,6 +77,7 @@ export const getUserInfo = authenticatedAction
     return {
       user: users[0].User,
       files: result,
+      remarks: nongsRemark,
     };
   });
 
@@ -120,5 +126,115 @@ export const submitNongInfo = authenticatedAction
       return "success";
     } catch (error) {
       console.log(error);
+    }
+  });
+
+export const addRemarks = authenticatedAction
+  .createServerAction()
+  .input(
+    z.object({
+      userId: z.string(),
+      remarks: z.string(),
+    }),
+  )
+  .handler(async ({ input }) => {
+    try {
+      const session = await auth.api.getSession({
+        headers: await headers(),
+      });
+      if (
+        !session?.user.username ||
+        (session.user.role !== StaffRoles.REGIS &&
+          session.user.role !== StaffRoles.ADMIN)
+      )
+        return;
+
+      await dbStaff
+        .insert(remarks)
+        .values({
+          userId: input.userId,
+          remarks: input.remarks,
+          updated_at: new Date(),
+          added_by: session.user.username,
+        });
+      return "success";
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+export const editRemarks = authenticatedAction
+  .createServerAction()
+  .input(
+    z.object({
+      userId: z.string(),
+      remarks: z.string(),
+    }),
+  )
+  .handler(async ({ input }) => {
+    try {
+      const session = await auth.api.getSession({
+        headers: await headers(),
+      });
+      if (
+        !session?.user.username ||
+        (session.user.role !== StaffRoles.REGIS &&
+          session.user.role !== StaffRoles.ADMIN)
+      )
+        return;
+
+      const [oldRemark] = await dbStaff
+        .select()
+        .from(remarks)
+        .where(eq(remarks.userId, input.userId))
+        .limit(1);
+
+      if (!oldRemark) return;
+
+      await dbStaff
+        .update(remarks)
+        .set({
+          remarks: input.remarks,
+          updated_at: new Date(),
+          added_by: session.user.username,
+        })
+        .where(eq(remarks.userId, input.userId));
+      return "success";
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+export const remRemarks = authenticatedAction
+  .createServerAction()
+  .input(
+    z.object({
+      userId: z.string(),
+    }),
+  )
+  .handler(async ({ input }) => {
+    try {
+      const session = await auth.api.getSession({
+        headers: await headers(),
+      });
+      if (
+        !session?.user.username ||
+        (session.user.role !== StaffRoles.REGIS &&
+          session.user.role !== StaffRoles.ADMIN)
+      )
+        return;
+
+      const [oldRemark] = await dbStaff
+        .select()
+        .from(remarks)
+        .where(eq(remarks.userId, input.userId))
+        .limit(1);
+
+      if (!oldRemark) return;
+
+      await dbStaff.delete(remarks).where(eq(remarks.userId, input.userId));
+      return "success";
+    } catch (err) {
+      console.log(err);
     }
   });

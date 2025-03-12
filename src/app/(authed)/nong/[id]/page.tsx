@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Image from "next/image";
 import { redirect, useParams } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
@@ -19,6 +19,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
 import { useServerActionQuery } from "@/hook/server-action-hooks";
 import {
   formatDateString,
@@ -28,9 +29,18 @@ import {
 } from "@/lib/formatter";
 
 import { getUserTabians } from "../../thabian/[id]/action";
-import { getUserInfo, submitNongInfo } from "./action";
+import {
+  addRemarks,
+  editRemarks,
+  getUserInfo,
+  remRemarks,
+  submitNongInfo,
+} from "./action";
 
 function ApplicantPage() {
+  const [textareaEnabled, setTextAreaEnabled] = useState(false);
+  const [remark, setRemark] = useState("");
+  const [remarkExisted, setRemarkExisted] = useState(false);
   const queryClient = useQueryClient();
   const { id } = useParams();
 
@@ -47,6 +57,14 @@ function ApplicantPage() {
     queryKey: ["userInfoTabians", id],
     input: { id: id ? id.toString() : null },
   });
+
+   
+  useEffect(() => {
+    if (!isLoading && !!data?.remarks) {
+      setRemark(data?.remarks.remarks ?? "");
+      setRemarkExisted(!!data?.remarks);
+    } else return;
+  }, [isLoading]);
 
   if (!id) {
     return redirect("/nongs");
@@ -194,6 +212,37 @@ function ApplicantPage() {
     }
   }
 
+  async function submitRemarks(remark: string, isRemove: boolean) {
+    if (!id) return;
+    if (isRemove) {
+      const [code] = await remRemarks({ userId: id?.toString() });
+      if (code == "success") {
+        toast.success("ลบหมายเหตุเรียบร้อย");
+        location.reload();
+      }
+    } else if (remark) {
+      if (remarkExisted) {
+        const [code] = await editRemarks({
+          userId: id.toString(),
+          remarks: remark,
+        });
+        if (code == "success") {
+          toast.success("แก้ไขหมายเหตุเรียบร้อย");
+          location.reload();
+        }
+      } else {
+        const [code] = await addRemarks({
+          userId: id.toString(),
+          remarks: remark,
+        });
+        if (code == "success") {
+          toast.success("เพิ่มหมายเหตุเรียบร้อย");
+          location.reload();
+        }
+      }
+    }
+  }
+
   return (
     <div className="mx-auto px-4 py-8">
       <Card className="mx-auto w-full max-w-7xl">
@@ -312,6 +361,39 @@ function ApplicantPage() {
                       )}
                     </div>
                   </div>
+                </div>
+              </div>
+              <div className="border-border rounded-lg border p-4">
+                <h3 className="mb-4 text-xl font-semibold">หมายเหตุ</h3>
+                <div className="mb-4 flex gap-x-4">
+                  {textareaEnabled ? (
+                    <Button
+                      onClick={() => {
+                        setTextAreaEnabled(false);
+                        submitRemarks(remark ?? "", false);
+                      }}
+                    >
+                      Save
+                    </Button>
+                  ) : (
+                    <Button onClick={() => setTextAreaEnabled(true)}>
+                      เพิ่ม/แก้ไขหมายเหตุ
+                    </Button>
+                  )}
+                  <Button
+                    variant="destructive"
+                    onClick={() => submitRemarks("", true)}
+                  >
+                    ลบหมายเหตุ
+                  </Button>
+                </div>
+                <div className="flex flex-col gap-y-4">
+                  <Textarea
+                    value={remark ?? ""}
+                    onChange={(e) => setRemark(e.target.value)}
+                    disabled={!textareaEnabled}
+                    className="!w-full disabled:opacity-100"
+                  />
                 </div>
               </div>
             </div>

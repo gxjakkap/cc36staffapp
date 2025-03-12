@@ -119,6 +119,23 @@ export const tabian = pgTable(
   ],
 );
 
+export const remarks = pgTable(
+  "remarks",
+  {
+    id: uuid("id").defaultRandom().notNull().primaryKey(),
+    userId: text().notNull(),
+    remarks: text(),
+    updated_at: timestamp("updated_at").notNull(),
+    added_by: text().notNull(),
+  },
+  (table) => [
+    uniqueIndex("remarks_userId_idx").using(
+      "btree",
+      table.userId.asc().nullsLast().op("text_ops"),
+    ),
+  ],
+);
+
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
