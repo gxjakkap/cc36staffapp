@@ -51,7 +51,6 @@ export const filterSchema = z.object({
   id: z.string(),
   value: z.union([z.string(), z.array(z.string())]),
   type: z.enum(dataTableConfig.columnTypes),
-  operator: z.enum(dataTableConfig.globalOperators),
   rowId: z.string(),
 });
 
@@ -87,8 +86,7 @@ export const getFiltersStateParser = <T>(originalRow?: Row<T>["original"]) => {
         (filter, index) =>
           filter.id === b[index]?.id &&
           filter.value === b[index]?.value &&
-          filter.type === b[index]?.type &&
-          filter.operator === b[index]?.operator,
+          filter.type === b[index]?.type,
       ),
   });
 };
