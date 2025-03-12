@@ -1,5 +1,4 @@
-import type { ColumnSort, Row } from "@tanstack/react-table";
-import type { SQL } from "drizzle-orm";
+import type { ColumnSort, TableState } from "@tanstack/react-table";
 import type { z } from "zod";
 
 import type { filterSchema } from "@/lib/parsers";
@@ -41,14 +40,4 @@ export type Filter<TData> = Prettify<
   }
 >;
 
-export interface DataTableRowAction<TData> {
-  row: Row<TData>;
-  type: "update" | "delete";
-}
-
-export interface QueryBuilderOpts {
-  where?: SQL;
-  orderBy?: SQL;
-  distinct?: boolean;
-  nullish?: boolean;
-}
+export type InitialStateTablePage = Omit<Partial<TableState>, "sorting">;
