@@ -15,6 +15,7 @@ export type Wichkans = {
   score_academic?: number | null;
   score_chess?: number | null;
   timestamp?: Date | null;
+  score_chess_normalize?: number | null;
 };
 
 export const createColumns = (): ColumnDef<Wichkans>[] => [
@@ -62,6 +63,22 @@ export const createColumns = (): ColumnDef<Wichkans>[] => [
       <>
         {row.original.score_chess ? (
           <div>{row.original.score_chess}</div>
+        ) : (
+          <p className="text-foreground/40">ยังไม่ได้ตรวจ</p>
+        )}
+      </>
+    ),
+    size: 200,
+  },
+  {
+    accessorKey: "score_chess_normalize",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="พาร์ทที่ 2 คำนวนแล้ว" />
+    ),
+    cell: ({ row }) => (
+      <>
+        {row.original.score_chess_normalize ? (
+          <div>{row.original.score_chess_normalize}</div>
         ) : (
           <p className="text-foreground/40">ยังไม่ได้ตรวจ</p>
         )}
