@@ -7,7 +7,6 @@ import StatusBadge, {
   InspectStatusKeys,
 } from "@/components/data-table/status-badge";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { formatId, formatThaiBuddhist } from "@/lib/formatter";
 
 export type Wichkans = {
@@ -18,15 +17,13 @@ export type Wichkans = {
   timestamp?: Date | null;
 };
 
-export const createColumns = (isLoading: boolean): ColumnDef<Wichkans>[] => [
+export const createColumns = (): ColumnDef<Wichkans>[] => [
   {
     accessorKey: "id",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="รหัส" />
     ),
-    cell: isLoading
-      ? () => <Skeleton className="h-5 w-24" />
-      : ({ row }) => <div>{formatId(row.original.id)}</div>,
+    cell: ({ row }) => <div>{formatId(row.original.id)}</div>,
     size: 200,
   },
   {
@@ -34,9 +31,7 @@ export const createColumns = (isLoading: boolean): ColumnDef<Wichkans>[] => [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="สถานะ" />
     ),
-    cell: isLoading
-      ? () => <Skeleton className="h-5 w-20" />
-      : ({ row }) => <StatusBadge status={row.original.status} />,
+    cell: ({ row }) => <StatusBadge status={row.original.status} />,
     size: 200,
   },
   {
@@ -47,17 +42,15 @@ export const createColumns = (isLoading: boolean): ColumnDef<Wichkans>[] => [
         title="คะแนนพาร์ทที่ 1 (algorithms)"
       />
     ),
-    cell: isLoading
-      ? () => <Skeleton className="h-5 w-16" />
-      : ({ row }) => (
-          <>
-            {row.original.score_academic ? (
-              <div>{row.original.score_academic}</div>
-            ) : (
-              <p className="text-foreground/40">ยังไม่ได้ตรวจ</p>
-            )}
-          </>
-        ),
+    cell: ({ row }) => (
+      <>
+        {row.original.score_academic ? (
+          <div>{row.original.score_academic}</div>
+        ) : (
+          <p className="text-foreground/40">ยังไม่ได้ตรวจ</p>
+        )}
+      </>
+    ),
     size: 200,
   },
   {
@@ -65,17 +58,15 @@ export const createColumns = (isLoading: boolean): ColumnDef<Wichkans>[] => [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="คะแนนพาร์ทที่ 2 (chess)" />
     ),
-    cell: isLoading
-      ? () => <Skeleton className="h-5 w-16" />
-      : ({ row }) => (
-          <>
-            {row.original.score_chess ? (
-              <div>{row.original.score_chess}</div>
-            ) : (
-              <p className="text-foreground/40">ยังไม่ได้ตรวจ</p>
-            )}
-          </>
-        ),
+    cell: ({ row }) => (
+      <>
+        {row.original.score_chess ? (
+          <div>{row.original.score_chess}</div>
+        ) : (
+          <p className="text-foreground/40">ยังไม่ได้ตรวจ</p>
+        )}
+      </>
+    ),
     size: 200,
   },
   {
@@ -83,23 +74,21 @@ export const createColumns = (isLoading: boolean): ColumnDef<Wichkans>[] => [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="ตรวจล่าสุด" />
     ),
-    cell: isLoading
-      ? () => <Skeleton className="h-5 w-28" />
-      : ({ row }) => (
-          <>
-            {row.original.timestamp ? (
-              <div>{formatThaiBuddhist(row.original.timestamp)}</div>
-            ) : (
-              <p className="text-foreground/40">ยังไม่มีการตรวจ</p>
-            )}
-          </>
-        ),
+    cell: ({ row }) => (
+      <>
+        {row.original.timestamp ? (
+          <div>{formatThaiBuddhist(row.original.timestamp)}</div>
+        ) : (
+          <p className="text-foreground/40">ยังไม่มีการตรวจ</p>
+        )}
+      </>
+    ),
     size: 200,
   },
   {
     id: "ตรวจสอบ",
     cell: ({ row }) => (
-      <Link href={isLoading ? "#" : `/wichakan/${row.original.id}`}>
+      <Link href={`/wichakan/${row.original.id}`}>
         <Button variant="outline" size="icon">
           <SearchIcon />
         </Button>
