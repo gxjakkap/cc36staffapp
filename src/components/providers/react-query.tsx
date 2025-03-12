@@ -10,7 +10,7 @@ function ReactQueryProvider({ children }: React.PropsWithChildren) {
     queries: {
       refetchOnWindowFocus: false,
       refetchOnReconnect: true,
-      refetchOnMount: true,
+      refetchOnMount: false,
     },
   });
 
