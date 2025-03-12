@@ -209,7 +209,17 @@ export function DataTable<TData, TValue>({
   });
 
   if (isLoading) {
-    return <DataTableSkeleton />;
+    return (
+      <DataTableSkeleton
+        columnCount={columns.length + 1}
+        searchableColumnCount={
+          filterFields?.filter((value) => value.options == null).length
+        }
+        filterableColumnCount={
+          filterFields?.filter((value) => value.options != null).length
+        }
+      />
+    );
   }
 
   return (
