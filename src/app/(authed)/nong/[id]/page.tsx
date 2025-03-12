@@ -4,7 +4,15 @@ import { Fragment, useEffect, useState } from "react";
 import Image from "next/image";
 import { redirect, useParams } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
-import { CircleCheck, CircleX, Download, ExternalLink } from "lucide-react";
+import {
+  CircleCheck,
+  CircleX,
+  Download,
+  ExternalLink,
+  PencilIcon,
+  SaveIcon,
+  TrashIcon,
+} from "lucide-react";
 import { toast } from "sonner";
 
 import BackwardButton from "@/components/backward-button";
@@ -58,7 +66,6 @@ function ApplicantPage() {
     input: { id: id ? id.toString() : null },
   });
 
-   
   useEffect(() => {
     if (!isLoading && !!data?.remarks) {
       setRemark(data?.remarks.remarks ?? "");
@@ -373,27 +380,37 @@ function ApplicantPage() {
                         submitRemarks(remark ?? "", false);
                       }}
                     >
-                      Save
+                      <SaveIcon /> {"บันทึก"}
                     </Button>
                   ) : (
-                    <Button onClick={() => setTextAreaEnabled(true)}>
-                      เพิ่ม/แก้ไขหมายเหตุ
+                    <Button
+                      className="cursor-pointer"
+                      onClick={() => setTextAreaEnabled(true)}
+                    >
+                      <PencilIcon /> {remarkExisted ? "แก้ไข" : "เพิ่ม"}หมายเหตุ
                     </Button>
                   )}
                   <Button
                     variant="destructive"
+                    className="cursor-pointer"
                     onClick={() => submitRemarks("", true)}
                   >
-                    ลบหมายเหตุ
+                    <TrashIcon /> ลบหมายเหตุ
                   </Button>
                 </div>
-                <div className="flex flex-col gap-y-4">
+                <div className="flex flex-col gap-y-2">
                   <Textarea
                     value={remark ?? ""}
                     onChange={(e) => setRemark(e.target.value)}
                     disabled={!textareaEnabled}
                     className="!w-full disabled:opacity-100"
                   />
+                  {!!data.remarks && (
+                    <p className="text-muted-foreground font-medium">
+                      แก้ไขล่าสุดโดย {data.remarks.added_by} เมื่อ{" "}
+                      {formatThaiBuddhist(data.remarks.updated_at, true)}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
