@@ -108,36 +108,6 @@ export const createColumns = (isLoading: boolean): ColumnDef<Nongs>[] => [
     size: 40,
   },
   {
-    accessorKey: "has_submit",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="ส่งใบสมัคร" />
-    ),
-    cell: isLoading
-      ? () => <Skeleton className="h-5 w-8" />
-      : ({ row }) => (
-          <div className="flex w-[5rem] items-center justify-center">
-            {row.original.has_submit ? "✅" : "❌"}
-          </div>
-        ),
-    size: 40,
-    filterFn: (row, _, filterValue) => {
-      if (
-        filterValue.includes("submitted") &&
-        filterValue.includes("not_submitted")
-      ) {
-        return true;
-      }
-
-      if (filterValue.includes("submitted")) {
-        return row.original.has_submit;
-      }
-
-      return filterValue.includes("not_submitted")
-        ? !row.original.has_submit
-        : true;
-    },
-  },
-  {
     id: "ตรวจสอบ",
     cell: ({ row }) => (
       <Link href={isLoading ? "#" : `/nong/${row.original.id}`}>
