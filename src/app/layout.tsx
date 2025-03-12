@@ -9,7 +9,7 @@ import "./globals.css";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import { ThemeProvider } from "@/components/providers/theme";
-import { LineSeedSans, sarabun } from "@/fonts";
+import { inter, LineSeedSans, sarabun } from "@/fonts";
 
 export const metadata: Metadata = {
   title: "CC36 Staff",
@@ -27,6 +27,7 @@ export default function RootLayout({
           "font-line-seed-sans antialiased",
           LineSeedSans.variable,
           sarabun.variable,
+          inter.variable,
         )}
       >
         <ThemeProvider

@@ -1,4 +1,4 @@
-import { Sarabun } from "next/font/google";
+import { Inter, Sarabun } from "next/font/google";
 import localFont from "next/font/local";
 
 export const LineSeedSans = localFont({
@@ -25,4 +25,10 @@ export const sarabun = Sarabun({
   display: "swap",
   variable: "--font-sarabun",
   subsets: ["latin", "thai"],
+});
+
+export const inter = Inter({
+  display: "swap",
+  variable: "--font-inter",
+  subsets: ["latin"],
 });

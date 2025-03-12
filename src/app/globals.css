@@ -116,6 +116,7 @@
 @theme {
   --font-line-seed-sans: "var(--font-line-seed-sans)", sans-serif;
   --font-sarabun: "var(--font-sarabun)", sans-serif;
+  --font-inter: "var(--font-inter)", sans-serif;
 }
 
 @theme inline {
@@ -186,4 +187,10 @@
 
 .slot[data-swapy-highlighted] {
   background: var(--muted);
+}
+
+@layer components {
+  number-flow-react::part(suffix) {
+    @apply text-muted-foreground ml-0.5 text-xl font-medium;
+  }
 }
