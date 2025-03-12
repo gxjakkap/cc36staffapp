@@ -22,20 +22,6 @@ export default function NongsTable(props: NongsTableProps) {
       input: undefined,
     });
 
-  const placeholderData = useMemo(() => {
-    if (!tabiansInfoLoading) return [];
-    return Array(10).fill({
-      id: "",
-      fullname: "",
-      gender: "",
-      phone: "",
-      email: "",
-      has_submit: false,
-      status: "unlock",
-      timestamp: null,
-    });
-  }, [tabiansInfoLoading]);
-
   const filterFields: DataTableFilterField<Nongs>[] = useMemo(
     () => [
       {
@@ -89,10 +75,7 @@ export default function NongsTable(props: NongsTableProps) {
     [tabiansInfoData],
   );
 
-  const columns = useMemo(
-    () => createColumns(tabiansInfoLoading),
-    [tabiansInfoLoading],
-  );
+  const columns = useMemo(() => createColumns(), []);
 
   return (
     <div className="flex w-full items-center justify-center pt-10">
@@ -100,26 +83,25 @@ export default function NongsTable(props: NongsTableProps) {
         <DataTable
           columns={columns}
           data={
-            tabiansInfoLoading
-              ? placeholderData
-              : tabiansInfoData
-                ? tabiansInfoData.map((item) => ({
-                    id: item.id,
-                    fullname: item.fullname,
-                    gender: item.gender,
-                    phone: item.phone,
-                    email: item.email,
-                    has_submit: item.has_submit,
-                    status:
-                      item.status == "done"
-                        ? "done"
-                        : ("unlock" as InspectStatusKeys),
-                    timestamp: item.timestamp,
-                  }))
-                : []
+            tabiansInfoData
+              ? tabiansInfoData.map((item) => ({
+                  id: item.id,
+                  fullname: item.fullname,
+                  gender: item.gender,
+                  phone: item.phone,
+                  email: item.email,
+                  has_submit: item.has_submit,
+                  status:
+                    item.status == "done"
+                      ? "done"
+                      : ("unlock" as InspectStatusKeys),
+                  timestamp: item.timestamp,
+                }))
+              : []
           }
           filterFields={filterFields}
           initialState={props.initialState}
+          isLoading={tabiansInfoLoading}
         />
       </div>
     </div>

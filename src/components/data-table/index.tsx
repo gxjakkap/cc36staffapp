@@ -38,6 +38,7 @@ import { DataTableFilterField, ExtendedSortingState } from "@/types";
 
 import { DataTableViewOptions } from "./column-toggle";
 import { DataTablePagination } from "./pagination";
+import { DataTableSkeleton } from "./skeleton";
 import { DataTableToolbar } from "./toolbar";
 
 interface DataTableProps<TData, TValue> {
@@ -47,6 +48,7 @@ interface DataTableProps<TData, TValue> {
   initialState?: Omit<Partial<TableState>, "sorting"> & {
     sorting?: ExtendedSortingState<TData>;
   };
+  isLoading?: boolean;
 }
 
 export function DataTable<TData, TValue>({
@@ -54,6 +56,7 @@ export function DataTable<TData, TValue>({
   data,
   filterFields,
   initialState,
+  isLoading,
 }: DataTableProps<TData, TValue>) {
   const queryStateOptions = useMemo<
     Omit<UseQueryStateOptions<string>, "parse">
@@ -204,6 +207,10 @@ export function DataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     autoResetPageIndex: false,
   });
+
+  if (isLoading) {
+    return <DataTableSkeleton />;
+  }
 
   return (
     <div className="flex flex-col gap-4">
