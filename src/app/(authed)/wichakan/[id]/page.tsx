@@ -140,10 +140,12 @@ export default function AnswerAcademicPage() {
                   inspectStatusBadgeVariants({
                     variant: wichakansData?.status as InspectStatusKeys,
                   }),
-                  "font-bold capitalize",
+                  "font-bold",
                 )}
               >
-                {wichakansData?.status}
+                <span className="capitalize">{wichakansData?.status}</span>{" "}
+                {wichakansData?.status === InspectStatus.DONE &&
+                  `(ตรวจโดย ${wichakansData.staffUsername})`}
               </span>
             </p>
             {wichakansData?.status == InspectStatus["LOCK"] && (
