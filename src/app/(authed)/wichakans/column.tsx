@@ -12,10 +12,11 @@ import { formatId, formatThaiBuddhist } from "@/lib/formatter";
 export type Wichkans = {
   id: string;
   status: InspectStatusKeys;
-  score_academic?: number | null;
-  score_chess?: number | null;
-  timestamp?: Date | null;
-  score_chess_normalize?: number | null;
+  score_academic: number | null;
+  score_chess: number | null;
+  timestamp: Date | null;
+  score_chess_normalize: number | null;
+  score: number | null;
 };
 
 export const createColumns = (): ColumnDef<Wichkans>[] => [
@@ -55,25 +56,9 @@ export const createColumns = (): ColumnDef<Wichkans>[] => [
     size: 200,
   },
   {
-    accessorKey: "score_chess",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="คะแนนพาร์ทที่ 2 (chess)" />
-    ),
-    cell: ({ row }) => (
-      <>
-        {row.original.score_chess ? (
-          <div>{row.original.score_chess}</div>
-        ) : (
-          <p className="text-foreground/40">ยังไม่ได้ตรวจ</p>
-        )}
-      </>
-    ),
-    size: 200,
-  },
-  {
     accessorKey: "score_chess_normalize",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="พาร์ทที่ 2 คำนวนแล้ว" />
+      <DataTableColumnHeader column={column} title="คะแนนพาร์ทที่ 2 (chess)" />
     ),
     cell: ({ row }) => (
       <>
@@ -86,6 +71,15 @@ export const createColumns = (): ColumnDef<Wichkans>[] => [
     ),
     size: 200,
   },
+  {
+    accessorKey: "score",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="คะแนนรวม" />
+    ),
+    cell: ({ row }) => <div>{row.original.score}</div>,
+    size: 200,
+  },
+
   {
     accessorKey: "timestamp",
     header: ({ column }) => (

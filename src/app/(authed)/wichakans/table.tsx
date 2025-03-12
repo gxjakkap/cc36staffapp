@@ -19,8 +19,6 @@ export default function WichakanPage(props: TableProps) {
 
   const columns = useMemo(() => createColumns(), []);
 
-  console.log(data);
-
   const filterFields: DataTableFilterField<Wichkans>[] = useMemo(
     () => [
       {
@@ -67,6 +65,7 @@ export default function WichakanPage(props: TableProps) {
                   status: item.status as InspectStatusKeys,
                   timestamp: item.timestamp,
                   score_chess_normalize: item.score_chess_normalize,
+                  score: item.score,
                 }))
               : []
           }

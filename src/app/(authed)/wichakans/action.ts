@@ -60,6 +60,7 @@ const getAllWichakansTable = authenticatedAction
             status: "unlock",
             staffUsername: null,
             timestamp: null,
+            score: score_chess_normalize,
           };
         }
 
@@ -71,6 +72,9 @@ const getAllWichakansTable = authenticatedAction
           status: wichakansData[0].status,
           staffUsername: wichakansData[0].staffUsername,
           timestamp: wichakansData[0].timestamp,
+          score:
+            score_chess_normalize +
+            (Number(wichakansData[0].score_academic) ?? 0),
         };
       }),
     );
