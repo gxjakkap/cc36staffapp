@@ -240,7 +240,8 @@ export const createColumns = (): ColumnDef<Thabians>[] => {
               <TooltipContent>
                 <p>
                   <span className="font-bold">ตรวจเมื่อ :</span>{" "}
-                  {formatThaiBuddhist(row.original.updatedAt_info, true)}
+                  {formatThaiBuddhist(row.original.updatedAt_info, true)} โดย{" "}
+                  {row.original.info_staffUsername}
                 </p>
               </TooltipContent>
             ) : null}

@@ -336,7 +336,8 @@ function ApplicantPage() {
             {tabiansData?.updatedAt_info && (
               <p>
                 <span className="font-bold">ตรวจเมื่อ : </span>
-                {formatThaiBuddhist(tabiansData.updatedAt_info)}
+                {formatThaiBuddhist(tabiansData.updatedAt_info, true)} โดย{" "}
+                {tabiansData.info_staffUsername}
               </p>
             )}
           </div>
