@@ -7,6 +7,12 @@ import StatusBadge, {
   InspectStatusKeys,
 } from "@/components/data-table/status-badge";
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { formatId, formatThaiBuddhist } from "@/lib/formatter";
 
 export type Wichkans = {
@@ -17,6 +23,7 @@ export type Wichkans = {
   timestamp: Date | null;
   score_chess_normalize: number | null;
   score: number | null;
+  staffUsername: string | null;
 };
 
 export const createColumns = (): ColumnDef<Wichkans>[] => [
@@ -88,7 +95,17 @@ export const createColumns = (): ColumnDef<Wichkans>[] => [
     cell: ({ row }) => (
       <>
         {row.original.timestamp ? (
-          <div>{formatThaiBuddhist(row.original.timestamp)}</div>
+          <TooltipProvider delayDuration={0}>
+            <Tooltip>
+              <TooltipTrigger>
+                <div>{formatThaiBuddhist(row.original.timestamp)}</div>
+              </TooltipTrigger>
+              <TooltipContent>
+                ตรวจโดย:{" "}
+                <span className="font-bold">{row.original.staffUsername}</span>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         ) : (
           <p className="text-foreground/40">ยังไม่มีการตรวจ</p>
         )}

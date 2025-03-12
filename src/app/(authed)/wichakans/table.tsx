@@ -66,6 +66,7 @@ export default function WichakanPage(props: TableProps) {
                   timestamp: item.timestamp,
                   score_chess_normalize: item.score_chess_normalize,
                   score: item.score,
+                  staffUsername: item.staffUsername,
                 }))
               : []
           }
