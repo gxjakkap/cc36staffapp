@@ -46,6 +46,7 @@ export type Thabians = {
 
   info: boolean | null;
   info_status: string | null;
+  info_staffUsername: string | null;
   updatedAt_info: Date | null;
 
   updatedAt_score1_user1: Date | null;
