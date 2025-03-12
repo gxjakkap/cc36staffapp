@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import { AnswerWrapper } from "@/components/answer-wrapper";
+import BackwardButton from "@/components/bacward-button";
 import {
   InspectStatus,
   inspectStatusBadgeVariants,
@@ -172,7 +173,10 @@ export default function AnswerAcademicPage() {
           </div>
         </div>
       </div>
-      <ViewControls className="mb-3 justify-end" />
+      <div className="flex justify-between">
+        <BackwardButton />
+        <ViewControls className="mb-3 justify-end" />
+      </div>
       <ResizablePanelGroup
         direction="horizontal"
         className="h-full w-full rounded-lg border"

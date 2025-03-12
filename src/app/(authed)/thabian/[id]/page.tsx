@@ -4,6 +4,7 @@ import { redirect, useParams } from "next/navigation";
 import { toast } from "sonner";
 
 import { AnswerWrapper } from "@/components/answer-wrapper";
+import BackwardButton from "@/components/bacward-button";
 import Spinner from "@/components/spinner";
 import {
   ResizableHandle,
@@ -67,6 +68,7 @@ export default function AnswerRegisPage() {
         คำถามจากฝ่ายทะเบียน
       </h1>
       <div className="flex w-full justify-between">
+        <BackwardButton />
         <ViewControls className="mb-3 justify-end" />
       </div>
       <ResizablePanelGroup
