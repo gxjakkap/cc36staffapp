@@ -54,7 +54,7 @@ export const createColumns = (isLoading: boolean): ColumnDef<Wichkans>[] => [
             {row.original.score_academic ? (
               <div>{row.original.score_academic}</div>
             ) : (
-              <p className="text-foreground/25">ยังไม่ได้ตรวจ</p>
+              <p className="text-foreground/40">ยังไม่ได้ตรวจ</p>
             )}
           </>
         ),
@@ -72,7 +72,7 @@ export const createColumns = (isLoading: boolean): ColumnDef<Wichkans>[] => [
             {row.original.score_chess ? (
               <div>{row.original.score_chess}</div>
             ) : (
-              <p className="text-foreground/25">ยังไม่ได้ตรวจ</p>
+              <p className="text-foreground/40">ยังไม่ได้ตรวจ</p>
             )}
           </>
         ),
@@ -90,7 +90,7 @@ export const createColumns = (isLoading: boolean): ColumnDef<Wichkans>[] => [
             {row.original.timestamp ? (
               <div>{formatThaiBuddhist(row.original.timestamp)}</div>
             ) : (
-              <p className="text-foreground/25">ยังไม่มีการตรวจ</p>
+              <p className="text-foreground/40">ยังไม่มีการตรวจ</p>
             )}
           </>
         ),

@@ -216,13 +216,13 @@ export const createColumns = (isLoading: boolean): ColumnDef<Thabians>[] => {
               className={cn(
                 row.original.overall_score !== null
                   ? "text-foreground"
-                  : "text-foreground/20",
+                  : "text-foreground/40",
               )}
             >
               {row.original.overall_score !== null ? (
                 <OverallScoreCol row={row} />
               ) : (
-                "N/A"
+                <span className="text-foreground/40">N/A</span>
               )}
             </div>
           ),
@@ -295,7 +295,7 @@ interface ScoreColumnProp {
 const ScoreColumn = ({ score, who, when, score_sep }: ScoreColumnProp) => {
   return (
     <div
-      className={cn(score !== null ? "text-foreground" : "text-foreground/20")}
+      className={cn(score !== null ? "text-foreground" : "text-foreground/40")}
     >
       {score !== null ? (
         <HoverCard openDelay={0} closeDelay={10}>
@@ -315,21 +315,49 @@ const ScoreColumn = ({ score, who, when, score_sep }: ScoreColumnProp) => {
               </TableHeader>
               <TableBody>
                 <TableRow>
-                  <TableCell>{who.user1 ? who.user1 : "N/A"}</TableCell>
                   <TableCell>
-                    {score_sep.user1 ? score_sep.user1 : "N/A"}
+                    {who.user1 ? (
+                      who.user1
+                    ) : (
+                      <span className="text-foreground/40">N/A</span>
+                    )}
                   </TableCell>
                   <TableCell>
-                    {when.user1 ? formatThaiBuddhist(when.user1, true) : "N/A"}
+                    {score_sep.user1 ? (
+                      score_sep.user1
+                    ) : (
+                      <span className="text-foreground/40">N/A</span>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {when.user1 ? (
+                      formatThaiBuddhist(when.user1, true)
+                    ) : (
+                      <span className="text-foreground/40">N/A</span>
+                    )}
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>{who.user2 ? who.user2 : "N/A"}</TableCell>
                   <TableCell>
-                    {score_sep.user2 ? score_sep.user2 : "N/A"}
+                    {who.user2 ? (
+                      who.user2
+                    ) : (
+                      <span className="text-foreground/40">N/A</span>
+                    )}
                   </TableCell>
                   <TableCell>
-                    {when.user2 ? formatThaiBuddhist(when.user2, true) : "N/A"}
+                    {score_sep.user2 ? (
+                      score_sep.user2
+                    ) : (
+                      <span className="text-foreground/40">N/A</span>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {when.user2 ? (
+                      formatThaiBuddhist(when.user2, true)
+                    ) : (
+                      <span className="text-foreground/40">N/A</span>
+                    )}
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -337,7 +365,7 @@ const ScoreColumn = ({ score, who, when, score_sep }: ScoreColumnProp) => {
           </HoverCardContent>
         </HoverCard>
       ) : (
-        "N/A"
+        <span className="text-foreground/40">N/A</span>
       )}
     </div>
   );
@@ -347,79 +375,101 @@ const OverallScoreCol = ({ row }: { row: Row<Thabians> }) => {
   const inspectorsData = [
     {
       label: "1",
-      user_1: row.original.score1_user1_staffUsername || "N/A",
-      user_2: row.original.score1_user2_staffUsername || "N/A",
+      user_1: row.original.score1_user1_staffUsername || (
+        <span className="text-foreground/40">N/A</span>
+      ),
+      user_2: row.original.score1_user2_staffUsername || (
+        <span className="text-foreground/40">N/A</span>
+      ),
     },
     {
       label: "2",
-      user_1: row.original.score2_user1_staffUsername || "N/A",
-      user_2: row.original.score2_user2_staffUsername || "N/A",
+      user_1: row.original.score2_user1_staffUsername || (
+        <span className="text-foreground/40">N/A</span>
+      ),
+      user_2: row.original.score2_user2_staffUsername || (
+        <span className="text-foreground/40">N/A</span>
+      ),
     },
     {
       label: "3",
-      user_1: row.original.score3_user1_staffUsername || "N/A",
-      user_2: row.original.score3_user2_staffUsername || "N/A",
+      user_1: row.original.score3_user1_staffUsername || (
+        <span className="text-foreground/40">N/A</span>
+      ),
+      user_2: row.original.score3_user2_staffUsername || (
+        <span className="text-foreground/40">N/A</span>
+      ),
     },
     {
       label: "4",
-      user_1: row.original.score4_user1_staffUsername || "N/A",
-      user_2: row.original.score4_user2_staffUsername || "N/A",
+      user_1: row.original.score4_user1_staffUsername || (
+        <span className="text-foreground/40">N/A</span>
+      ),
+      user_2: row.original.score4_user2_staffUsername || (
+        <span className="text-foreground/40">N/A</span>
+      ),
     },
     {
       label: "5",
-      user_1: row.original.score5_user1_staffUsername || "N/A",
-      user_2: row.original.score5_user2_staffUsername || "N/A",
+      user_1: row.original.score5_user1_staffUsername || (
+        <span className="text-foreground/40">N/A</span>
+      ),
+      user_2: row.original.score5_user2_staffUsername || (
+        <span className="text-foreground/40">N/A</span>
+      ),
     },
     {
       label: "6.1",
-      user_1: row.original.score6_1_user1_staffUsername || "N/A",
-      user_2: row.original.score6_1_user2_staffUsername || "N/A",
+      user_1: row.original.score6_1_user1_staffUsername || (
+        <span className="text-foreground/40">N/A</span>
+      ),
+      user_2: row.original.score6_1_user2_staffUsername || (
+        <span className="text-foreground/40">N/A</span>
+      ),
     },
     {
       label: "6.2",
-      user_1: row.original.score6_2_user1_staffUsername || "N/A",
-      user_2: row.original.score6_2_user2_staffUsername || "N/A",
+      user_1: row.original.score6_2_user1_staffUsername || (
+        <span className="text-foreground/40">N/A</span>
+      ),
+      user_2: row.original.score6_2_user2_staffUsername || (
+        <span className="text-foreground/40">N/A</span>
+      ),
     },
   ];
 
   return (
-    <>
-      {row.original.overall_score !== null ? (
-        <HoverCard openDelay={0} closeDelay={10}>
-          <HoverCardTrigger asChild>
-            <Button size="icon" variant="ghost" className="cursor-pointer p-0">
-              {row.original.overall_score}
-            </Button>
-          </HoverCardTrigger>
-          <HoverCardContent className="w-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[70px]">ข้อที่</TableHead>
-                  <TableHead>คนที่ 1</TableHead>
-                  <TableHead>คนที่ 2</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {inspectorsData.map((inspector, index) => (
-                  <TableRow key={index}>
-                    <TableCell>
-                      {inspector.label.split(" ")[0]}{" "}
-                      <span className="font-bold">
-                        {inspector.label.split(" ")[1]}
-                      </span>
-                    </TableCell>
-                    <TableCell>{inspector.user_1} </TableCell>
-                    <TableCell>{inspector.user_2}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </HoverCardContent>
-        </HoverCard>
-      ) : (
-        "N/A"
-      )}
-    </>
+    <HoverCard openDelay={0} closeDelay={10}>
+      <HoverCardTrigger asChild>
+        <Button size="icon" variant="ghost" className="cursor-pointer p-0">
+          {row.original.overall_score}
+        </Button>
+      </HoverCardTrigger>
+      <HoverCardContent className="w-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[70px]">ข้อที่</TableHead>
+              <TableHead>คนที่ 1</TableHead>
+              <TableHead>คนที่ 2</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {inspectorsData.map((inspector, index) => (
+              <TableRow key={index}>
+                <TableCell>
+                  {inspector.label.split(" ")[0]}{" "}
+                  <span className="font-bold">
+                    {inspector.label.split(" ")[1]}
+                  </span>
+                </TableCell>
+                <TableCell>{inspector.user_1} </TableCell>
+                <TableCell>{inspector.user_2}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </HoverCardContent>
+    </HoverCard>
   );
 };
