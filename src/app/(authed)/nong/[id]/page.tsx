@@ -7,6 +7,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { CircleCheck, CircleX, Download, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
 
+import BackwardButton from "@/components/bacward-button";
 import Spinner from "@/components/spinner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -19,7 +20,12 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useServerActionQuery } from "@/hook/server-action-hooks";
-import { formatDateString, genderVal, titleVal } from "@/lib/formatter";
+import {
+  formatDateString,
+  formatThaiBuddhist,
+  genderVal,
+  titleVal,
+} from "@/lib/formatter";
 
 import { getUserTabians } from "../../thabian/[id]/action";
 import { getUserInfo, submitNongInfo } from "./action";
@@ -192,7 +198,8 @@ function ApplicantPage() {
     <div className="mx-auto px-4 py-8">
       <Card className="mx-auto w-full max-w-7xl">
         <CardHeader>
-          <CardTitle className="text-2xl font-bold md:text-3xl">
+          <CardTitle className="flex gap-2 text-2xl font-bold md:text-3xl">
+            <BackwardButton />
             {titleVal(data.user.title || "")}{" "}
             {data.user.fullname || "ยังไม่ได้ระบุชื่อเต็ม"}
           </CardTitle>
@@ -324,30 +331,43 @@ function ApplicantPage() {
           </div>
         </CardContent>
 
-        <CardFooter className="flex justify-center gap-4 border-t pt-6">
-          <Button
-            onClick={() => submitInfo(true)}
-            disabled={
-              tabiansLoading ||
-              (tabiansData?.info_status == "done" && tabiansData?.info == true)
-            }
-            className="min-w-32 bg-green-600 text-white hover:bg-green-700"
-            size="lg"
-          >
-            <CircleCheck className="!size-5" /> ข้อมูลถูกต้อง
-          </Button>
-          <Button
-            onClick={() => submitInfo(false)}
-            disabled={
-              tabiansLoading ||
-              (tabiansData?.info_status == "done" && !tabiansData?.info == true)
-            }
-            variant="destructive"
-            className="min-w-32"
-            size="lg"
-          >
-            <CircleX className="!size-5" /> ข้อมูลไม่ถูกต้อง
-          </Button>
+        <CardFooter className="flex flex-col justify-center gap-4 border-t pt-6">
+          <div>
+            {tabiansData?.updatedAt_info && (
+              <p>
+                <span className="font-bold">ตรวจเมื่อ : </span>
+                {formatThaiBuddhist(tabiansData.updatedAt_info)}
+              </p>
+            )}
+          </div>
+          <div className="flex justify-center gap-4">
+            <Button
+              onClick={() => submitInfo(true)}
+              disabled={
+                tabiansLoading ||
+                (tabiansData?.info_status == "done" &&
+                  tabiansData?.info == true)
+              }
+              className="min-w-32 bg-green-600 text-white hover:bg-green-700"
+              size="lg"
+            >
+              <CircleCheck className="!size-5" /> ข้อมูลถูกต้อง
+            </Button>
+            <Button
+              onClick={() => submitInfo(false)}
+              disabled={
+                tabiansLoading ||
+                (tabiansData?.info_status == "done" &&
+                  !tabiansData?.info == true)
+              }
+              variant="destructive"
+              className="min-w-32"
+              size="lg"
+            >
+              <CircleX className="!size-5" /> ข้อมูลไม่ถูกต้อง
+            </Button>
+          </div>
+          <BackwardButton />
         </CardFooter>
       </Card>
     </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { CheckCircle2Icon, ListFilterIcon, XCircleIcon } from "lucide-react";
+import { ListFilterIcon } from "lucide-react";
 
 import { DataTable } from "@/components/data-table";
 import { InspectStatusKeys } from "@/components/data-table/status-badge";
@@ -77,28 +77,6 @@ export default function NongsPage() {
             value: "done",
             count:
               tabiansInfoData?.filter((item) => item.status === "done")
-                .length || 0,
-          },
-        ],
-      },
-      {
-        id: "has_submit",
-        label: "สถานะใบสมัคร",
-        options: [
-          {
-            label: "ส่งแล้ว",
-            value: "submitted",
-            icon: CheckCircle2Icon,
-            count:
-              tabiansInfoData?.filter((item) => item.has_submit == true)
-                .length || 0,
-          },
-          {
-            label: "ยังไม่ส่ง",
-            value: "not_submitted",
-            icon: XCircleIcon,
-            count:
-              tabiansInfoData?.filter((item) => item.has_submit === false)
                 .length || 0,
           },
         ],

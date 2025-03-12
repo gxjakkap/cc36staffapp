@@ -28,7 +28,8 @@ export const getAllTabiansInfoTable = authenticatedAction
         phone: user.telephone,
         has_submit: user.hasSubmitAnswer,
       })
-      .from(user);
+      .from(user)
+      .where(eq(user.hasSubmitAnswer, true));
 
     const data = await Promise.all(
       users.map(async (user) => {
