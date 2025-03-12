@@ -4,7 +4,7 @@ import { redirect, useParams } from "next/navigation";
 import { toast } from "sonner";
 
 import { AnswerWrapper } from "@/components/answer-wrapper";
-import BackwardButton from "@/components/bacward-button";
+import BackwardButton from "@/components/backward-button";
 import Spinner from "@/components/spinner";
 import {
   ResizableHandle,

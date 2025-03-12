@@ -38,6 +38,7 @@ import { DataTableFilterField, ExtendedSortingState } from "@/types";
 
 import { DataTableViewOptions } from "./column-toggle";
 import { DataTablePagination } from "./pagination";
+import { DataTableSkeleton } from "./skeleton";
 import { DataTableToolbar } from "./toolbar";
 
 interface DataTableProps<TData, TValue> {
@@ -47,6 +48,7 @@ interface DataTableProps<TData, TValue> {
   initialState?: Omit<Partial<TableState>, "sorting"> & {
     sorting?: ExtendedSortingState<TData>;
   };
+  isLoading?: boolean;
 }
 
 export function DataTable<TData, TValue>({
@@ -54,6 +56,7 @@ export function DataTable<TData, TValue>({
   data,
   filterFields,
   initialState,
+  isLoading,
 }: DataTableProps<TData, TValue>) {
   const queryStateOptions = useMemo<
     Omit<UseQueryStateOptions<string>, "parse">
@@ -156,6 +159,8 @@ export function DataTable<TData, TValue>({
           return acc;
         }, {});
 
+        setPage(1);
+
         for (const prevFilter of prev) {
           if (!next.some((filter) => filter.id === prevFilter.id)) {
             filterUpdates[prevFilter.id] = null;
@@ -166,7 +171,7 @@ export function DataTable<TData, TValue>({
         return next;
       });
     },
-    [debouncedSetFilterValues, filterableColumns, searchableColumns],
+    [debouncedSetFilterValues, filterableColumns, searchableColumns, setPage],
   );
 
   // Paginate
@@ -204,6 +209,20 @@ export function DataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     autoResetPageIndex: false,
   });
+
+  if (isLoading) {
+    return (
+      <DataTableSkeleton
+        columnCount={columns.length + 1}
+        searchableColumnCount={
+          filterFields?.filter((value) => value.options == null).length
+        }
+        filterableColumnCount={
+          filterFields?.filter((value) => value.options != null).length
+        }
+      />
+    );
+  }
 
   return (
     <div className="flex flex-col gap-4">

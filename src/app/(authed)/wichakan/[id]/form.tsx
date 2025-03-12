@@ -82,7 +82,7 @@ function WichakanForm(props: WichakanProps) {
                       asChild
                     >
                       <div>
-                        เกณฑ์การให้คะแนน 1
+                        <p className="font-bold">เกณฑ์การให้คะแนน 1</p>
                         <Button
                           type="button"
                           size="icon"
@@ -128,6 +128,7 @@ function WichakanForm(props: WichakanProps) {
                 </FormLabel>
                 <FormControl>
                   <Input
+                    disabled
                     placeholder="กรอกคะแนน 2"
                     type="number"
                     min={0}

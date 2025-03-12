@@ -9,7 +9,6 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
   TableBody,
@@ -72,8 +71,6 @@ export type Thabians = {
   score6_1: number | null;
   score6_2: number | null;
 
-  score_done: boolean;
-
   overall_score: number | null;
 
   score1_user1_staffUsername: string | null;
@@ -102,45 +99,41 @@ const scoreColumns = [
   { key: "score6_2", title: "ข้อที่ 6.2" },
 ];
 
-export const createColumns = (isLoading: boolean): ColumnDef<Thabians>[] => {
+export const createColumns = (): ColumnDef<Thabians>[] => {
   const scoreColumnDefs = scoreColumns.map(({ key, title }) => ({
     accessorKey: key,
     header: ({ column }: { column: Column<Thabians> }) => (
       <DataTableColumnHeader column={column} title={title} />
     ),
-    cell: isLoading
-      ? () => <Skeleton className="h-5 w-24" />
-      : ({ row }: { row: Row<Thabians> }) => (
-          <ScoreColumn
-            score={row.original[key as keyof Thabians["score1"]]}
-            score_sep={{
-              user1:
-                row.original[`${key}_user1` as keyof Thabians["score1_user1"]],
-              user2:
-                row.original[`${key}_user2` as keyof Thabians["score1_user1"]],
-            }}
-            who={{
-              user1:
-                row.original[
-                  `${key}_user1_staffUsername` as keyof Thabians["score1_user1"]
-                ],
-              user2:
-                row.original[
-                  `${key}_user2_staffUsername` as keyof Thabians["score1_user1"]
-                ],
-            }}
-            when={{
-              user1:
-                row.original[
-                  `updatedAt_${key}_user1` as keyof Thabians["updatedAt_score1_user1"]
-                ],
-              user2:
-                row.original[
-                  `updatedAt_${key}_user2` as keyof Thabians["updatedAt_score1_user1"]
-                ],
-            }}
-          />
-        ),
+    cell: ({ row }: { row: Row<Thabians> }) => (
+      <ScoreColumn
+        score={row.original[key as keyof Thabians["score1"]]}
+        score_sep={{
+          user1: row.original[`${key}_user1` as keyof Thabians["score1_user1"]],
+          user2: row.original[`${key}_user2` as keyof Thabians["score1_user1"]],
+        }}
+        who={{
+          user1:
+            row.original[
+              `${key}_user1_staffUsername` as keyof Thabians["score1_user1"]
+            ],
+          user2:
+            row.original[
+              `${key}_user2_staffUsername` as keyof Thabians["score1_user1"]
+            ],
+        }}
+        when={{
+          user1:
+            row.original[
+              `updatedAt_${key}_user1` as keyof Thabians["updatedAt_score1_user1"]
+            ],
+          user2:
+            row.original[
+              `updatedAt_${key}_user2` as keyof Thabians["updatedAt_score1_user1"]
+            ],
+        }}
+      />
+    ),
     size: 200,
     filterFn: (row: Row<Thabians>, _: unknown, filterValue: string[]) => {
       if (
@@ -198,9 +191,7 @@ export const createColumns = (isLoading: boolean): ColumnDef<Thabians>[] => {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="รหัส" />
       ),
-      cell: isLoading
-        ? () => <Skeleton className="h-5 w-24" />
-        : ({ row }) => <div>{formatId(row.original.id)}</div>,
+      cell: ({ row }) => <div>{formatId(row.original.id)}</div>,
       size: 200,
     },
     ...scoreColumnDefs,
@@ -209,23 +200,21 @@ export const createColumns = (isLoading: boolean): ColumnDef<Thabians>[] => {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="คะแนนรวม" />
       ),
-      cell: isLoading
-        ? () => <Skeleton className="h-5 w-24" />
-        : ({ row }) => (
-            <div
-              className={cn(
-                row.original.overall_score !== null
-                  ? "text-foreground"
-                  : "text-foreground/40",
-              )}
-            >
-              {row.original.overall_score !== null ? (
-                <OverallScoreCol row={row} />
-              ) : (
-                <span className="text-foreground/40">N/A</span>
-              )}
-            </div>
-          ),
+      cell: ({ row }) => (
+        <div
+          className={cn(
+            row.original.overall_score !== null
+              ? "text-foreground"
+              : "text-foreground/40",
+          )}
+        >
+          {row.original.overall_score !== null ? (
+            <OverallScoreCol row={row} />
+          ) : (
+            <span className="text-foreground/40">N/A</span>
+          )}
+        </div>
+      ),
       filterFn: (row, _, filterValue) => {
         if (filterValue.length >= 2) {
           return true;
@@ -241,31 +230,29 @@ export const createColumns = (isLoading: boolean): ColumnDef<Thabians>[] => {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="สถานะข้อมูลส่วนตัว" />
       ),
-      cell: isLoading
-        ? () => <Skeleton className="h-5 w-24" />
-        : ({ row }) => (
-            <TooltipProvider delayDuration={0}>
-              <Tooltip>
-                <TooltipTrigger>
-                  {row.original.info_status === "done" ? "✅" : "❌"}
-                </TooltipTrigger>
-                {row.original.updatedAt_info ? (
-                  <TooltipContent>
-                    <p>
-                      <span className="font-bold">ตรวจเมื่อ :</span>{" "}
-                      {formatThaiBuddhist(row.original.updatedAt_info, true)}
-                    </p>
-                  </TooltipContent>
-                ) : null}
-              </Tooltip>
-            </TooltipProvider>
-          ),
+      cell: ({ row }) => (
+        <TooltipProvider delayDuration={0}>
+          <Tooltip>
+            <TooltipTrigger>
+              {row.original.info_status === "done" ? "✅" : "❌"}
+            </TooltipTrigger>
+            {row.original.updatedAt_info ? (
+              <TooltipContent>
+                <p>
+                  <span className="font-bold">ตรวจเมื่อ :</span>{" "}
+                  {formatThaiBuddhist(row.original.updatedAt_info, true)}
+                </p>
+              </TooltipContent>
+            ) : null}
+          </Tooltip>
+        </TooltipProvider>
+      ),
       size: 150,
     },
     {
       id: "ตรวจสอบ",
       cell: ({ row }) => (
-        <Link href={isLoading ? "#" : `/thabian/${row.original.id}`}>
+        <Link href={`/thabian/${row.original.id}`}>
           <Button variant="outline" size="icon">
             <SearchIcon />
           </Button>

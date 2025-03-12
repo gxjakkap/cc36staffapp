@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import { AnswerWrapper } from "@/components/answer-wrapper";
-import BackwardButton from "@/components/bacward-button";
+import BackwardButton from "@/components/backward-button";
 import {
   InspectStatus,
   inspectStatusBadgeVariants,
@@ -165,9 +165,9 @@ export default function AnswerAcademicPage() {
                 onClick={lock}
                 className="cursor-pointer"
               >
-                {wichakansData?.status == InspectStatus["LOCK"]
-                  ? InspectStatus["UNLOCK"]
-                  : InspectStatus["LOCK"]}
+                {wichakansData?.status == InspectStatus["UNLOCK"]
+                  ? "ไม่มีใครตรวจอยู่"
+                  : "มีคนตรวจอยู่"}
               </Button>
             )}
           </div>
@@ -195,7 +195,10 @@ export default function AnswerAcademicPage() {
                   ...academicAnswerData.answers,
                   algoAnswer: (
                     academicAnswerData.answers.algoAnswer ?? ""
-                  ).replace(/<-----ALGO-ANSWER-SPLITTER----->/g, ""),
+                  ).replace(
+                    /<-----ALGO-ANSWER-SPLITTER----->/g,
+                    `<br /><br /><div>ตัวขั้นคำถาม</div><br />`,
+                  ),
                 }}
               />
             ) : (
@@ -207,8 +210,8 @@ export default function AnswerAcademicPage() {
         <ResizablePanel defaultSize={40}>
           <WichakanForm
             data={{
-              scoreChess: wichakansData?.scoreChess
-                ? wichakansData.scoreChess.toString()
+              scoreChess: academicAnswerData?.answers.chessScore
+                ? academicAnswerData?.answers.chessScore.toString()
                 : "",
               scoreAcademic: wichakansData?.scoreAcademic
                 ? wichakansData.scoreAcademic.toString()
