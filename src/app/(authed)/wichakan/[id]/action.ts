@@ -97,7 +97,7 @@ export const lockWichakarn = authenticatedAction
           staffUsername: wichakarn.staffUsername,
         })
         .from(wichakarn)
-        .where(eq(wichakarn.userId, wichakarn.userId));
+        .where(eq(wichakarn.userId, input.userId));
 
       if (wichakansData.length > 0) {
         if (wichakansData[0].status == InspectStatus["LOCK"]) {
@@ -110,7 +110,7 @@ export const lockWichakarn = authenticatedAction
               })
               .where(eq(wichakarn.userId, input.userId));
           } else {
-            return "This has lock by other user";
+            return `This application has been locked by ${wichakansData[0].staffUsername}`;
           }
           return "success";
         }
@@ -151,19 +151,20 @@ export const submitScoreAcademics = authenticatedAction
         headers: await headers(),
       });
       if (!session?.user.username) return;
-      const wichakansData = await dbStaff
+      const [wichakansData] = await dbStaff
         .select({
           id: wichakarn.id,
           staffUsername: wichakarn.staffUsername,
         })
         .from(wichakarn)
-        .where(eq(wichakarn.userId, input.userId));
+        .where(eq(wichakarn.userId, input.userId))
+        .limit(1);
 
-      if (wichakansData[0].staffUsername == session.user.username) {
+      if (wichakansData.staffUsername == session.user.username) {
         await dbStaff
           .update(wichakarn)
           .set({
-            scoreAcademic: input.scoreAcademic,
+            scoreAcademic: input.scoreAcademic.toString(),
             scoreChess: input.scoreChess,
             status: InspectStatus["DONE"],
             staffUsername: session.user.username,
@@ -172,7 +173,7 @@ export const submitScoreAcademics = authenticatedAction
           .where(eq(wichakarn.userId, input.userId));
         return "success";
       } else {
-        return "This has lock by other user";
+        return `This application has been lock by ${wichakansData.staffUsername}`;
       }
     } catch (error) {
       console.log(error);
