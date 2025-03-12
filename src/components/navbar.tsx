@@ -102,7 +102,7 @@ export function Navbar({ isAdmin, role }: NavbarProps) {
   return (
     <div className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 flex border-b px-4 py-3 backdrop-blur">
       <nav className="flex w-full items-center justify-between">
-        <MobileNav isAdmin={isAdmin} />
+        <MobileNav isAdmin={isAdmin} role={role} />
         <div className="flex items-center gap-2">
           <SignOutButton />
           <ThemeToggle />
