@@ -41,3 +41,7 @@ export type Filter<TData> = Prettify<
 >;
 
 export type InitialStateTablePage = Omit<Partial<TableState>, "sorting">;
+
+export interface TableProps {
+  initialState?: InitialStateTablePage;
+}

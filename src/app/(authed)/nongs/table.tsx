@@ -6,16 +6,12 @@ import { ListFilterIcon } from "lucide-react";
 import { DataTable } from "@/components/data-table";
 import { InspectStatusKeys } from "@/components/data-table/status-badge";
 import { useServerActionQuery } from "@/hook/server-action-hooks";
-import { DataTableFilterField, InitialStateTablePage } from "@/types";
+import { DataTableFilterField, TableProps } from "@/types";
 
 import { getAllTabiansInfoTable } from "./action";
 import { createColumns, Nongs } from "./column";
 
-interface NongsTableProps {
-  initialState?: InitialStateTablePage;
-}
-
-export default function NongsTable(props: NongsTableProps) {
+export default function NongsTable(props: TableProps) {
   const { data: tabiansInfoData, isLoading: tabiansInfoLoading } =
     useServerActionQuery(getAllTabiansInfoTable, {
       queryKey: ["nongs"],
