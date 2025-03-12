@@ -7,7 +7,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { CircleCheck, CircleX, Download, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
 
-import BackwardButton from "@/components/bacward-button";
+import BackwardButton from "@/components/backward-button";
 import Spinner from "@/components/spinner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
