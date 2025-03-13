@@ -50,31 +50,27 @@ export default function WichakanPage(props: TableProps) {
   );
 
   return (
-    <div className="flex w-full items-center justify-center pt-10">
-      <div className="w-full max-w-[90vw]">
-        <DataTable
-          columns={columns}
-          data={
-            data
-              ? data.map((item) => ({
-                  id: item.id,
-                  score_academic: item.score_academic
-                    ? parseFloat(item.score_academic)
-                    : null,
-                  score_chess: item.score_chess,
-                  status: item.status as InspectStatusKeys,
-                  timestamp: item.timestamp,
-                  score_chess_normalize: item.score_chess_normalize,
-                  score: item.score,
-                  staffUsername: item.staffUsername,
-                }))
-              : []
-          }
-          filterFields={filterFields}
-          initialState={props.initialState}
-          isLoading={isLoading}
-        />
-      </div>
-    </div>
+    <DataTable
+      columns={columns}
+      data={
+        data
+          ? data.map((item) => ({
+              id: item.id,
+              score_academic: item.score_academic
+                ? parseFloat(item.score_academic)
+                : null,
+              score_chess: item.score_chess,
+              status: item.status as InspectStatusKeys,
+              timestamp: item.timestamp,
+              score_chess_normalize: item.score_chess_normalize,
+              score: item.score,
+              staffUsername: item.staffUsername,
+            }))
+          : []
+      }
+      filterFields={filterFields}
+      initialState={props.initialState}
+      isLoading={isLoading}
+    />
   );
 }

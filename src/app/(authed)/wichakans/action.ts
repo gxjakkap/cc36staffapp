@@ -1,6 +1,6 @@
 "use server";
 
-import { and, eq } from "drizzle-orm";
+import { and, count, eq } from "drizzle-orm";
 
 import { db, dbStaff } from "@/db";
 import { answerAcademic, user } from "@/db/schema";
@@ -80,6 +80,33 @@ const getAllWichakansTable = authenticatedAction
     );
 
     return data;
+  });
+
+export const getPersonalRecordCheck = authenticatedAction
+  .createServerAction()
+  .handler(async ({ ctx }) => {
+    const data = await dbStaff
+      .select({
+        staff: wichakarn.staffUsername,
+        count: count(wichakarn.staffUsername),
+      })
+      .from(wichakarn)
+      .groupBy(wichakarn.staffUsername);
+
+    if (!data) {
+      return {
+        staff: ctx.user.username,
+        count: 0,
+      };
+    }
+
+    const personalRecord = data.find(
+      (record) => record.staff === ctx.user.username,
+    );
+
+    return personalRecord
+      ? personalRecord
+      : { staff: ctx.user.username, count: 0 };
   });
 
 export default getAllWichakansTable;
