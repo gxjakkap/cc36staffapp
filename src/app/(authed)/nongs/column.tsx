@@ -22,6 +22,7 @@ export type Nongs = {
   has_submit: boolean;
   status: InspectStatusKeys;
   timestamp: Date | null;
+  staffUsername: string | null;
 };
 
 export const createColumns = (): ColumnDef<Nongs>[] => [
@@ -86,7 +87,10 @@ export const createColumns = (): ColumnDef<Nongs>[] => [
     cell: ({ row }) => (
       <div>
         {row.original.timestamp ? (
-          <div>{formatThaiBuddhist(row.original.timestamp, true)}</div>
+          <div>
+            {formatThaiBuddhist(row.original.timestamp, true)} (
+            {row.original.staffUsername})
+          </div>
         ) : (
           <div className="text-foreground/40">ยังไม่ได้ตรวจสอบ</div>
         )}
