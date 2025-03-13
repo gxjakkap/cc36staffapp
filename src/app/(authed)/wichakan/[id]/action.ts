@@ -121,7 +121,7 @@ export const lockWichakarn = authenticatedAction
             staffUsername: session.user.username,
             updatedAt: new Date(),
           })
-          .where(eq(wichakarn.userId, wichakarn.userId));
+          .where(eq(wichakarn.userId, input.userId));
         return "success";
       } else {
         await dbStaff.insert(wichakarn).values({
