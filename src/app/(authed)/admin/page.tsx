@@ -6,6 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { auth } from "@/lib/auth";
 import { StaffRoles } from "@/lib/auth/role";
 
+import Dashboard from "./dashboard";
+
 export default async function SettingsPage() {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -36,6 +38,14 @@ export default async function SettingsPage() {
         </CardContent>
       </Card>
       <StaffUsersTable data={staffsData} isLoading={false} />
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">Works</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Dashboard />
+        </CardContent>
+      </Card>
     </div>
   );
 }
