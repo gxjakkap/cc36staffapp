@@ -11,6 +11,7 @@ import { auth } from "@/lib/auth";
 import { StaffRoles } from "@/lib/auth/role";
 import { ForbiddenError, NotFoundError } from "@/lib/errors";
 import { getPresignedURL } from "@/lib/files";
+import { InspectStatusE } from "@/lib/inspect-status";
 import { authenticatedAction } from "@/lib/safe-action";
 
 export const getUserInfo = authenticatedAction
@@ -107,7 +108,7 @@ export const submitNongInfo = authenticatedAction
         await dbStaff.insert(tabian).values({
           userId: input.userId,
           info: input.isCorrect,
-          info_status: "done",
+          info_status: InspectStatusE.DONE,
           info_staffUsername: session.user.username,
           updatedAt_info: new Date(),
         });
@@ -118,7 +119,7 @@ export const submitNongInfo = authenticatedAction
         .update(tabian)
         .set({
           info: input.isCorrect,
-          info_status: "done",
+          info_status: InspectStatusE.DONE,
           info_staffUsername: session.user.username,
           updatedAt_info: new Date(),
         })
@@ -126,6 +127,58 @@ export const submitNongInfo = authenticatedAction
       return "success";
     } catch (error) {
       console.log(error);
+    }
+  });
+
+export const setNongWaiting = authenticatedAction
+  .createServerAction()
+  .input(
+    z.object({
+      userId: z.string(),
+    }),
+  )
+  .handler(async ({ input }) => {
+    try {
+      const session = await auth.api.getSession({
+        headers: await headers(),
+      });
+      if (
+        !session?.user.username ||
+        (session.user.role !== StaffRoles.REGIS &&
+          session.user.role !== StaffRoles.ADMIN)
+      )
+        return;
+
+      const tabiansData = await dbStaff
+        .select({
+          id: tabian.id,
+        })
+        .from(tabian)
+        .where(eq(tabian.userId, input.userId));
+
+      if (tabiansData.length <= 0) {
+        await dbStaff.insert(tabian).values({
+          userId: input.userId,
+          info: null,
+          info_status: InspectStatusE.WAITING,
+          info_staffUsername: session.user.username,
+          updatedAt_info: new Date(),
+        });
+        return "success";
+      }
+
+      await dbStaff
+        .update(tabian)
+        .set({
+          info: null,
+          info_status: InspectStatusE.WAITING,
+          info_staffUsername: session.user.username,
+          updatedAt_info: new Date(),
+        })
+        .where(eq(tabian.userId, input.userId));
+      return "success";
+    } catch (err) {
+      console.log(err);
     }
   });
 
@@ -149,14 +202,12 @@ export const addRemarks = authenticatedAction
       )
         return;
 
-      await dbStaff
-        .insert(remarks)
-        .values({
-          userId: input.userId,
-          remarks: input.remarks,
-          updated_at: new Date(),
-          added_by: session.user.username,
-        });
+      await dbStaff.insert(remarks).values({
+        userId: input.userId,
+        remarks: input.remarks,
+        updated_at: new Date(),
+        added_by: session.user.username,
+      });
       return "success";
     } catch (err) {
       console.log(err);

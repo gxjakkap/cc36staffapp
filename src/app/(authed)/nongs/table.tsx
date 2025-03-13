@@ -6,6 +6,7 @@ import { ListFilterIcon } from "lucide-react";
 import { DataTable } from "@/components/data-table";
 import { InspectStatusKeys } from "@/components/data-table/status-badge";
 import { useServerActionQuery } from "@/hook/server-action-hooks";
+import { InspectStatusE } from "@/lib/inspect-status";
 import { DataTableFilterField, TableProps } from "@/types";
 
 import { getAllTabiansInfoTable } from "./action";
@@ -53,17 +54,27 @@ export default function NongsTable(props: TableProps) {
         options: [
           {
             label: "ยังไม่ได้ตรวจ",
-            value: "unlock",
+            value: InspectStatusE.UNLOCK,
             count:
-              tabiansInfoData?.filter((item) => item.status === "unlock")
-                .length || 0,
+              tabiansInfoData?.filter(
+                (item) => item.status === InspectStatusE.UNLOCK,
+              ).length || 0,
           },
           {
             label: "ตรวจแล้ว",
-            value: "done",
+            value: InspectStatusE.DONE,
             count:
-              tabiansInfoData?.filter((item) => item.status === "done")
-                .length || 0,
+              tabiansInfoData?.filter(
+                (item) => item.status === InspectStatusE.DONE,
+              ).length || 0,
+          },
+          {
+            label: "รอการส่งเอกสารเพิ่มเติม",
+            value: InspectStatusE.WAITING,
+            count:
+              tabiansInfoData?.filter(
+                (item) => item.status === InspectStatusE.WAITING,
+              ).length || 0,
           },
         ],
       },
@@ -88,9 +99,11 @@ export default function NongsTable(props: TableProps) {
                   email: item.email,
                   has_submit: item.has_submit,
                   status:
-                    item.status == "done"
-                      ? "done"
-                      : ("unlock" as InspectStatusKeys),
+                    item.status === InspectStatusE.DONE
+                      ? InspectStatusE.DONE
+                      : item.status === InspectStatusE.WAITING
+                        ? InspectStatusE.WAITING
+                        : ("unlock" as InspectStatusKeys),
                   timestamp: item.timestamp,
                 }))
               : []

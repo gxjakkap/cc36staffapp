@@ -9,6 +9,7 @@ import {
   CircleX,
   Download,
   ExternalLink,
+  LoaderIcon,
   PencilIcon,
   SaveIcon,
   TrashIcon,
@@ -35,6 +36,7 @@ import {
   genderVal,
   titleVal,
 } from "@/lib/formatter";
+import { InspectStatusE } from "@/lib/inspect-status";
 
 import { getUserTabians } from "../../thabian/[id]/action";
 import {
@@ -42,6 +44,7 @@ import {
   editRemarks,
   getUserInfo,
   remRemarks,
+  setNongWaiting,
   submitNongInfo,
 } from "./action";
 
@@ -206,13 +209,25 @@ function ApplicantPage() {
     },
   ];
 
-  async function submitInfo(isCorrect: boolean) {
+  async function submitInfo(isCorrect: boolean, isWaiting?: boolean) {
     if (!id) return;
+    if (isWaiting) {
+      const [code] = await setNongWaiting({ userId: id.toString() });
+      if (code == "success") {
+        queryClient.setQueryData(["userInfoTabians", id], {
+          ...tabiansData,
+          info_status: InspectStatusE.WAITING,
+          info: null,
+        });
+        toast.success(`ตั้งสถานะน้องเป็น "กำลังรอ" เรียบร้อย`);
+      }
+      return;
+    }
     const [code] = await submitNongInfo({ userId: id.toString(), isCorrect });
     if (code == "success") {
       queryClient.setQueryData(["userInfoTabians", id], {
         ...tabiansData,
-        info_status: "done",
+        info_status: InspectStatusE.DONE,
         info: isCorrect,
       });
       toast.success("ตรวจสอบข้อมูลเรียบร้อย");
@@ -466,6 +481,20 @@ function ApplicantPage() {
               size="lg"
             >
               <CircleX className="!size-5" /> ข้อมูลไม่ถูกต้อง
+            </Button>
+            <Button
+              onClick={() => submitInfo(false, true)}
+              disabled={
+                tabiansLoading ||
+                ((tabiansData?.info_status == InspectStatusE.WAITING ||
+                  tabiansData?.info_status === InspectStatusE.WAITING) &&
+                  tabiansData?.info == true)
+              }
+              variant="secondary"
+              className="min-w-32"
+              size="lg"
+            >
+              <LoaderIcon /> รอส่งเอกสารเพิ่มเติม
             </Button>
           </div>
           <BackwardButton />
