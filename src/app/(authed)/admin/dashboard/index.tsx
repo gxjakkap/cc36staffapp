@@ -31,7 +31,9 @@ function Dashboard() {
         <Academic />
       </TabsContent>
       <TabsContent value="tab-2">
-        <p className="text-muted-foreground p-4 text-center text-xs">ทะเบียน</p>
+        <p className="text-muted-foreground p-4 text-center text-xl">
+          Coming Soon
+        </p>
       </TabsContent>
     </Tabs>
   );
