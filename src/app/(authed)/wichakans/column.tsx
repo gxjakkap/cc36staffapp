@@ -53,7 +53,7 @@ export const createColumns = (): ColumnDef<Wichkans>[] => [
     ),
     cell: ({ row }) => (
       <>
-        {row.original.score_academic ? (
+        {row.original.score_academic != null ? (
           <div>{row.original.score_academic}</div>
         ) : (
           <p className="text-foreground/40">ยังไม่ได้ตรวจ</p>
@@ -86,7 +86,6 @@ export const createColumns = (): ColumnDef<Wichkans>[] => [
     cell: ({ row }) => <div>{row.original.score}</div>,
     size: 200,
   },
-
   {
     accessorKey: "timestamp",
     header: ({ column }) => (
