@@ -26,7 +26,8 @@ function Academic() {
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col pt-10">
+      <h1 className="text-xl">*ไม่รวมคะแนนของหัวหน้าฝ่าย</h1>
       <DataTable columns={columns} data={data} />
     </div>
   );
