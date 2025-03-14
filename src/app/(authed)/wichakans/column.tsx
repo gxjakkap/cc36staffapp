@@ -36,6 +36,19 @@ export const createColumns = (): ColumnDef<Wichkans>[] => [
     ),
     cell: ({ row }) => <StatusBadge status={row.original.status} />,
     size: 200,
+    filterFn: (row, _, filterValue) => {
+      if (filterValue[0] === "lock") {
+        return row.original.status === "lock";
+      }
+      if (filterValue[0] === "unlock") {
+        return row.original.status === "unlock";
+      }
+      if (filterValue[0] === "done") {
+        return row.original.status === "done";
+      }
+
+      return true;
+    },
   },
   {
     accessorKey: "score_academic",

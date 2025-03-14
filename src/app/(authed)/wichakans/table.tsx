@@ -44,6 +44,7 @@ export default function WichakanPage(props: TableProps) {
             count: data?.filter((item) => item.status == "lock").length || 0,
           },
         ],
+        only_one: true,
       },
     ],
     [data],

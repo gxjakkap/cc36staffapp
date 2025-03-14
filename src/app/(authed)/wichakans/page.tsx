@@ -25,7 +25,7 @@ export async function NongsPage(props: NongsPageProps) {
         </Button>
         <Button variant="outline" className="w-fit">
           น้องใช้ ChatGPT ไปแล้ว
-          <span className="font-bold">{dataChat?.[0]?.count ?? 0}</span> ข้อ 🔥
+          <span className="font-bold">{dataChat?.[0]?.count ?? 0}</span> คน 🔥
         </Button>
         <WichakansTable
           initialState={{
