@@ -124,6 +124,11 @@ export default function ThabiansTable(props: TableProps) {
   const filterFields: DataTableFilterField<Thabians>[] = useMemo(
     () => [
       {
+        id: "id",
+        label: "รหัส",
+        placeholder: "ค้นหาด้วยรหัส",
+      },
+      {
         id: "info_status",
         label: "สถานะข้อมูลส่วนตัว",
         options: [
