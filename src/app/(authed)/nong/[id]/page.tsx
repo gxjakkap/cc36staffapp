@@ -6,6 +6,7 @@ import { redirect, useParams } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   CircleCheck,
+  CircleCheckBigIcon,
   CircleX,
   Download,
   ExternalLink,
@@ -446,6 +447,30 @@ function ApplicantPage() {
         </CardContent>
 
         <CardFooter className="flex flex-col justify-center gap-4 border-t pt-6">
+          <div>
+            {tabiansData?.info_status == "done" &&
+              tabiansData?.info == true && (
+                <div className="flex gap-2 font-bold text-green-500">
+                  ข้อมูลถูกต้อง
+                  <CircleCheckBigIcon />
+                </div>
+              )}
+
+            {tabiansData?.info_status == "done" &&
+              !tabiansData?.info == true && (
+                <div className="text-destructive flex gap-2 font-bold">
+                  ข้อมูลไม่ถูกต้อง
+                  <CircleCheckBigIcon />
+                </div>
+              )}
+
+            {(tabiansData?.info_status == InspectStatusE.WAITING ||
+              tabiansData?.info_status === InspectStatusE.WAITING) && (
+              <div className="flex gap-2 font-bold text-yellow-500">
+                <LoaderIcon /> รอส่งเอกสารเพิ่มเติม
+              </div>
+            )}
+          </div>
           <div>
             {tabiansData?.updatedAt_info && (
               <p>
