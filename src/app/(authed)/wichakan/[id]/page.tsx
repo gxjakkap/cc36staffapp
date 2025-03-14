@@ -199,42 +199,18 @@ export default function AnswerAcademicPage() {
                   ...academicAnswerData.answers,
                   algoAnswer: (
                     <div className="flex flex-col gap-4">
-                      <Card>
-                        <CardHeader className="font-bold">
-                          คำถามย่อย 1
-                        </CardHeader>
-                        <CardContent>
-                          {
-                            (academicAnswerData.answers.algoAnswer ?? "").split(
-                              /<-----ALGO-ANSWER-SPLITTER----->/g,
-                            )[0]
-                          }
-                        </CardContent>
-                      </Card>
-                      <Card>
-                        <CardHeader className="font-bold">
-                          คำถามย่อย 2
-                        </CardHeader>
-                        <CardContent>
-                          {
-                            (academicAnswerData.answers.algoAnswer ?? "").split(
-                              /<-----ALGO-ANSWER-SPLITTER----->/g,
-                            )[1]
-                          }
-                        </CardContent>
-                      </Card>
-                      <Card>
-                        <CardHeader className="font-bold">
-                          คำถามย่อย 3
-                        </CardHeader>
-                        <CardContent>
-                          {
-                            (academicAnswerData.answers.algoAnswer ?? "").split(
-                              /<-----ALGO-ANSWER-SPLITTER----->/g,
-                            )[2]
-                          }
-                        </CardContent>
-                      </Card>
+                      {academicAnswerData.answers.algoAnswer
+                        ?.split(/<-----ALGO-ANSWER-SPLITTER----->/g)
+                        .map((answer, index) => (
+                          <Card key={index}>
+                            <CardHeader className="font-bold">
+                              คำถามย่อย {index + 1}
+                            </CardHeader>
+                            <CardContent className="answer font-sarabun text-foreground/90 leading-7">
+                              {answer}
+                            </CardContent>
+                          </Card>
+                        ))}
                     </div>
                   ),
                 }}
