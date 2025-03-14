@@ -20,6 +20,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { ViewControls } from "@/components/view-controls";
 import { useServerActionQuery } from "@/hook/server-action-hooks";
 import { authClient } from "@/lib/auth-client";
@@ -245,23 +246,28 @@ export default function AnswerAcademicPage() {
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={40}>
-          <WichakanForm
-            data={{
-              scoreChess: academicAnswerData?.answers.chessScore
-                ? academicAnswerData?.answers.chessScore.toString()
-                : "",
-              scoreAcademic: wichakansData?.scoreAcademic
-                ? wichakansData.scoreAcademic.toString()
-                : "",
-            }}
-            status={
-              wichakansData?.status
-                ? (wichakansData.status as InspectStatusKeys)
-                : InspectStatus["UNLOCK"]
-            }
-            isSameUser={data?.user.username == wichakansData?.staffUsername}
-            onSubmit={onSubmit}
-          />
+          <div className="flex items-center justify-center p-6">
+            เกณฑ์การให้คะแนน 10 สหายในเงามืด
+          </div>
+          <ScrollArea className="h-[calc(100vh-15rem)] w-full">
+            <WichakanForm
+              data={{
+                scoreChess: academicAnswerData?.answers.chessScore
+                  ? academicAnswerData?.answers.chessScore.toString()
+                  : "",
+                scoreAcademic: wichakansData?.scoreAcademic
+                  ? wichakansData.scoreAcademic.toString()
+                  : "",
+              }}
+              status={
+                wichakansData?.status
+                  ? (wichakansData.status as InspectStatusKeys)
+                  : InspectStatus["UNLOCK"]
+              }
+              isSameUser={data?.user.username == wichakansData?.staffUsername}
+              onSubmit={onSubmit}
+            />
+          </ScrollArea>
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>

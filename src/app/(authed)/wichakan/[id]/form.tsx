@@ -62,9 +62,6 @@ function WichakanForm(props: WichakanProps) {
         onSubmit={form.handleSubmit(props.onSubmit)}
         className="font-noto-sans-thai-looped"
       >
-        <div className="flex items-center justify-center p-6">
-          เกณฑ์การให้คะแนน 10 สหายในเงามืด
-        </div>
         <div className="grid gap-10 p-7">
           <FormField
             disabled={
@@ -94,7 +91,7 @@ function WichakanForm(props: WichakanProps) {
                         </Button>
                       </div>
                     </CollapsibleTrigger>
-                    <CollapsibleContent>
+                    <CollapsibleContent className="text-base">
                       <WichakanCite1 />
                       <WichakanCite2 />
                       <WichakanCite3 />
