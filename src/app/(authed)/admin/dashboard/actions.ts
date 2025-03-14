@@ -30,10 +30,12 @@ export const getPeoplePercent = authenticatedAction
     const mergedData = await Promise.all(
       userData.map((item) => {
         const staffData = data.find((d) => d.staff === item.username);
+        const count = staffData ? staffData.count : 0;
+        const totalUsers = userData.length;
         return {
           username: item.username,
-          count: staffData ? staffData.count : 0,
-          percentage: staffData ? (staffData.count / data.length) * 100 : 0,
+          count,
+          percentage: (count / totalUsers) * 100,
         };
       }),
     );
