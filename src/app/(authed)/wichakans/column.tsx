@@ -7,12 +7,6 @@ import StatusBadge, {
   InspectStatusKeys,
 } from "@/components/data-table/status-badge";
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { formatId, formatThaiBuddhist } from "@/lib/formatter";
 
 export type Wichkans = {
@@ -94,17 +88,10 @@ export const createColumns = (): ColumnDef<Wichkans>[] => [
     cell: ({ row }) => (
       <>
         {row.original.timestamp ? (
-          <TooltipProvider delayDuration={0}>
-            <Tooltip>
-              <TooltipTrigger>
-                <div>{formatThaiBuddhist(row.original.timestamp)}</div>
-              </TooltipTrigger>
-              <TooltipContent>
-                ตรวจโดย:{" "}
-                <span className="font-bold">{row.original.staffUsername}</span>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <div className="flex gap-2">
+            {formatThaiBuddhist(row.original.timestamp, true)}
+            <span className="font-bold">({row.original.staffUsername})</span>
+          </div>
         ) : (
           <p className="text-foreground/40">ยังไม่มีการตรวจ</p>
         )}
