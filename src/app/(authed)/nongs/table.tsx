@@ -106,6 +106,7 @@ export default function NongsTable(props: TableProps) {
                         : ("unlock" as InspectStatusKeys),
                   timestamp: item.timestamp,
                   staffUsername: item.staffUsername,
+                  info_correct: item.info,
                 }))
               : []
           }
