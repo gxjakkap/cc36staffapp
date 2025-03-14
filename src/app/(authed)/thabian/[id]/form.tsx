@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/collapsible";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
 
 import { ScoreFieldEnum } from "./enum";
 
@@ -71,7 +72,7 @@ function TabianForm(props: TabianFormProps) {
       </div>
       <ScrollArea className="font-noto-sans-thai-looped h-[calc(100vh-15rem)] w-full">
         <div className="grid w-full gap-4 px-8">
-          {["1", "2", "3", "4", "5", "6_1", "6_2"].map((num) => (
+          {["1", "2", "3", "4", "5", "6_1", "6_2"].map((num, index) => (
             <div key={num} className="flex flex-col gap-4">
               {THABIANS_CITERIAS[num] && (
                 <Collapsible>
@@ -154,6 +155,7 @@ function TabianForm(props: TabianFormProps) {
                   </Button>
                 </div>
               </div>
+              {index < 5 - 1 && <Separator className="my-4" />}
             </div>
           ))}
         </div>

@@ -14,11 +14,13 @@ import {
 } from "@/components/data-table/status-badge";
 import Spinner from "@/components/spinner";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { ViewControls } from "@/components/view-controls";
 import { useServerActionQuery } from "@/hook/server-action-hooks";
 import { authClient } from "@/lib/auth-client";
@@ -196,10 +198,44 @@ export default function AnswerAcademicPage() {
                 answers={{
                   ...academicAnswerData.answers,
                   algoAnswer: (
-                    academicAnswerData.answers.algoAnswer ?? ""
-                  ).replace(
-                    /<-----ALGO-ANSWER-SPLITTER----->/g,
-                    `<br /><br /><div>ตัวขั้นคำถาม</div><br />`,
+                    <div className="flex flex-col gap-4">
+                      <Card>
+                        <CardHeader className="font-bold">
+                          คำถามย่อย 1
+                        </CardHeader>
+                        <CardContent>
+                          {
+                            (academicAnswerData.answers.algoAnswer ?? "").split(
+                              /<-----ALGO-ANSWER-SPLITTER----->/g,
+                            )[0]
+                          }
+                        </CardContent>
+                      </Card>
+                      <Card>
+                        <CardHeader className="font-bold">
+                          คำถามย่อย 2
+                        </CardHeader>
+                        <CardContent>
+                          {
+                            (academicAnswerData.answers.algoAnswer ?? "").split(
+                              /<-----ALGO-ANSWER-SPLITTER----->/g,
+                            )[1]
+                          }
+                        </CardContent>
+                      </Card>
+                      <Card>
+                        <CardHeader className="font-bold">
+                          คำถามย่อย 3
+                        </CardHeader>
+                        <CardContent>
+                          {
+                            (academicAnswerData.answers.algoAnswer ?? "").split(
+                              /<-----ALGO-ANSWER-SPLITTER----->/g,
+                            )[2]
+                          }
+                        </CardContent>
+                      </Card>
+                    </div>
                   ),
                 }}
               />
@@ -210,23 +246,28 @@ export default function AnswerAcademicPage() {
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={40}>
-          <WichakanForm
-            data={{
-              scoreChess: academicAnswerData?.answers.chessScore
-                ? academicAnswerData?.answers.chessScore.toString()
-                : "",
-              scoreAcademic: wichakansData?.scoreAcademic
-                ? wichakansData.scoreAcademic.toString()
-                : "",
-            }}
-            status={
-              wichakansData?.status
-                ? (wichakansData.status as InspectStatusKeys)
-                : InspectStatus["UNLOCK"]
-            }
-            isSameUser={data?.user.username == wichakansData?.staffUsername}
-            onSubmit={onSubmit}
-          />
+          <div className="flex items-center justify-center p-6">
+            เกณฑ์การให้คะแนน 10 สหายในเงามืด
+          </div>
+          <ScrollArea className="h-[calc(100vh-15rem)] w-full">
+            <WichakanForm
+              data={{
+                scoreChess: academicAnswerData?.answers.chessScore
+                  ? academicAnswerData?.answers.chessScore.toString()
+                  : "",
+                scoreAcademic: wichakansData?.scoreAcademic
+                  ? wichakansData.scoreAcademic.toString()
+                  : "",
+              }}
+              status={
+                wichakansData?.status
+                  ? (wichakansData.status as InspectStatusKeys)
+                  : InspectStatus["UNLOCK"]
+              }
+              isSameUser={data?.user.username == wichakansData?.staffUsername}
+              onSubmit={onSubmit}
+            />
+          </ScrollArea>
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>

@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { ColumnDef } from "@tanstack/react-table";
-import { SearchIcon } from "lucide-react";
+import {
+  CircleAlertIcon,
+  CircleCheckBigIcon,
+  CircleDashedIcon,
+  SearchIcon,
+} from "lucide-react";
 
 import { DataTableColumnHeader } from "@/components/data-table/column-header";
 import StatusBadge, {
@@ -23,6 +28,7 @@ export type Nongs = {
   status: InspectStatusKeys;
   timestamp: Date | null;
   staffUsername: string | null;
+  info_correct: boolean | null;
 };
 
 export const createColumns = (): ColumnDef<Nongs>[] => [
@@ -77,6 +83,43 @@ export const createColumns = (): ColumnDef<Nongs>[] => [
     size: 60,
     filterFn: (row, _, filterValue) => {
       return filterValue.includes(row.original.status);
+    },
+  },
+  {
+    accessorKey: "info_correct",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="ความถูกต้อง" />
+    ),
+    cell: ({ row }) => (
+      <div>
+        {row.original.info_correct != null ? (
+          <div>
+            {row.original.info_correct ? (
+              <CircleCheckBigIcon className="text-green-500" />
+            ) : (
+              <CircleAlertIcon className="text-destructive" />
+            )}
+          </div>
+        ) : (
+          <div className="text-foreground/40">
+            <CircleDashedIcon />
+          </div>
+        )}
+      </div>
+    ),
+    size: 60,
+    filterFn: (row, _, filterValue) => {
+      if (filterValue[0] === "null") {
+        return row.original.info_correct === null;
+      }
+      if (filterValue[0] === "correct") {
+        return row.original.info_correct === true;
+      }
+      if (filterValue[0] === "incorrect") {
+        return row.original.info_correct === false;
+      }
+
+      return true;
     },
   },
   {
