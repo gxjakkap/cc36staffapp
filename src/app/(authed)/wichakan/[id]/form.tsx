@@ -54,7 +54,7 @@ function WichakanForm(props: WichakanProps) {
 
   useEffect(() => {
     form.reset(props.data);
-  }, [props.data, form.reset]);
+  }, [props.data, form.reset, form]);
 
   return (
     <Form {...form}>
@@ -103,6 +103,7 @@ function WichakanForm(props: WichakanProps) {
                     placeholder="กรอกคะแนน 1"
                     type="number"
                     min={0}
+                    max={15}
                     step={0.01}
                     {...field}
                   />
