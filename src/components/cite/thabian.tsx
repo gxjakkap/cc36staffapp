@@ -2,11 +2,11 @@ import { ReactNode } from "react";
 
 import "./typo.css";
 
-export const THABIANS_CITERIAS: Record<
+export const THABIANS_CRITERIAS: Record<
   string,
   {
     question: ReactNode;
-    citeria: ReactNode;
+    criteria: ReactNode;
     maxScore: number;
   }
 > = {
@@ -19,7 +19,7 @@ export const THABIANS_CITERIAS: Record<
         </span>
       </div>
     ),
-    citeria: (
+    criteria: (
       <ul className="ml-6">
         <li>
           มีความคาดหวังที่ชัดเจน
@@ -49,7 +49,7 @@ export const THABIANS_CITERIAS: Record<
         </span>
       </div>
     ),
-    citeria: (
+    criteria: (
       <ul className="ml-6">
         <li>
           ความชัดเจนและเหตุผลที่ดี
@@ -172,7 +172,7 @@ export const THABIANS_CITERIAS: Record<
         </span>
       </div>
     ),
-    citeria: (
+    criteria: (
       <ul className="ml-6">
         <li>
           การระบุปัญหาหลัก
@@ -297,7 +297,7 @@ export const THABIANS_CITERIAS: Record<
         </span>
       </div>
     ),
-    citeria: (
+    criteria: (
       <ul className="ml-6">
         <li>
           การแก้ปัญหา
@@ -360,7 +360,7 @@ export const THABIANS_CITERIAS: Record<
         </span>
       </div>
     ),
-    citeria: (
+    criteria: (
       <ul className="ml-6">
         <li>
           ตอบแนวใช้เกม, ให้เด็กได้ลงมือเล่นเกมจริง เช่น &quot;Algorithm
@@ -409,7 +409,7 @@ export const THABIANS_CITERIAS: Record<
         </span>
       </div>
     ),
-    citeria: (
+    criteria: (
       <ul className="ml-6">
         <li>
           เลือกนวัตกรรมที่สร้างสรรค์ ทันสมัย และมีความเหมาะสมกับปัญหา เช่น
@@ -454,7 +454,7 @@ export const THABIANS_CITERIAS: Record<
         </span>
       </div>
     ),
-    citeria: (
+    criteria: (
       <ul className="ml-6">
         <li>
           อธิบายการทำงานของนวัตกรรมได้ชัดเจน มีขั้นตอนการทำงานที่เป็นระบบ
