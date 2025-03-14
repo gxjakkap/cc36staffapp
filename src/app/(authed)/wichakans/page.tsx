@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { searchParamsCache } from "@/lib/validations";
 import { SearchParams } from "@/types";
 
-import { getPersonalRecordCheck } from "./action";
+import { getHowManyChatGPT, getPersonalRecordCheck } from "./action";
 import WichakansTable from "./table";
 
 interface NongsPageProps {
@@ -14,6 +14,7 @@ export async function NongsPage(props: NongsPageProps) {
   const search = searchParamsCache.parse(searchParams);
 
   const [data] = await getPersonalRecordCheck();
+  const [dataChat] = await getHowManyChatGPT();
 
   return (
     <div className="flex w-full items-center justify-center pt-10">
@@ -21,6 +22,10 @@ export async function NongsPage(props: NongsPageProps) {
         <Button variant="outline" className="w-fit">
           เพื่อน <span className="font-bold">{data?.staff}</span> ตรวจไปแล้ว{" "}
           <span className="font-bold">{data?.count}</span> ข้อ 🔥
+        </Button>
+        <Button variant="outline" className="w-fit">
+          น้องใช้ ChatGPT ไปแล้ว
+          <span className="font-bold">{dataChat?.[0]?.count ?? 0}</span> ข้อ 🔥
         </Button>
         <WichakansTable
           initialState={{

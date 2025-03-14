@@ -9,10 +9,10 @@ import { StaffRoles } from "@/lib/auth/role";
 import { ForbiddenError } from "@/lib/errors";
 import { authenticatedAction } from "@/lib/safe-action";
 
-const MAX_SCORE = 68414;
+const MAX_SCORE = 69109;
 const MIN_SCORE = 81;
 
-const getAllWichakansTable = authenticatedAction
+export const getAllWichakansTable = authenticatedAction
   .createServerAction()
   .handler(async ({ ctx }) => {
     if (
@@ -109,4 +109,15 @@ export const getPersonalRecordCheck = authenticatedAction
       : { staff: ctx.user.username, count: 0 };
   });
 
-export default getAllWichakansTable;
+export const getHowManyChatGPT = authenticatedAction
+  .createServerAction()
+  .handler(async () => {
+    const data = await dbStaff
+      .select({
+        count: count(wichakarn.scoreAcademic),
+      })
+      .from(wichakarn)
+      .where(eq(wichakarn.scoreAcademic, "0"));
+
+    return data;
+  });

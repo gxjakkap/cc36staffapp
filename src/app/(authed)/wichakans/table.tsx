@@ -8,7 +8,7 @@ import { InspectStatusKeys } from "@/components/data-table/status-badge";
 import { useServerActionQuery } from "@/hook/server-action-hooks";
 import { DataTableFilterField, TableProps } from "@/types";
 
-import getAllWichakansTable from "./action";
+import { getAllWichakansTable } from "./action";
 import { createColumns, Wichkans } from "./column";
 
 export default function WichakanPage(props: TableProps) {
