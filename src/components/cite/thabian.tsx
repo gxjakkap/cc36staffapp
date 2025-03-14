@@ -2,24 +2,24 @@ import { ReactNode } from "react";
 
 import "./typo.css";
 
-export const THABIANS_CITERIAS: Record<
+export const THABIANS_CRITERIAS: Record<
   string,
   {
     question: ReactNode;
-    citeria: ReactNode;
+    criteria: ReactNode;
+    maxScore: number;
   }
 > = {
   "1": {
     question: (
       <div className="text-base">
         1.น้องคาดหวังอะไรจากค่าย ComCamp36{" "}
-        <span className="text-red-500">(5 คะแนน)</span>{" "}
         <span className="text-blue-500">
           (วัดความสามารถในการคิดเชิงวิเคราะห์)
         </span>
       </div>
     ),
-    citeria: (
+    criteria: (
       <ul className="ml-6">
         <li>
           มีความคาดหวังที่ชัดเจน
@@ -37,19 +37,19 @@ export const THABIANS_CITERIAS: Record<
         </li>
       </ul>
     ),
+    maxScore: 5,
   },
   "2": {
     question: (
       <div className="text-base">
         2. ในยุคที่ AI และหุ่นยนต์สามารถทำงานแทนมนุษย์ได้มากขึ้น
         น้องคิดว่าวิศวกรคอมพิวเตอร์ยังมีความสำคัญอย่างไร?{" "}
-        <span className="text-red-500">(15 คะแนน)</span>{" "}
         <span className="text-blue-500">
           (วัดความสามารถด้านการคิดเชิงวิเคราะห์และการให้เหตุผล)
         </span>
       </div>
     ),
-    citeria: (
+    criteria: (
       <ul className="ml-6">
         <li>
           ความชัดเจนและเหตุผลที่ดี
@@ -160,19 +160,19 @@ export const THABIANS_CITERIAS: Record<
         </li>
       </ul>
     ),
+    maxScore: 15,
   },
   "3": {
     question: (
       <div className="text-base">
-        3. “หากน้องและทีมจำนวน 5 คน
+        3. หากน้องและทีมจำนวน 5 คน
         กำลังอยู่บนยานอวกาศที่ติดอยู่ในวงโคจรของดาวเคราะห์ดวงหนึ่ง...{" "}
-        <span className="text-red-500">(15 คะแนน)</span>{" "}
         <span className="text-blue-500">
           (ความสามารถในการทำงานเป็นทีมและภาวะผู้นำ)
         </span>
       </div>
     ),
-    citeria: (
+    criteria: (
       <ul className="ml-6">
         <li>
           การระบุปัญหาหลัก
@@ -285,19 +285,19 @@ export const THABIANS_CITERIAS: Record<
         </li>
       </ul>
     ),
+    maxScore: 15,
   },
   "4": {
     question: (
       <div className="text-base">
         4. หากในค่ายมี Group Project แล้วน้องได้อยู่ในกลุ่มที่มีคนไม่ค่อยทำงาน
         นิ่งเฉย หรือทิ้งงาน น้องจะจัดการกับปัญหานี้อย่างไร?{" "}
-        <span className="text-red-500">(10 คะแนน)</span>{" "}
         <span className="text-blue-500">
           (ความสามารถในการจัดการอารมณ์และปรับตัว)
         </span>
       </div>
     ),
-    citeria: (
+    criteria: (
       <ul className="ml-6">
         <li>
           การแก้ปัญหา
@@ -347,19 +347,20 @@ export const THABIANS_CITERIAS: Record<
         </li>
       </ul>
     ),
+    maxScore: 10,
   },
   "5": {
     question: (
       <div className="text-base">
         5. ถ้าต้องสอนเด็ก 7 ขวบให้เข้าใจว่า &quot;Algorithm&quot;
         คืออะไรโดยห้ามใช้คำศัพท์เทคนิค น้องจะอธิบายอย่างไร?{" "}
-        <span className="text-red-500">(10 คะแนน)</span>{" "}
         <span className="text-blue-500">
-          (วัดความรู้และความเข้าใจการคิดเชิงโครงสร้าง,วัดความคิดสร้างสรรค์,ความสามารถในการสื่อสาร)
+          (วัดความรู้และความเข้าใจการคิดเชิงโครงสร้าง, วัดความคิดสร้างสรรค์,
+          ความสามารถในการสื่อสาร)
         </span>
       </div>
     ),
-    citeria: (
+    criteria: (
       <ul className="ml-6">
         <li>
           ตอบแนวใช้เกม, ให้เด็กได้ลงมือเล่นเกมจริง เช่น &quot;Algorithm
@@ -394,12 +395,13 @@ export const THABIANS_CITERIAS: Record<
         </li>
       </ul>
     ),
+    maxScore: 10,
   },
   "6_1": {
     question: (
       <div className="text-base">
         6.1 หากน้องสามารถพัฒนานวัตกรรมเพื่อช่วยแก้ปัญหาสังคมนี้ได้หนึ่งอย่าง
-        น้องจะเลือกพัฒนาอะไร? <span className="text-red-500">(5 คะแนน)</span>{" "}
+        น้องจะเลือกพัฒนาอะไร?{" "}
         <span className="text-blue-500">
           (เช่น ระบบติดตามสุขภาพผ่านแอปพลิเคชัน, อุปกรณ์ IoT
           ตรวจวัดสัญญาณชีพอัตโนมัติ,
@@ -407,7 +409,7 @@ export const THABIANS_CITERIAS: Record<
         </span>
       </div>
     ),
-    citeria: (
+    criteria: (
       <ul className="ml-6">
         <li>
           เลือกนวัตกรรมที่สร้างสรรค์ ทันสมัย และมีความเหมาะสมกับปัญหา เช่น
@@ -440,19 +442,19 @@ export const THABIANS_CITERIAS: Record<
         </li>
       </ul>
     ),
+    maxScore: 5,
   },
   "6_2": {
     question: (
       <div className="text-base">
         6.2 จงอธิบายการทำงานของนวัตกรรมนี้{" "}
-        <span className="text-red-500">(10 คะแนน)</span>{" "}
         <span className="text-blue-500">
           (อธิบายกระบวนการทำงานของนวัตกรรมดังกล่าวและวิธีการที่มันจะทำให้การดูแลผู้สูงอายุในชุมชนดีขึ้น
           เช่น วิธีการติดตามอาการของผู้สูงอายุ, การใช้เทคโนโลยี เช่น AI และ IoT)
         </span>
       </div>
     ),
-    citeria: (
+    criteria: (
       <ul className="ml-6">
         <li>
           อธิบายการทำงานของนวัตกรรมได้ชัดเจน มีขั้นตอนการทำงานที่เป็นระบบ
@@ -493,5 +495,6 @@ export const THABIANS_CITERIAS: Record<
         </li>
       </ul>
     ),
+    maxScore: 10,
   },
 };
