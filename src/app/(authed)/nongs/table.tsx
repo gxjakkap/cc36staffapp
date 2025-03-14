@@ -78,6 +78,32 @@ export default function NongsTable(props: TableProps) {
           },
         ],
       },
+      {
+        id: "info_correct",
+        label: "ความถูกต้องของเอกสาร",
+        options: [
+          {
+            label: "รอการตรวจ/เอกสารใหม่",
+            value: "null",
+            count:
+              tabiansInfoData?.filter((item) => item.info === null).length || 0,
+          },
+          {
+            label: "ข้อมูลถูกต้อง",
+            value: "correct",
+            count:
+              tabiansInfoData?.filter((item) => item.info === true).length || 0,
+          },
+          {
+            label: "ข้อมูลไม่ถูกต้อง",
+            value: "incorrect",
+            count:
+              tabiansInfoData?.filter((item) => item.info === false).length ||
+              0,
+          },
+        ],
+        only_one: true,
+      },
     ],
     [tabiansInfoData],
   );

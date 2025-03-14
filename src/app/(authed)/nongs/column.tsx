@@ -108,6 +108,19 @@ export const createColumns = (): ColumnDef<Nongs>[] => [
       </div>
     ),
     size: 60,
+    filterFn: (row, _, filterValue) => {
+      if (filterValue[0] === "null") {
+        return row.original.info_correct === null;
+      }
+      if (filterValue[0] === "correct") {
+        return row.original.info_correct === true;
+      }
+      if (filterValue[0] === "incorrect") {
+        return row.original.info_correct === false;
+      }
+
+      return true;
+    },
   },
   {
     accessorKey: "timestamp",
