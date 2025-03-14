@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import type { InferSelectModel } from "drizzle-orm";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -8,13 +9,25 @@ import { formatTextWithLineBreaks } from "@/lib/formatter";
 type AnswerRegis = InferSelectModel<typeof answerRegis>;
 type AnswerAcademic = InferSelectModel<typeof answerAcademic>;
 
+type ModifiedAnswerRegis = {
+  [K in keyof AnswerRegis]: K extends `answer${number}`
+    ? ReactNode | null
+    : AnswerRegis[K];
+};
+
+type ModifiedAnswerAcademic = {
+  [K in keyof AnswerAcademic]: K extends "algoAnswer"
+    ? ReactNode | null
+    : AnswerAcademic[K];
+};
+
 type AnswerType<T extends "academic" | "regis"> = T extends "academic"
-  ? AnswerAcademic
-  : AnswerRegis;
+  ? ModifiedAnswerAcademic
+  : ModifiedAnswerRegis;
 
 type QuestionKeyType<T extends "academic" | "regis"> = T extends "academic"
-  ? keyof Omit<AnswerAcademic, "id" | "userId">
-  : keyof Omit<AnswerRegis, "id" | "userId">;
+  ? keyof Omit<ModifiedAnswerAcademic, "id" | "userId">
+  : keyof Omit<ModifiedAnswerRegis, "id" | "userId">;
 
 interface AnswerWrapperProps<T extends "academic" | "regis"> {
   type: T;
@@ -40,12 +53,16 @@ export function AnswerWrapper<T extends "academic" | "regis">({
               <h3 className="text-xl font-semibold">
                 {question[key as keyof typeof question]}
               </h3>
-              <p
-                className="answer font-sarabun text-foreground/90 leading-7"
-                dangerouslySetInnerHTML={{
-                  __html: formatTextWithLineBreaks(String(value)),
-                }}
-              />
+              {typeof value === "string" ? (
+                <p
+                  className="answer font-sarabun text-foreground/90 leading-7"
+                  dangerouslySetInnerHTML={{
+                    __html: formatTextWithLineBreaks(value),
+                  }}
+                />
+              ) : (
+                value
+              )}
             </div>
             {index < filteredAnswers.length - 1 && (
               <Separator className="my-8" />

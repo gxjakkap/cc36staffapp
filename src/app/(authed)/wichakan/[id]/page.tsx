@@ -14,6 +14,7 @@ import {
 } from "@/components/data-table/status-badge";
 import Spinner from "@/components/spinner";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   ResizableHandle,
   ResizablePanel,
@@ -196,10 +197,44 @@ export default function AnswerAcademicPage() {
                 answers={{
                   ...academicAnswerData.answers,
                   algoAnswer: (
-                    academicAnswerData.answers.algoAnswer ?? ""
-                  ).replace(
-                    /<-----ALGO-ANSWER-SPLITTER----->/g,
-                    `<br /><br /><div>ตัวขั้นคำถาม</div><br />`,
+                    <div className="flex flex-col gap-4">
+                      <Card>
+                        <CardHeader className="font-bold">
+                          คำถามย่อย 1
+                        </CardHeader>
+                        <CardContent>
+                          {
+                            (academicAnswerData.answers.algoAnswer ?? "").split(
+                              /<-----ALGO-ANSWER-SPLITTER----->/g,
+                            )[0]
+                          }
+                        </CardContent>
+                      </Card>
+                      <Card>
+                        <CardHeader className="font-bold">
+                          คำถามย่อย 2
+                        </CardHeader>
+                        <CardContent>
+                          {
+                            (academicAnswerData.answers.algoAnswer ?? "").split(
+                              /<-----ALGO-ANSWER-SPLITTER----->/g,
+                            )[1]
+                          }
+                        </CardContent>
+                      </Card>
+                      <Card>
+                        <CardHeader className="font-bold">
+                          คำถามย่อย 3
+                        </CardHeader>
+                        <CardContent>
+                          {
+                            (academicAnswerData.answers.algoAnswer ?? "").split(
+                              /<-----ALGO-ANSWER-SPLITTER----->/g,
+                            )[2]
+                          }
+                        </CardContent>
+                      </Card>
+                    </div>
                   ),
                 }}
               />
