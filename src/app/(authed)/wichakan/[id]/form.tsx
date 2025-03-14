@@ -30,6 +30,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 
 export const formSchema = z.object({
   scoreAcademic: z.string().min(1, "จำเป็นต้องกรอกคะแนน"),
@@ -113,12 +114,11 @@ function WichakanForm(props: WichakanProps) {
               </FormItem>
             )}
           />
+
+          <Separator className="my-1" />
+
           <FormField
-            disabled={
-              props.status == InspectStatus["DONE"] ||
-              props.status != InspectStatus["LOCK"] ||
-              !props.isSameUser
-            }
+            disabled
             control={form.control}
             name="scoreChess"
             render={({ field }) => (
