@@ -1,7 +1,10 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import Link from "next/link";
 import { redirect, useParams } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
+import { ChevronDownIcon } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -24,6 +27,10 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ViewControls } from "@/components/view-controls";
 import { useServerActionQuery } from "@/hook/server-action-hooks";
 import { authClient } from "@/lib/auth-client";
+import {
+  Plagiarism,
+  plagiarismData as plagiarismJSONData,
+} from "@/lib/plagiarism/plagiarism";
 import { cn } from "@/lib/utils";
 
 import {
@@ -39,6 +46,17 @@ export default function AnswerAcademicPage() {
   const queryClient = useQueryClient();
 
   const { id } = useParams();
+
+  const [openPlagiarism, setOpenPlagiarism] = useState({
+    answer1: false,
+    answer2: false,
+    answer3: false,
+  });
+  const [plagiarism, setPlagiarism] = useState<Plagiarism | null>(null);
+  useEffect(() => {
+    const data = plagiarismJSONData.find((obj) => obj.userId == id);
+    setPlagiarism(data ? data : null);
+  }, [id]);
 
   const {
     data: wichakansData,
@@ -206,6 +224,55 @@ export default function AnswerAcademicPage() {
                             <CardHeader className="font-bold">
                               คำถามย่อย {index + 1}
                             </CardHeader>
+                            {plagiarism &&
+                              (
+                                plagiarism[
+                                  `high_sim_algo_part_${index + 1}_userId` as keyof typeof plagiarism
+                                ] as string[]
+                              ).length > 0 && (
+                                <div>
+                                  <div className="mb-5 ml-5 flex items-center">
+                                    <Button
+                                      type="button"
+                                      size="icon"
+                                      effect="shineHover"
+                                      variant="outline"
+                                      onClick={() =>
+                                        setOpenPlagiarism({
+                                          ...openPlagiarism,
+                                          [`answer${index + 1}`]:
+                                            !openPlagiarism[
+                                              `answer${index + 1}` as keyof typeof openPlagiarism
+                                            ],
+                                        })
+                                      }
+                                    >
+                                      <ChevronDownIcon />
+                                    </Button>
+                                    <p className="ml-2 text-red-500">
+                                      ตรวจพบความคล้าย! {"(similarity > 0.8)"}
+                                    </p>
+                                  </div>
+                                  <CardHeader>
+                                    {openPlagiarism[
+                                      `answer${index + 1}` as keyof typeof openPlagiarism
+                                    ] &&
+                                      (
+                                        plagiarism[
+                                          `high_sim_algo_part_${index + 1}_userId` as keyof typeof plagiarism
+                                        ] as string[]
+                                      ).map((userId) => (
+                                        <Link
+                                          key={userId}
+                                          className="cursor-pointer text-xs hover:text-blue-500"
+                                          href={`/wichakan/${userId}`}
+                                        >
+                                          คล้ายกับ {userId.substring(0, 5)}
+                                        </Link>
+                                      ))}
+                                  </CardHeader>
+                                </div>
+                              )}
                             <CardContent className="answer font-sarabun text-foreground/90 leading-7">
                               {answer}
                             </CardContent>
