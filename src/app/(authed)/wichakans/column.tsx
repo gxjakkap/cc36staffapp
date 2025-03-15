@@ -7,6 +7,11 @@ import StatusBadge, {
   InspectStatusKeys,
 } from "@/components/data-table/status-badge";
 import { Button } from "@/components/ui/button";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import { formatId, formatThaiBuddhist } from "@/lib/formatter";
 
 export type Wichkans = {
@@ -77,7 +82,20 @@ export const createColumns = (): ColumnDef<Wichkans>[] => [
     cell: ({ row }) => (
       <>
         {row.original.score_chess_normalize ? (
-          <div>{row.original.score_chess_normalize}</div>
+          <HoverCard openDelay={0} closeDelay={10}>
+            <HoverCardTrigger asChild>
+              <Button
+                size="icon"
+                variant="ghost"
+                className="cursor-pointer p-0"
+              >
+                {row.original.score_chess_normalize}
+              </Button>
+            </HoverCardTrigger>
+            <HoverCardContent className="w-auto">
+              <p>คะแนน: {row.original.score_chess}</p>
+            </HoverCardContent>
+          </HoverCard>
         ) : (
           <p className="text-foreground/40">ยังไม่ได้ตรวจ</p>
         )}
