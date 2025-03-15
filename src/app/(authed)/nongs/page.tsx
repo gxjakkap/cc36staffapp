@@ -12,14 +12,18 @@ export async function NongsPage(props: NongsPageProps) {
   const search = searchParamsCache.parse(searchParams);
 
   return (
-    <NongsTable
-      initialState={{
-        pagination: {
-          pageIndex: search.page,
-          pageSize: search.perPage,
-        },
-      }}
-    />
+    <div className="flex w-full items-center justify-center pt-10">
+      <div className="w-full max-w-[90vw]">
+        <NongsTable
+          initialState={{
+            pagination: {
+              pageIndex: search.page,
+              pageSize: search.perPage,
+            },
+          }}
+        />
+      </div>
+    </div>
   );
 }
 export default NongsPage;
