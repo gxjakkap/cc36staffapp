@@ -93,10 +93,19 @@ export const getPersonalRecordCheck = authenticatedAction
       .from(wichakarn)
       .groupBy(wichakarn.staffUsername);
 
+    const checkedNongs = await dbStaff
+      .select({
+        userId: wichakarn.userId,
+        scoreAcademic: wichakarn.scoreAcademic,
+      })
+      .from(wichakarn)
+      .where(eq(wichakarn.staffUsername, ctx.user.username || ""));
+
     if (!data) {
       return {
         staff: ctx.user.username,
         count: 0,
+        checkedNongs: [],
       };
     }
 
@@ -105,8 +114,15 @@ export const getPersonalRecordCheck = authenticatedAction
     );
 
     return personalRecord
-      ? personalRecord
-      : { staff: ctx.user.username, count: 0 };
+      ? {
+          ...personalRecord,
+          checkedNongs,
+        }
+      : {
+          staff: ctx.user.username,
+          count: 0,
+          checkedNongs,
+        };
   });
 
 export const getHowManyChatGPT = authenticatedAction
