@@ -250,7 +250,7 @@ export default function AnswerAcademicPage() {
                                       <ChevronDownIcon />
                                     </Button>
                                     <p className="ml-2 text-red-500">
-                                      ตรวจพบความคล้าย! {"(similarity > 0.)"}
+                                      ตรวจพบความคล้าย! {"(similarity > 0.9)"}
                                     </p>
                                   </div>
                                   <CardHeader>
