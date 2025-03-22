@@ -1,4 +1,4 @@
-import jsonData from "./Plagiarism_Checked.json"; //gen มาจาก collab ที่จิตอลทำ
+import jsonData from "./Plagiarism_Checked_90_new.json"; //gen มาจาก collab ที่จิตอลทำ
 
 export interface Plagiarism {
   id: string;
