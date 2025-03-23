@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 
+import SendButton from "@/app/(authed)/confirm/email/send-button";
 import { DataTableColumnHeader } from "@/components/data-table/column-header";
-import { Button } from "@/components/ui/button";
 
 export type Confirm = {
   id: string;
@@ -51,7 +51,13 @@ export const createColumns = (): ColumnDef<Confirm>[] => [
   },
   {
     id: "ตอบรับการยืนยันสิทธิ์",
-    cell: () => <Button>ส่งอีเมล</Button>,
-    size: 40,
+    cell: ({ row }) => (
+      <div className="w-[10rem]">
+        <SendButton
+          email={row.original.email}
+          fullname={row.original.fullname}
+        />
+      </div>
+    ),
   },
 ];
