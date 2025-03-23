@@ -3,7 +3,7 @@
 import { Resend } from "resend";
 import { z } from "zod";
 
-import { EmailTemplate } from "@/app/(authed)/confirm/email/template";
+import ConfirmEmail from "@/components/emails/confirm-email-template";
 import { PublicError } from "@/lib/errors";
 import { authenticatedAction } from "@/lib/safe-action";
 
@@ -23,8 +23,10 @@ export const sendConfirmationEmail = authenticatedAction
         // TODO: REPLACE WITH COMCAMP.io email
         from: "onboarding@resend.dev",
         to: [input.email],
-        subject: "Hello world",
-        react: await EmailTemplate({ firstName: "john" }),
+        subject: "ยืนยันการเข้าร่วม ค่าย ComCamp36",
+        react: ConfirmEmail({
+          fullname: input.fullname,
+        }),
       });
 
       if (error) {
