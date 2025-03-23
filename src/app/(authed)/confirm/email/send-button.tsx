@@ -33,7 +33,7 @@ function SendButton({ email, fullname, sent }: SendButtonProps) {
         toast.success("ส่งอีเมลสำเร็จ");
       },
       onError() {
-        toast.success("เกิดข้อผิดพลาดบางอย่าง ส่งอีเมลไม่สำเร็จ");
+        toast.error(`เกิดข้อผิดพลาดบางอย่าง ส่งอีเมลไม่สำเร็จ`);
       },
     },
   );
