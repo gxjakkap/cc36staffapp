@@ -20,6 +20,7 @@ interface NavbarProps {
 export const THABIANS_NAV = [
   { href: "/nongs", text: "ข้อมูลส่วนตัว" },
   { href: "/thabians", text: "คำถามทะเบียน" },
+  { href: "/confirm", text: "ยืนยันสิทธิ์" },
 ];
 
 const ThabianNavItems = ({ pathname }: { pathname: string }) => {
