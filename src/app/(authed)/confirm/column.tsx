@@ -110,30 +110,6 @@ export const createColumns = (): ColumnDef<Confirm>[] => [
     },
   },
   {
-    id: "result",
-    accessorFn: (row) => {
-      const status = row.status;
-      const gender = row.gender == "man" ? "man" : "woman";
-      let index = 0;
-
-      if (gender === "man") {
-        index = status.includes("reserved") ? row.index - 100 : row.index - 50;
-      }
-
-      if (gender === "woman") {
-        index = status.includes("reserved") ? row.index - 100 : row.index;
-      }
-
-      return `${status}-${gender}-${index.toString().padStart(2, "0")}`;
-    },
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="ผลการสมัคร" />
-    ),
-    cell: ({ row }) => <div>{row.getValue("result")}</div>,
-    size: 100,
-    filterFn: "includesString",
-  },
-  {
     accessorKey: "status",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="สถานะ" />
