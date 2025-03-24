@@ -119,6 +119,11 @@ export const tabian = pgTable(
   ],
 );
 
+export const confirmationStaff = pgTable("confirmationStaff", {
+  user_id: text().notNull(),
+  isSentEmail: boolean(),
+});
+
 export const remarks = pgTable(
   "remarks",
   {
