@@ -119,10 +119,19 @@ export const tabian = pgTable(
   ],
 );
 
-export const confirmationStaff = pgTable("confirmationStaff", {
-  user_id: text().notNull(),
-  isSentEmail: boolean(),
-});
+export const confirmationStaff = pgTable(
+  "confirmationStaff",
+  {
+    userId: text().notNull(),
+    isSentEmail: boolean(),
+  },
+  (table) => [
+    uniqueIndex("confirmationStaff_userId_idx").using(
+      "btree",
+      table.userId.asc().nullsLast().op("text_ops"),
+    ),
+  ],
+);
 
 export const remarks = pgTable(
   "remarks",
