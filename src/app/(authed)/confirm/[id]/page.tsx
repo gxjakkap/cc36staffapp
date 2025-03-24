@@ -87,8 +87,8 @@ export default function ConfirmIndividualPage() {
           <CardContent>
             <p>ชื่อเล่น: {data?.nickname}</p>
             <p>อาหาร: {data?.requestFood}</p>
-            <p>มี Ipad ไหม: {data?.haveIpad}</p>
-            <p>มี Mouse ไหม: {data?.haveMouse}</p>
+            <p>มี Ipad ไหม: {data?.haveIpad ? "มี" : "ไม่มี"}</p>
+            <p>มี Mouse ไหม: {data?.haveMouse ? "มี" : "ไม่มี"}</p>
             <p>ระบบปฏิบัติการ: {data?.osNotebook}</p>
             <p>การเดินทางมาค่าย: {data?.travel}</p>
           </CardContent>
