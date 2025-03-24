@@ -34,7 +34,7 @@ export const confirmStatusBadgeVariants = cva("m-1", {
 });
 
 const statusText: Record<ConfirmStatusKeys, string> = {
-  yes: "ยืนยัน",
+  yes: "ยืนยันสิทธิ์",
   no: "สละสิทธิ์",
   candidate: "ตัวจริง",
   reserved: "สำรอง",
