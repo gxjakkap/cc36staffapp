@@ -1,0 +1,1 @@
+ALTER TABLE "confirmationStaff" ADD PRIMARY KEY ("userId");

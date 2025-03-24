@@ -122,8 +122,10 @@ export const tabian = pgTable(
 export const confirmationStaff = pgTable(
   "confirmationStaff",
   {
-    userId: text().notNull(),
+    userId: text().notNull().primaryKey(),
     isSentEmail: boolean(),
+    staffName: text().notNull(),
+    sent_at: timestamp("sent_at").notNull(),
   },
   (table) => [
     uniqueIndex("confirmationStaff_userId_idx").using(

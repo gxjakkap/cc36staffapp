@@ -4,6 +4,7 @@ import React, { Fragment, ReactNode } from "react";
 import Image from "next/image";
 import { redirect, useParams } from "next/navigation";
 
+import SendButton from "@/app/(authed)/confirm/email/send-button";
 import ConfirmStatusBadge, {
   ConfirmStatusKeys,
 } from "@/app/(authed)/confirm/status-badge";
@@ -49,7 +50,7 @@ export default function ConfirmIndividualPage() {
       data: `${data.fullname || ""}`,
     },
     {
-      label: "อาหารที่ขอ",
+      label: "ประเภทอาหารที่ต้องการเป็นพิเศษ",
       data: `${data.requestFood || ""}`,
     },
     {
@@ -83,14 +84,20 @@ export default function ConfirmIndividualPage() {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-[1fr_2fr]">
             <div className="flex flex-col gap-6">
               <div className="border-border overflow-hidden rounded-lg border">
-                <Image
-                  style={{ width: "100%", height: "auto" }}
-                  width={1000}
-                  height={0}
-                  src={data.receipt_path}
-                  alt="ComCamp36Logo"
-                  priority
-                />
+                {data.receipt_path != "" ? (
+                  <Image
+                    style={{ width: "100%", height: "auto" }}
+                    width={1000}
+                    height={0}
+                    src={data.receipt_path}
+                    alt="ComCamp36Logo"
+                    priority
+                  />
+                ) : (
+                  <div className="flex w-full items-center justify-center p-2">
+                    ยังไม่ได้ส่งใบเสร็จ
+                  </div>
+                )}
               </div>
               <ApplicantItems
                 data={data.receipt_date ?? ""}
@@ -120,6 +127,16 @@ export default function ConfirmIndividualPage() {
                     <ApplicantItems {...item} />
                   </Fragment>
                 ))}
+              </div>
+
+              <div className="flex w-full flex-col items-center justify-center gap-2 pt-10">
+                <SendButton
+                  email={data.email ?? ""}
+                  fullname={data.fullname}
+                  disabled={!data.isSentEmail && data.status != "yes"}
+                  user_id={Array.isArray(id) ? id[0] : id}
+                />
+                {data.staffName && `${data.staffName}`}
               </div>
             </div>
           </div>

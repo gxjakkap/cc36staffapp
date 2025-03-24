@@ -135,7 +135,7 @@ export const createColumns = (): ColumnDef<Confirm>[] => [
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <Link href={`/confirm/${row.original.id}`}>
-            <DropdownMenuItem disabled asChild>
+            <DropdownMenuItem asChild>
               <div className="flex gap-2">
                 <PinIcon />
                 <p>การยืนยันสิทธิ์</p>

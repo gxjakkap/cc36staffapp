@@ -1,0 +1,1 @@
+ALTER TABLE "confirmationStaff" ADD COLUMN "staffName" text NOT NULL;

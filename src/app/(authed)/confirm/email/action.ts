@@ -4,6 +4,8 @@ import { Resend } from "resend";
 import { z } from "zod";
 
 import ConfirmEmail from "@/components/emails/confirm-email-template";
+import { dbStaff } from "@/db";
+import { confirmationStaff } from "@/db/staff-schema";
 import { PublicError } from "@/lib/errors";
 import { authenticatedAction } from "@/lib/safe-action";
 
@@ -13,11 +15,12 @@ export const sendConfirmationEmail = authenticatedAction
   .createServerAction()
   .input(
     z.object({
+      user_id: z.string(),
       email: z.string(),
       fullname: z.string(),
     }),
   )
-  .handler(async ({ input }) => {
+  .handler(async ({ input, ctx }) => {
     try {
       const { error } = await resend.emails.send({
         from: "noreply@mail.comcamp.io",
@@ -32,6 +35,13 @@ export const sendConfirmationEmail = authenticatedAction
         console.log(error);
         throw new PublicError(`${error}`);
       }
+
+      await dbStaff.insert(confirmationStaff).values({
+        userId: input.user_id,
+        isSentEmail: true,
+        staffName: ctx.user.username ?? "",
+        sent_at: new Date(),
+      });
 
       return;
     } catch (error) {

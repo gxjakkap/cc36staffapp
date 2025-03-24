@@ -22,10 +22,18 @@ import { useServerActionMutation } from "@/hook/server-action-hooks";
 interface SendButtonProps {
   email: string;
   fullname: string;
+  user_id: string;
   sent?: boolean;
+  disabled?: boolean;
 }
 
-function SendButton({ email, fullname, sent }: SendButtonProps) {
+function SendButton({
+  email,
+  fullname,
+  sent,
+  disabled,
+  user_id,
+}: SendButtonProps) {
   const { mutate, isPending, isSuccess } = useServerActionMutation(
     sendConfirmationEmail,
     {
@@ -54,6 +62,20 @@ function SendButton({ email, fullname, sent }: SendButtonProps) {
     );
   }
 
+  if (disabled) {
+    return (
+      <Button
+        effect="expandIcon"
+        icon={SendIcon}
+        iconPlacement="right"
+        disabled
+        variant="outline"
+      >
+        ไม่สามารถส่งอีเมลได้
+      </Button>
+    );
+  }
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -74,7 +96,7 @@ function SendButton({ email, fullname, sent }: SendButtonProps) {
           <AlertDialogCancel>ยกเลิก</AlertDialogCancel>
           <AlertDialogAction
             onClick={() => {
-              mutate({ email, fullname });
+              mutate({ email, fullname, user_id });
             }}
           >
             ส่งอีเมลยืนยันสิทธิ์

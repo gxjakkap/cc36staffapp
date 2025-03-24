@@ -1,0 +1,1 @@
+ALTER TABLE "confirmationStaff" ADD COLUMN "sent_at" timestamp NOT NULL;
