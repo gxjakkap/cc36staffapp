@@ -1,5 +1,5 @@
-import { sql } from "drizzle-orm";
 import {
+  bigint,
   boolean,
   foreignKey,
   index,
@@ -7,6 +7,7 @@ import {
   pgTable,
   text,
   timestamp,
+  unique,
   uniqueIndex,
   varchar,
 } from "drizzle-orm/pg-core";
@@ -173,3 +174,43 @@ export const session = pgTable("Session", {
   userId: text("user_id").notNull(),
   expire: timestamp({ precision: 6, mode: "string" }).notNull(),
 });
+
+export const answerConfirm = pgTable(
+  "AnswerConfirm",
+  {
+    id: text().primaryKey().notNull(),
+    userId: text().notNull(),
+    questions: text().array(),
+  },
+  (table) => [uniqueIndex("AnswerConfirm_pkey").on(table.userId)],
+);
+
+export const confirmation = pgTable(
+  "Confirmation",
+  {
+    userId: text("user_id").primaryKey().notNull(),
+    index: bigint("index", { mode: "number" }).notNull(),
+    fullname: text("fullname").notNull(),
+    nickname: text("nickname"),
+    requestFood: text("request_food"),
+    haveIpad: boolean("haveIpad"),
+    osNotebook: text("os_notebook"),
+    travel: text("travel"),
+    receiptPath: text("receipt_path"),
+    receiptDatetime: timestamp("receipt_datetime", {
+      withTimezone: true,
+      mode: "string",
+    }),
+    confirmationStatus: text("confirmation_status").notNull(),
+    isAnswerDone: timestamp("isAnswerDone", { mode: "string" }),
+    isConfirmDone: timestamp("isConfirmDone", { mode: "string" }),
+    haveMouse: boolean("haveMouse"),
+    isInfoDone: timestamp("isInfoDone", { withTimezone: true, mode: "string" }),
+    gender: text("gender").notNull(),
+  },
+  (table) => [
+    uniqueIndex("Confirmation_pkey").on(table.userId),
+    uniqueIndex("Confirmation_index_key").on(table.index),
+    unique("Confirmation_index_unique").on(table.index),
+  ],
+);

@@ -1,7 +1,22 @@
+import Link from "next/link";
 import { ColumnDef } from "@tanstack/react-table";
+import { PinIcon, SearchIcon } from "lucide-react";
 
-import SendButton from "@/app/(authed)/confirm/email/send-button";
+import GenderBadge, { GenderKeys } from "@/app/(authed)/confirm/gender-badge";
+import ConfirmStatusBadge, {
+  ConfirmStatusKeys,
+} from "@/app/(authed)/confirm/status-badge";
 import { DataTableColumnHeader } from "@/components/data-table/column-header";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { formatPhoneNumber } from "@/lib/formatter";
 
 export type Confirm = {
   id: string;
@@ -9,9 +24,27 @@ export type Confirm = {
   email: string;
   nickname: string;
   index: string;
+  status: string;
+  gender: string;
+  tel: string;
 };
 
 export const createColumns = (): ColumnDef<Confirm>[] => [
+  {
+    accessorKey: "index",
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="ลำดับ"
+        className="justify-center"
+      />
+    ),
+    cell: ({ row }) => (
+      <div className="w-full text-center">{row.getValue("index")}</div>
+    ),
+    size: 30,
+    filterFn: "includesString",
+  },
   {
     accessorKey: "email",
     header: ({ column }) => (
@@ -19,6 +52,21 @@ export const createColumns = (): ColumnDef<Confirm>[] => [
     ),
     cell: ({ row }) => <div>{row.getValue("email")}</div>,
     size: 250,
+    filterFn: "includesString",
+  },
+  {
+    accessorKey: "tel",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="เบอร์โทร" />
+    ),
+    cell: ({ row }) => (
+      <div>
+        {row.original.tel
+          ? formatPhoneNumber(row.original.tel)
+          : "ไม่กรอกเบอร์โทรศัพท์"}
+      </div>
+    ),
+    size: 150,
     filterFn: "includesString",
   },
   {
@@ -35,29 +83,76 @@ export const createColumns = (): ColumnDef<Confirm>[] => [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="ชื่อเล่น" />
     ),
-    cell: ({ row }) => <div>{row.getValue("nickname")}</div>,
+    cell: ({ row }) => (
+      <div>
+        {row.original.nickname ? (
+          <p>{row.original.nickname}</p>
+        ) : (
+          <p className="text-foreground/20">ยังไม่ได้กรอกชื่อเล่น</p>
+        )}
+      </div>
+    ),
     size: 100,
     filterFn: "includesString",
   },
-
   {
-    accessorKey: "index",
+    accessorKey: "gender",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="ลำดับ" />
+      <DataTableColumnHeader column={column} title="เพศ" />
     ),
-    cell: ({ row }) => <div>{row.getValue("index")}</div>,
-    size: 60,
+    cell: ({ row }) => (
+      <GenderBadge gender={row.original.gender as GenderKeys} />
+    ),
+    size: 100,
+    filterFn: (row, _, filterValue) => {
+      return filterValue.includes(row.original.gender);
+    },
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="สถานะ" />
+    ),
+    cell: ({ row }) => (
+      <ConfirmStatusBadge status={row.original.status as ConfirmStatusKeys} />
+    ),
+    size: 100,
     filterFn: "includesString",
   },
   {
-    id: "ตอบรับการยืนยันสิทธิ์",
+    id: "ตรวจสอบ",
     cell: ({ row }) => (
-      <div className="w-[10rem]">
-        <SendButton
-          email={row.original.email}
-          fullname={row.original.fullname}
-        />
-      </div>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" size="icon">
+            <SearchIcon />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuLabel>
+            ตรวจสอบ <span className="font-bold">{row.original.fullname}</span>
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <Link href={`/confirm/${row.original.id}`}>
+            <DropdownMenuItem disabled asChild>
+              <div className="flex gap-2">
+                <PinIcon />
+                <p>การยืนยันสิทธิ์</p>
+              </div>
+            </DropdownMenuItem>
+          </Link>
+          <Link href={`/nong/${row.original.id}`}>
+            <DropdownMenuItem>ข้อมูลส่วนตัว</DropdownMenuItem>
+          </Link>
+          <Link href={`/thabian/${row.original.id}`}>
+            <DropdownMenuItem>คำถามทะเบียน</DropdownMenuItem>
+          </Link>
+          <Link href={`/wichakan/${row.original.id}`}>
+            <DropdownMenuItem>คำถามวิชาการ</DropdownMenuItem>
+          </Link>
+        </DropdownMenuContent>
+      </DropdownMenu>
     ),
+    size: 40,
   },
 ];
