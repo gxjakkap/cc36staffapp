@@ -20,8 +20,7 @@ export const sendConfirmationEmail = authenticatedAction
   .handler(async ({ input }) => {
     try {
       const { error } = await resend.emails.send({
-        // TODO: REPLACE WITH COMCAMP.io email
-        from: "onboarding@resend.dev",
+        from: "noreply@mail.comcamp.io",
         to: [input.email],
         subject: "ยืนยันการเข้าร่วม ค่าย ComCamp36",
         react: ConfirmEmail({
