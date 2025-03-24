@@ -97,7 +97,7 @@ export default function ConfirmTable(props: TableProps) {
         fullname: item.fullname,
         email: item.email ?? "",
         nickname: item.nickname ?? "",
-        index: item.index.toString(),
+        index: item.index,
         gender: item.gender ?? "",
         status: item.status,
         tel: item.tel ?? "",

@@ -23,7 +23,7 @@ export type Confirm = {
   fullname: string;
   email: string;
   nickname: string;
-  index: string;
+  index: number;
   status: string;
   gender: string;
   tel: string;
@@ -43,7 +43,8 @@ export const createColumns = (): ColumnDef<Confirm>[] => [
       <div className="w-full text-center">{row.getValue("index")}</div>
     ),
     size: 30,
-    filterFn: "includesString",
+    enableSorting: true,
+    sortingFn: "basic",
   },
   {
     accessorKey: "email",
@@ -107,6 +108,30 @@ export const createColumns = (): ColumnDef<Confirm>[] => [
     filterFn: (row, _, filterValue) => {
       return filterValue.includes(row.original.gender);
     },
+  },
+  {
+    id: "result",
+    accessorFn: (row) => {
+      const status = row.status;
+      const gender = row.gender == "man" ? "man" : "woman";
+      let index = 0;
+
+      if (gender === "man") {
+        index = status.includes("reserved") ? row.index - 100 : row.index - 50;
+      }
+
+      if (gender === "woman") {
+        index = status.includes("reserved") ? row.index - 100 : row.index;
+      }
+
+      return `${status}-${gender}-${index.toString().padStart(2, "0")}`;
+    },
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="ผลการสมัคร" />
+    ),
+    cell: ({ row }) => <div>{row.getValue("result")}</div>,
+    size: 100,
+    filterFn: "includesString",
   },
   {
     accessorKey: "status",
