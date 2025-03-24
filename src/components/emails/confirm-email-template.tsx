@@ -7,6 +7,7 @@ import {
   Heading,
   Html,
   Img,
+  Link,
   Preview,
   Section,
   Tailwind,
@@ -15,9 +16,13 @@ import {
 
 interface ConfirmEmailProps {
   fullname: string;
+  nickname: string | null;
 }
 
-export default function ConfirmEmail({ fullname }: ConfirmEmailProps) {
+export default function ConfirmEmail({
+  fullname,
+  nickname,
+}: ConfirmEmailProps) {
   return (
     <Html>
       <Head>
@@ -28,7 +33,7 @@ export default function ConfirmEmail({ fullname }: ConfirmEmailProps) {
           fontStyle="normal"
         />
       </Head>
-      <Preview>ยืนยันการเข้าร่วม ค่าย ComCamp36</Preview>
+      <Preview>ยืนยันการเข้าร่วม ค่าย ComCamp 36</Preview>
       <Tailwind>
         <Body className="bg-white font-sans">
           <Container className="mx-auto w-full max-w-[700px] rounded border border-solid border-[#eaeaea] p-0">
@@ -40,26 +45,67 @@ export default function ConfirmEmail({ fullname }: ConfirmEmailProps) {
                 className="my-0"
               />
               <Heading className="my-10 text-2xl leading-tight font-medium">
-                อีเมลยืนยันการยืนยันสิทธิ์เพื่อเข้าร่วมกิจกรรม Comcamp36
+                อีเมลยืนยันการยืนยันสิทธิเพื่อเข้าร่วมกิจกรรม ComCamp 36
               </Heading>
               <Text className="text-[1rem]">
-                ขอบคุณน้อง {fullname} ที่ได้ยืนยันสิทธิ์ในการเข้าร่วมกิจกรรมค่าย
-                Comcamp36 ขอให้ น้อง เข้ากลุ่ม Line Open Chat
-              </Text>
-              <Text>รหัสผ่าน : CC36</Text>
-              <Text>
-                หมายเหตุ : แนวทางการตั้งชื่อเมื่อเข้า Line Open Chat N&apos;
-                ชื่อจริง(ชื่อเล่น) ตัวอย่าง N&apos; ต้มยำ(ห่าน)
+                ขอบคุณน้อง {fullname} {!!nickname ? `(${nickname})` : ""}{" "}
+                ที่ได้ยืนยันสิทธิในการเข้าร่วมกิจกรรมค่าย ComCamp 36
+                โดยหลังจากนี้พี่ ๆ ขอรบกวนน้อง
               </Text>
               <Section>
-                <Img
-                  src="https://media.discordapp.net/attachments/1330249133642092625/1353384783492812932/image.png?ex=67e1754d&is=67e023cd&hm=207933de3bcf112da8a3c5b7f02b02634796f1f0c07df06f598d0b5a9198fc50&=&format=webp&quality=lossless&width=1392&height=1392"
-                  width="200"
-                  height="200"
-                  className="my-0"
-                />
+                <Heading as="h3">
+                  1. กรอกไซส์เสื้อยืดเพื่อจัดทำเสื้อยืดค่าย
+                </Heading>
+                <Text className="text-[1rem]">
+                  ขอรบกวนน้องกรอกไซส์เสื้อยืดเพื่อจัดทำเสื่อยืดค่ายผ่านฟอร์มด้านล่าง
+                  (ไม่มีค่าใช้จ่าย)
+                </Text>
+                <Text className="inline-flex gap-x-2">
+                  <Text className="font-bold">Link ฟอร์ม:</Text>{" "}
+                  <Link
+                    className="text-[1rem]"
+                    href="https://kmutt.me/cc36participanttshirt"
+                  >
+                    https://kmutt.me/cc36participanttshirt
+                  </Link>
+                </Text>
               </Section>
-              <Text>เข้ามาพูดคุยกับพี่ ๆ ได้เลยน่ะ</Text>
+              <Section>
+                <Heading as="h3">
+                  2. เข้าร่วมกลุ่ม Line OpenChat
+                  เพื่อรับข่าวสารและพูดคุยกับพี่ค่ายและเพื่อน ๆ
+                </Heading>
+                <Text className="inline-flex gap-x-2">
+                  <Text className="font-bold">รหัสผ่าน:</Text>
+                  <Text>CC36</Text>
+                </Text>
+                <Text>
+                  หมายเหตุ: แนวทางการตั้งชื่อสำหรับเข้าร่วม Line OpenChat
+                  N&apos; ชื่อจริง(ชื่อเล่น) ตัวอย่าง N&apos; ต้มยำ(ห่าน)
+                </Text>
+                <Text className="inline-flex gap-x-2">
+                  <Text className="font-bold">
+                    Link เข้าร่วม LINE OpenChat:
+                  </Text>{" "}
+                  <Link
+                    className="text-[1rem]"
+                    href="https://kmutt.me/cc36openchat"
+                  >
+                    https://kmutt.me/cc36openchat
+                  </Link>
+                </Text>
+                <Section>
+                  <Img
+                    src="https://axizqhrfmehmjjbztewj.supabase.co/storage/v1/object/public/comcamp36-public-files/cc36openchat.png"
+                    width="200"
+                    height="200"
+                    className="my-0"
+                  />
+                </Section>
+                <Text>
+                  สามารถเข้ามาสอบถามและพูดคุยกับเพื่อน ๆ ในค่ายได้เลยนะ!
+                </Text>
+              </Section>
             </Section>
 
             <Section className="px-12 text-sm leading-5">
@@ -71,13 +117,22 @@ export default function ConfirmEmail({ fullname }: ConfirmEmailProps) {
               />
 
               <Text className="text-[0.8rem]">
-                © 2025 Comcamp36 Computer Engineering Department, King
+                © 2025 ComCamp36. Computer Engineering Department, King
                 Mongkut&apos;s University of Technology Thonburi, 126 Pracha
                 Uthit Rd, Bang Mot, Thung Khru, Bangkok 10140
               </Text>
               <Text className="text-center text-[0.8rem]">
-                คุณได้รับอีเมลยืนยันการยืนยันสิทธิ์เพื่อเข้าร่วมกิจกรรม
-                Comcamp36
+                คุณได้รับอีเมลยืนยันการยืนยันสิทธิ์เพื่อเข้าร่วมกิจกรรม ComCamp
+                36
+              </Text>
+              <Text className="text-center text-[0.8rem]">
+                อีเมลฉบับนี้ถูกส่งโดยระบบอัตโนมัติ โปรดอย่าตอบกลับ
+                หากมีข้อสงสัยสามารถติดต่อทีมงานได้ที่{" "}
+                <Link href="mailto:kmutt.comcamp@gmail.com">
+                  kmutt.comcamp@gmail.com
+                </Link>{" "}
+                หรือ
+                <Link href="https://comcamp.io/#contact">ช่องทางต่อไปนี้</Link>
               </Text>
             </Section>
           </Container>

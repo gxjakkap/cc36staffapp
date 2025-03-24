@@ -3,7 +3,7 @@
 import { SendIcon } from "lucide-react";
 import { toast } from "sonner";
 
-import { sendConfirmationEmail } from "@/app/(authed)/confirm/email/action";
+import { sendTestEmail } from "@/app/(authed)/confirm/email/action";
 import { LoadingSpinner } from "@/components/svg/loading-spinner";
 import {
   AlertDialog,
@@ -19,7 +19,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useServerActionMutation } from "@/hook/server-action-hooks";
 
-interface SendButtonProps {
+interface TestButtonProps {
   email: string;
   fullname: string;
   nickname: string | null;
@@ -28,16 +28,15 @@ interface SendButtonProps {
   disabled?: boolean;
 }
 
-function SendButton({
-  email,
+function TestButton({
   fullname,
   nickname,
   sent,
   disabled,
   user_id,
-}: SendButtonProps) {
+}: TestButtonProps) {
   const { mutate, isPending, isSuccess } = useServerActionMutation(
-    sendConfirmationEmail,
+    sendTestEmail,
     {
       onSuccess() {
         toast.success("ส่งอีเมลสำเร็จ");
@@ -51,7 +50,7 @@ function SendButton({
   if (sent || isSuccess) {
     return (
       <Button disabled variant="outline">
-        ส่งอีเมลยืนยันสิทธิ์แล้ว
+        ส่งอีเมลทดสอบสิทธิ์แล้ว
       </Button>
     );
   }
@@ -82,31 +81,28 @@ function SendButton({
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button effect="expandIcon" icon={SendIcon} iconPlacement="right">
-          ส่งอีเมลยืนยันสิทธิ์
+          ส่งอีเมลยืนยันทดสอบ
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>
-            ส่งอีเมลยืนยันสิทธิ์ ให้ {fullname}
-          </AlertDialogTitle>
+          <AlertDialogTitle>ส่งอีเมลทดสอบ ให้ {fullname}</AlertDialogTitle>
           <AlertDialogDescription>
-            ตรวจสอบให้ดีก่อนส่ง เนื่องจากอีเมลส่งแล้วส่งเลย ไม่สามารถยกเลิกได้!
-            กำลังส่งอีเมลยืนยันสิทธิไปให้ {email}
+            กำลังส่งอีเมลไปให้ delivered@resend.dev
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>ยกเลิก</AlertDialogCancel>
           <AlertDialogAction
             onClick={() => {
-              mutate({ email, fullname, user_id, nickname });
+              mutate({ fullname, user_id, nickname });
             }}
           >
-            ส่งอีเมลยืนยันสิทธิ์
+            ส่งอีเมลทดสอบ
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
   );
 }
-export default SendButton;
+export default TestButton;

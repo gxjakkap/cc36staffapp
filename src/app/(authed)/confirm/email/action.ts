@@ -18,16 +18,18 @@ export const sendConfirmationEmail = authenticatedAction
       user_id: z.string(),
       email: z.string(),
       fullname: z.string(),
+      nickname: z.string().nullable(),
     }),
   )
   .handler(async ({ input, ctx }) => {
     try {
       const { error } = await resend.emails.send({
-        from: "noreply@mail.comcamp.io",
+        from: "ComCamp 36 <samsibhok@mail.comcamp.io>",
         to: [input.email],
-        subject: "ยืนยันการเข้าร่วม ค่าย ComCamp36",
+        subject: "ยืนยันการเข้าร่วม ค่าย ComCamp 36",
         react: ConfirmEmail({
           fullname: input.fullname,
+          nickname: input.nickname,
         }),
       });
 
@@ -45,8 +47,38 @@ export const sendConfirmationEmail = authenticatedAction
 
       return;
     } catch (error) {
-      throw new PublicError(`Said email erorr: ${error}`);
+      throw new PublicError(`Send email erorr: ${error}`);
     }
+  });
 
-    return;
+export const sendTestEmail = authenticatedAction
+  .createServerAction()
+  .input(
+    z.object({
+      user_id: z.string(),
+      fullname: z.string(),
+      nickname: z.string().nullable(),
+    }),
+  )
+  .handler(async ({ input }) => {
+    try {
+      const { error } = await resend.emails.send({
+        from: "ComCamp 36 <samsibhok@mail.comcamp.io>",
+        to: ["delivered@resend.dev"],
+        subject: "ยืนยันการเข้าร่วม ค่าย ComCamp 36",
+        react: ConfirmEmail({
+          fullname: input.fullname,
+          nickname: input.nickname,
+        }),
+      });
+
+      if (error) {
+        console.log(error);
+        throw new PublicError(`${error}`);
+      }
+
+      return;
+    } catch (error) {
+      throw new PublicError(`Send email erorr: ${error}`);
+    }
   });

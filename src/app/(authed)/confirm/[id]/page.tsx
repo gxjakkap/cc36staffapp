@@ -13,6 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useServerActionQuery } from "@/hook/server-action-hooks";
 
+import TestButton from "../email/test-button";
 import { getConfirmInfo } from "./action";
 
 export default function ConfirmIndividualPage() {
@@ -133,9 +134,19 @@ export default function ConfirmIndividualPage() {
                 <SendButton
                   email={data.email ?? ""}
                   fullname={data.fullname}
+                  nickname={data.nickname}
                   disabled={!data.isSentEmail && data.status != "yes"}
                   user_id={Array.isArray(id) ? id[0] : id}
                 />
+                {process.env.CORNFLOWER_ENABLE_EMAIL_TEST === "1" && (
+                  <TestButton
+                    email={data.email ?? ""}
+                    fullname={data.fullname}
+                    nickname={data.nickname}
+                    disabled={false}
+                    user_id={Array.isArray(id) ? id[0] : id}
+                  />
+                )}
                 {data.staffName && `${data.staffName}`}
               </div>
             </div>
