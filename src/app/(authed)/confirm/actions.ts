@@ -2,8 +2,9 @@
 
 import { eq } from "drizzle-orm";
 
-import { db } from "@/db";
+import { db, dbStaff } from "@/db";
 import { confirmation, user } from "@/db/schema";
+import { confirmationStaff } from "@/db/staff-schema";
 import { authenticatedAction } from "@/lib/safe-action";
 
 export const getAllPassedPerson = authenticatedAction
@@ -23,5 +24,16 @@ export const getAllPassedPerson = authenticatedAction
       .from(confirmation)
       .leftJoin(user, eq(confirmation.userId, user.id));
 
-    return data;
+    const dataStaffDb = await dbStaff.select().from(confirmationStaff);
+
+    const mergedData = data.map((item) => {
+      const staffInfo = dataStaffDb.find((staff) => staff.userId === item.id);
+
+      return {
+        ...item,
+        staffInfo: staffInfo || null,
+      };
+    });
+
+    return mergedData;
   });

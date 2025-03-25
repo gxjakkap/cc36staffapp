@@ -101,6 +101,7 @@ export default function ConfirmTable(props: TableProps) {
         gender: item.gender ?? "",
         status: item.status,
         tel: item.tel ?? "",
+        staffInfo: item.staffInfo,
       }))}
       filterFields={filterFields}
       initialState={props.initialState}

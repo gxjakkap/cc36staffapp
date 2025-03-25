@@ -135,9 +135,13 @@ export default function ConfirmIndividualPage() {
                   email={data.email ?? ""}
                   fullname={data.fullname}
                   nickname={data.nickname}
-                  disabled={!data.isSentEmail && data.status != "yes"}
+                  disabled={
+                    (!data.isSentEmail && data.status != "yes") ||
+                    data.staffName != null
+                  }
                   user_id={Array.isArray(id) ? id[0] : id}
                 />
+
                 {process.env.CORNFLOWER_ENABLE_EMAIL_TEST === "1" && (
                   <TestButton
                     email={data.email ?? ""}

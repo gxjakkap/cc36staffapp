@@ -27,6 +27,12 @@ export type Confirm = {
   status: string;
   gender: string;
   tel: string;
+  staffInfo: {
+    userId: string;
+    isSentEmail: boolean | null;
+    staffName: string;
+    sent_at: Date;
+  } | null;
 };
 
 export const createColumns = (): ColumnDef<Confirm>[] => [
@@ -121,6 +127,32 @@ export const createColumns = (): ColumnDef<Confirm>[] => [
     filterFn: "includesString",
   },
   {
+    accessorKey: "staffInfo",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="สถานะอีเมลยืนยันสิทธิ์" />
+    ),
+    cell: ({ row }) => (
+      <div className="flex w-[10rem] flex-col items-start justify-start">
+        {row.original.staffInfo ? (
+          <>
+            <p>ชื่อ: {row.original.staffInfo.staffName}</p>
+            <p>
+              ส่งอีเมล:{" "}
+              {row.original.staffInfo.isSentEmail ? "\u2705" : "\u274C"}
+            </p>
+            <p>
+              ส่งเมื่อ: {row.original.staffInfo.sent_at.toLocaleDateString()}
+            </p>
+          </>
+        ) : (
+          <p className="text-foreground/20">ยังไม่ได้ส่ง</p>
+        )}
+      </div>
+    ),
+    size: 200,
+    enableSorting: false,
+  },
+  {
     id: "ตรวจสอบ",
     cell: ({ row }) => (
       <DropdownMenu>
@@ -144,12 +176,6 @@ export const createColumns = (): ColumnDef<Confirm>[] => [
           </Link>
           <Link href={`/nong/${row.original.id}`}>
             <DropdownMenuItem>ข้อมูลส่วนตัว</DropdownMenuItem>
-          </Link>
-          <Link href={`/thabian/${row.original.id}`}>
-            <DropdownMenuItem>คำถามทะเบียน</DropdownMenuItem>
-          </Link>
-          <Link href={`/wichakan/${row.original.id}`}>
-            <DropdownMenuItem>คำถามวิชาการ</DropdownMenuItem>
           </Link>
         </DropdownMenuContent>
       </DropdownMenu>
