@@ -23,7 +23,6 @@ interface TestButtonProps {
   email: string;
   fullname: string;
   nickname: string | null;
-  user_id: string;
   sent?: boolean;
   disabled?: boolean;
 }
@@ -31,9 +30,9 @@ interface TestButtonProps {
 function TestButton({
   fullname,
   nickname,
+  email,
   sent,
   disabled,
-  user_id,
 }: TestButtonProps) {
   const { mutate, isPending, isSuccess } = useServerActionMutation(
     sendTestEmail,
@@ -95,7 +94,7 @@ function TestButton({
           <AlertDialogCancel>ยกเลิก</AlertDialogCancel>
           <AlertDialogAction
             onClick={() => {
-              mutate({ fullname, user_id, nickname });
+              mutate({ fullname, nickname, email });
             }}
           >
             ส่งอีเมลทดสอบ

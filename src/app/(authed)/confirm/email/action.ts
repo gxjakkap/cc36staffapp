@@ -55,16 +55,16 @@ export const sendTestEmail = authenticatedAction
   .createServerAction()
   .input(
     z.object({
-      user_id: z.string(),
       fullname: z.string(),
       nickname: z.string().nullable(),
+      email: z.string().email(),
     }),
   )
   .handler(async ({ input }) => {
     try {
       const { error } = await resend.emails.send({
         from: "ComCamp 36 <samsibhok@mail.comcamp.io>",
-        to: ["delivered@resend.dev"],
+        to: [input.email],
         subject: "ยืนยันการเข้าร่วม ค่าย ComCamp 36",
         react: ConfirmEmail({
           fullname: input.fullname,

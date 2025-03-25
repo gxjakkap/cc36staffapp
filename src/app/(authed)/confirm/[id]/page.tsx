@@ -141,14 +141,13 @@ export default function ConfirmIndividualPage() {
                   }
                   user_id={Array.isArray(id) ? id[0] : id}
                 />
-
-                {process.env.CORNFLOWER_ENABLE_EMAIL_TEST === "1" && (
+                {/** Manually replace the condition to render the button na kub */}
+                {false && (
                   <TestButton
-                    email={data.email ?? ""}
-                    fullname={data.fullname}
-                    nickname={data.nickname}
+                    email={"delivered@resend.dev"}
+                    fullname={data?.fullname ?? "Test"}
+                    nickname={data?.nickname ?? "Nick"}
                     disabled={false}
-                    user_id={Array.isArray(id) ? id[0] : id}
                   />
                 )}
                 {data.staffName && `${data.staffName}`}
