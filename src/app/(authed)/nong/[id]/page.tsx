@@ -116,6 +116,10 @@ function ApplicantPage() {
       data: `${data.user.gender ? genderVal(data.user.gender) : "ยังไม่ได้ระบุเพศ"}`,
     },
     {
+      label: "ศาสนา",
+      data: `${data.user.religion || "ยังไม่ได้ระบุศาสนา"}`,
+    },
+    {
       label: "ประวัติการศึกษา",
       data: "",
       isHeader: true,
