@@ -21,6 +21,11 @@ const nextConfig: NextConfig = {
         hostname: "**.supabase.co",
         pathname: "**",
       },
+      {
+        protocol: "https",
+        hostname: "bd9bb043cf4f5871232d3baaa5c6abf0.r2.cloudflarestorage.com",
+        pathname: "**",
+      },
     ],
   },
 };
